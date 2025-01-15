@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.msg {
+    display: flex;
+    justify-content: center;
+}
+
+.msg p {
+    background-color: red;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: white;
+    font-weight: bold;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.yellow-text {
+    background-color: yellow;
+}
+
+.form-container {
+    width: 50%;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.table-container {
+    overflow-x: auto;
+    overflow-y: hidden; /* Optional: to hide vertical scroll if unnecessary */
+    width: 100%; /* or specify a fixed width if needed */
+    white-space: nowrap; /* Ensures table cells don't wrap */
+}
+
+#reporttable {
+    width: 100%; /* This will take full width of the container */
+    border-collapse: collapse;
+}
+
+#reporttable th, #reporttable td {
+    padding: 8px 12px; /* Adjust as necessary */
+    border: 1px solid #ddd; /* Example border styling */
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+.header-table td {
+    border: none;
+    text-align: left;
+    padding: 4px;
+}
+.header-table {
+    margin-bottom: 20px;
+}
+.add-row {
+    cursor: pointer;
+    color: blue;
+}
+.form-header {
+    background-color: #dff0d8;
+}
+.highlight {
+    background-color: #ffff99;
+}
+
+.not-paid {
+    color: red;
+    font-weight: bold;
+}
