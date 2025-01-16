@@ -15,7 +15,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="../controller/index.php">INVENTORY</a>
+            <a class="navbar-brand" href="{{ route("dashboard") }}">INVENTORY</a>
                 @if (session("userType"))
                     @if (session("userType") == 1)
                         <a class="disabled yellow-text" aria-disabled="true">ADMIN</a>
