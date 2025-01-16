@@ -22,7 +22,7 @@ return new class extends Migration
         );
 
         Schema::create('products', function (Blueprint $table) {
-            $table->string("productCode", 5)->primary();
+            $table->string("productCode", 30)->primary();
             $table->string("productName", 100);
             }
         );
