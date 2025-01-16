@@ -1,4 +1,4 @@
-<x-header />
+<x-header :title="$title" />
 
 <main class="main-container">
     <div class="form-container bg-white">

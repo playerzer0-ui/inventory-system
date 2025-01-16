@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route("home");
 });
 
 Route::get("/home", [HomeController::class, "index"])->name("home");
 Route::post("/login", [HomeController::class, "login"])->name("login");
 Route::get("/logout", [HomeController::class, "logout"])->name("logout");
+
+Route::get("/dashboard", [ReportController::class, "dashboard"])->name("dashboard");
+Route::get("/debt", [ReportController::class, "debt"])->name("debt");
+Route::get("/receivables", [ReportController::class, "receivables"])->name("receivables");

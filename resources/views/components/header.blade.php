@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>home</title>
+        <title>{{$title}}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -15,9 +15,14 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="../controller/index.php">gudang</a>
-                <a class="disabled yellow-text" aria-disabled="true">ADMIN</a>
-                <a class="disabled" aria-disabled="true">normie</a>
+            <a class="navbar-brand" href="../controller/index.php">INVENTORY</a>
+                @if (session("userType"))
+                    @if (session("userType") == 1)
+                        <a class="disabled yellow-text" aria-disabled="true">ADMIN</a>
+                    @else
+                        <a class="disabled" aria-disabled="true">normal</a>
+                    @endif                    
+                @endif
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,13 +33,13 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../controller/index.php?action=dashboard"><button class="btn btn-info">storage</button></a>
+                        <a class="nav-link active" aria-current="page" href="{{ route("dashboard") }}"><button class="btn btn-info">storage</button></a>
                     </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../controller/index.php?action=show_hutang"><button class="btn btn-info">debt report</button></a>
+                            <a class="nav-link active" aria-current="page" href="{{ route("debt") }}"><button class="btn btn-info">debt report</button></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../controller/index.php?action=show_piutang"><button class="btn btn-info">receiveables report</button></a>
+                            <a class="nav-link active" aria-current="page" href="{{ route("receivables") }}"><button class="btn btn-info">receiveables report</button></a>
                         </li>
                     <li class="nav-item dropdown btn btn-outline-primary">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -105,7 +110,11 @@
                         <a class="nav-link" href="../controller/index.php?action=getLogs"><button class="btn btn-info">LOGS</button></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../controller/index.php?action=logout"><button class="btn btn-primary">LOGGING OUT</button></a>
+                        @if (session("userType"))
+                            <a class="nav-link" href="{{ route("logout") }}"><button class="btn btn-primary">LOGOUT</button></a>
+                        @else
+                            <a class="nav-link" href="{{ route("home") }}"><button class="btn btn-primary">LOGIN</button></a>                 
+                        @endif
                     </li>
                 </ul>
             </div>

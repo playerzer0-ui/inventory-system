@@ -1,5 +1,0 @@
-<x-header />
-
-
-
-<x-footer />
