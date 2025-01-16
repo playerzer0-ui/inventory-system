@@ -57,11 +57,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="../controller/index.php?action=show_slip&state=out">slip out</a></li>
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_invoice&state=out">invoice out</a></li>
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_payment&state=out">payment out</a></li>
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_slip&state=out_tax">slip tax out</a></li>
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_invoice&state=out_tax">invoice tax out</a></li>
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_payment&state=out_tax">payment tax out</a></li>
+                            <li><a class="dropdown-item" href="../controller/index.php?action=show_invoice&state=out">invoice out</a></li>
+                            <li><a class="dropdown-item" href="../controller/index.php?action=show_payment&state=out">payment out</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown btn btn-outline-primary">
@@ -72,8 +69,8 @@
                             <li><a class="dropdown-item" href="../controller/index.php?action=show_repack">repack</a></li>
                             <li><a class="dropdown-item" href="../controller/index.php?action=show_moving">moving</a></li>
 
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_invoice&state=moving">invoice moving</a></li>
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_payment&state=moving">payment moving</a></li>
+                            <li><a class="dropdown-item" href="../controller/index.php?action=show_invoice&state=moving">invoice moving</a></li>
+                            <li><a class="dropdown-item" href="../controller/index.php?action=show_payment&state=moving">payment moving</a></li>
 
                         </ul>
                     </li>

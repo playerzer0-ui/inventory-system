@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SlipController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,5 @@ Route::get("/logout", [HomeController::class, "logout"])->name("logout");
 Route::get("/dashboard", [ReportController::class, "dashboard"])->name("dashboard");
 Route::get("/debt", [ReportController::class, "debt"])->name("debt");
 Route::get("/receivables", [ReportController::class, "receivables"])->name("receivables");
+
+Route::get("/slip", [SlipController::class, "slip"])->name("slip");
