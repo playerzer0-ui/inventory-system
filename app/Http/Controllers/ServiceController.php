@@ -42,8 +42,10 @@ class ServiceController extends Controller
     public function getProductSuggestions(Request $req)
     {
         $code = $req->input("code");
-        $products = Product::where("productCode", "LIKE", "%$code%")->limit(10)->get();
-        
+        $products = Product::where('productCode', 'like', '%' . $code . '%')
+        ->limit(10)
+        ->pluck('productCode');
+
         return $products;
     }
 

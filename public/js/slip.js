@@ -37,6 +37,30 @@ if (!pageState.includes("amend")){
 }
 
 function applyAutocomplete(element) {
+    var availableTags = [
+        "ActionScript",
+        "AppleScript",
+        "Asp",
+        "BASIC",
+        "C",
+        "C++",
+        "Clojure",
+        "COBOL",
+        "ColdFusion",
+        "Erlang",
+        "Fortran",
+        "Groovy",
+        "Haskell",
+        "Java",
+        "JavaScript",
+        "Lisp",
+        "Perl",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Scala",
+        "Scheme"
+      ];
     $(element).autocomplete({
         source: function(request, response) {
             $.ajax({
@@ -45,9 +69,10 @@ function applyAutocomplete(element) {
                 dataType: 'json',
                 data: {
                     action: 'getProductSuggestions',
-                    term: request.term
+                    code: request.term
                 },
                 success: function(data) {
+                    console.log(data);
                     response(data);
                 }
             });
@@ -57,6 +82,7 @@ function applyAutocomplete(element) {
             getProductDetails(element);
             return false;
         }
+        //source: availableTags
     });
 }
 
@@ -86,7 +112,7 @@ function getProductDetails(input) {
         dataType: 'json',
         data: {
             action: 'getProductDetails',
-            productCode: productCode
+            code: productCode
         },
         success: function(data) {
             if (data) {
