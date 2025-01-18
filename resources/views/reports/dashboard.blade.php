@@ -1,5 +1,5 @@
 <x-header :title="$title" />
 
-<h1>fwefwefweffe</h1>
+<h1>{{$uuid}}</h1>
 
 <x-footer />

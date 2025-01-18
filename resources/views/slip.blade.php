@@ -61,21 +61,21 @@
                 <td>NO. LPB</td>
                 <td>:</td>
                 <td colspan="2">
-                    <input name="no_lpb_display" type="text" id="no_lpb_display" placeholder="automatic" readonly>
+                    <input name="no_lpb_display" type="text" id="no_lpb_display" placeholder="Automatic from the system" readonly>
                     <input name="no_LPB" type="hidden" id="no_LPB">
                 </td>
                 @else
                 <td>No SJ</td>
                 <td>:</td>
-                <td colspan="2"><input name="no_sj" type="text" id="no_sj" placeholder="di isi" readonly></td>
+                <td colspan="2"><input name="no_sj" type="text" id="no_sj" placeholder="fill in" readonly></td>
                 @endif
                 <td>Order Date</td>
                 <td>:</td>
                 <td>
                 @if ($state == "in")
-                <input name="order_date" type="date" id="tgl_penerimaan" onchange="getLPB()" placeholder="di isi" required>
+                <input name="order_date" type="date" id="tgl_penerimaan" onchange="getLPB()" placeholder="fill in" required>
                 @else
-                <input name="order_date" type="date" id="tgl_penerimaan" onchange="getSJ()" placeholder="di isi" required>
+                <input name="order_date" type="date" id="tgl_penerimaan" onchange="getSJ()" placeholder="fill in" required>
                 @endif
                 </td>
             </tr>
@@ -83,21 +83,21 @@
                 @if ($state == "in")
                 <td>No SJ</td>
                 <td>:</td>
-                <td colspan="2"><input name="no_sj" type="text" id="no_sj" placeholder="di isi" required></td>
+                <td colspan="2"><input name="no_sj" type="text" id="no_sj" placeholder="fill in" required></td>
                 @else
                 <td>Truck No</td>
                 <td>:</td>
-                <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="di isi" required></td>
+                <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="fill in" required></td>
                 @endif
                 <td>Purchase Order</td>
                 <td>:</td>
-                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="di isi" required></td>
+                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="fill in" required></td>
             </tr>
             <tr>
                 @if ($state == "in")
                 <td>Truck No</td>
                 <td>:</td>
-                <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="di isi" required></td>
+                <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="fill in" required></td>
                 <td colspan="3"></td>
                 @else
                 <td></td>
@@ -129,21 +129,6 @@
     </form>
 </main>
 
-{{-- <script>
-    <?php if($pageState == "in"){ ?>
-    window.onload = function() {
-        getLPB();
-    };
-    <?php } else if($pageState == "out") { ?>
-    window.onload = function() {
-        getSJ();
-    };
-    <?php } else { ?>
-    window.onload = function() {
-        getSJT();
-    };
-    <?php } ?>
-</script>
-<script src="../js/index.js" async defer></script> --}}
+<script src="{{asset('js/slip.js')}}" async defer></script>
 
 <x-footer />

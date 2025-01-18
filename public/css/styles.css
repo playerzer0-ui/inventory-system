@@ -89,3 +89,19 @@ th, td {
     color: red;
     font-weight: bold;
 }
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+
+td input, td select {
+    margin: 4px 0;
+}
+
+table td {
+    vertical-align: middle;
+}
