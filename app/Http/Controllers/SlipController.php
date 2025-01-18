@@ -24,6 +24,11 @@ class SlipController extends Controller
         
     }
 
+    public function remove_slip(Request $req)
+    {
+        
+    }
+
     public function amend_slip(Request $req)
     {
         

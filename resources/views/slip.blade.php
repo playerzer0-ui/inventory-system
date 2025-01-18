@@ -61,7 +61,7 @@
                 <td>NO. LPB</td>
                 <td>:</td>
                 <td colspan="2">
-                    <input name="no_lpb_display" type="text" id="no_lpb_display" placeholder="Otomatis dari sistem" readonly>
+                    <input name="no_lpb_display" type="text" id="no_lpb_display" placeholder="automatic" readonly>
                     <input name="no_LPB" type="hidden" id="no_LPB">
                 </td>
                 @else
@@ -69,7 +69,7 @@
                 <td>:</td>
                 <td colspan="2"><input name="no_sj" type="text" id="no_sj" placeholder="di isi" readonly></td>
                 @endif
-                <td>Tgl Penerimaan</td>
+                <td>Order Date</td>
                 <td>:</td>
                 <td>
                 @if ($state == "in")
@@ -85,17 +85,17 @@
                 <td>:</td>
                 <td colspan="2"><input name="no_sj" type="text" id="no_sj" placeholder="di isi" required></td>
                 @else
-                <td>No Truk</td>
+                <td>Truck No</td>
                 <td>:</td>
                 <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="di isi" required></td>
                 @endif
-                <td>No PO</td>
+                <td>Purchase Order</td>
                 <td>:</td>
                 <td><input name="purchase_order" type="text" id="purchase_order" placeholder="di isi" required></td>
             </tr>
             <tr>
                 @if ($state == "in")
-                <td>No Truk</td>
+                <td>Truck No</td>
                 <td>:</td>
                 <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="di isi" required></td>
                 <td colspan="3"></td>
@@ -112,7 +112,7 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>KD</th>
+                    <th>Code</th>
                     <th>Material</th>
                     <th>QTY</th>
                     <th>UOM</th>

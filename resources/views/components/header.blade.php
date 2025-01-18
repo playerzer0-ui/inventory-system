@@ -46,9 +46,9 @@
                             in
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../controller/index.php?action=show_slip&state=in">slip in</a></li>
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_invoice&state=in">invoice in</a></li>
-                                <li><a class="dropdown-item" href="../controller/index.php?action=show_payment&state=in">payment in</a></li>
+                            <li><a class="dropdown-item" href="{{route("slip", ["state" => "in"])}}">slip in</a></li>
+                                <li><a class="dropdown-item" href="{{route("invoice", ["state" => "in"])}}">invoice in</a></li>
+                                <li><a class="dropdown-item" href="{{route("payment", ["state" => "in"])}}">payment in</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown btn btn-outline-primary">
@@ -56,9 +56,9 @@
                             out
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../controller/index.php?action=show_slip&state=out">slip out</a></li>
-                            <li><a class="dropdown-item" href="../controller/index.php?action=show_invoice&state=out">invoice out</a></li>
-                            <li><a class="dropdown-item" href="../controller/index.php?action=show_payment&state=out">payment out</a></li>
+                            <li><a class="dropdown-item" href="{{route("slip", ["state" => "out"])}}">slip out</a></li>
+                            <li><a class="dropdown-item" href="{{route("invoice", ["state" => "out"])}}">invoice out</a></li>
+                            <li><a class="dropdown-item" href="{{route("payment", ["state" => "out"])}}">payment out</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown btn btn-outline-primary">

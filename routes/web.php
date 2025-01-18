@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SlipController;
 use Illuminate\Support\Facades\Route;
@@ -29,3 +31,7 @@ Route::get("/debt", [ReportController::class, "debt"])->name("debt");
 Route::get("/receivables", [ReportController::class, "receivables"])->name("receivables");
 
 Route::get("/slip", [SlipController::class, "slip"])->name("slip");
+
+Route::get("/invoice", [InvoiceController::class, "invoice"])->name("invoice");
+
+Route::get("/payment", [PaymentController::class, "payment"])->name("payment");
