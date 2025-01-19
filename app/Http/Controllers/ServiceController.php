@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Product;
@@ -33,8 +34,26 @@ class ServiceController extends Controller
     {
         $no_sj = $req->no_sj;
 
-        $order = Order::where("nomor_surat_jalan", $no_sj)->first();
-        return $order;
+        $result = DB::table('orders as o')
+        ->join('customers as c', 'o.customerCode', '=', 'c.customerCode')
+        ->where('o.nomor_surat_jalan', $no_sj)
+        ->select(
+            'o.nomor_surat_jalan',
+            'o.storageCode',
+            'o.no_LPB',
+            'o.no_truk',
+            'o.vendorCode',
+            'o.customerCode',
+            'c.customerName',
+            'c.customerAddress',
+            'c.customerNPWP',
+            'o.orderDate',
+            'o.purchase_order',
+            'o.status_mode'
+        )
+        ->first();
+
+        return $result;
     }
 
     public function getOrderProducts(Request $req)
@@ -92,6 +111,14 @@ class ServiceController extends Controller
         }
 
         return $orderProducts;
+    }
+
+    public function getInvoiceByNoSJ(Request $req)
+    {
+        $no_sj = $req->no_sj;
+
+        $invoice = Invoice::where("nomor_surat_jalan", $no_sj)->first();
+        return $invoice;
     }
 
     public function generate_LPB_SJK_INV(Request $req)

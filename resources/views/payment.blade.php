@@ -124,10 +124,12 @@
                 <th><input type="number" inputmode="numeric" name="totalNominal" id="totalNominal" disabled></th>
             </tr>
             <tr>
-                <td>Payment Amount:</td>
-                <td><input type="number" inputmode="numeric" name="payment_amount" id="payment_amount" oninput="calculateHutang()" required></td>
-                <td>Tax(%):</td>
-                <td><input type="number" name="tax" id="tax" oninput="calculateTotalNominal()" readonly></td>
+                <td>Payment Amount: </td>
+                <td>
+                    <input type="number" inputmode="numeric" name="payment_amount" id="payment_amount" required>
+                </td>
+                <td>Tax(%): <input type="number" name="tax" id="tax" oninput="calculateTotalNominal()" readonly></td>
+                <td><input type="number" inputmode="numeric" name="taxPPN" id="taxPPN" disabled></td>
             </tr>
             <tr>
                 <td>Remaining Payment:</td>
