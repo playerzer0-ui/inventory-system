@@ -15,6 +15,7 @@ class Storage extends Model
      * @var string
      */
     protected $table = 'storages';
+    public $timestamps = false;
 
     /**
      * The primary key for the model.

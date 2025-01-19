@@ -15,6 +15,7 @@ class Customer extends Model
      * @var string
      */
     protected $table = 'customers';
+    public $timestamps = false;
 
     /**
      * The primary key for the model.

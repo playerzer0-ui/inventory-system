@@ -15,6 +15,7 @@ class Product extends Model
      * @var string
      */
     protected $table = 'products';
+    public $timestamps = false;
 
     /**
      * The primary key for the model.

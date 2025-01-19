@@ -22,7 +22,7 @@ return new class extends Migration
         );
 
         Schema::create('products', function (Blueprint $table) {
-            $table->string("productCode", 30)->primary();
+            $table->string("productCode", 50)->primary();
             $table->string("productName", 100);
             }
         );
@@ -54,11 +54,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->string("nomor_surat_jalan", 100)->primary();
             $table->string("storageCode", 5);
-            $table->string("no_LPB", 5);
-            $table->string("no_truk", 5);
+            $table->string("no_LPB", 100);
+            $table->string("no_truk", 100);
             $table->string("vendorCode", 5);
             $table->string("customerCode", 5);
-            $table->dateTime("orderDate")->nullable();
+            $table->date("orderDate")->nullable();
             $table->string("purchase_order", 30);
             $table->integer("status_mode");
             $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
@@ -69,7 +69,7 @@ return new class extends Migration
 
         Schema::create('invoices', function(Blueprint $table){
             $table->string("nomor_surat_jalan", 100);
-            $table->dateTime("invoice_date");
+            $table->date("invoice_date");
             $table->string("no_invoice", 100);
             $table->string("no_faktur", 100);
             $table->string("no_moving", 100);
@@ -79,21 +79,21 @@ return new class extends Migration
 
         Schema::create('payments', function(Blueprint $table){
             $table->string("nomor_surat_jalan", 100);
-            $table->dateTime("payment_date");
+            $table->date("payment_date");
             $table->double("payment_amount");
             $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('orders')->onDelete('cascade');
         });
 
         Schema::create('repacks', function(Blueprint $table){
             $table->string("no_repack", 100)->primary();
-            $table->dateTime("repack_date")->nullable();
+            $table->date("repack_date")->nullable();
             $table->string("storageCode", 5);
             $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
         });
 
         Schema::create('movings', function(Blueprint $table){
             $table->string("no_moving", 100)->primary();
-            $table->dateTime("moving_date")->nullable();
+            $table->date("moving_date")->nullable();
             $table->string("storageCodeSender", 5);
             $table->string("storageCodeReceiver", 5);
             $table->foreign('storageCodeSender')->references('storageCode')->on('storages')->onDelete('cascade');
@@ -116,7 +116,7 @@ return new class extends Migration
             $table->string("nomor_surat_jalan", 100);
             $table->string("repack_no_repack", 100);
             $table->string("moving_no_moving", 100);
-            $table->string("productCode", 5);
+            $table->string("productCode", 50);
             $table->integer("qty");
             $table->string("UOM", 20);
             $table->double("price_per_UOM");

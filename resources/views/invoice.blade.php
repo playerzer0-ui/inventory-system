@@ -2,6 +2,7 @@
 
 <main class="main-container">
     <form id="myForm" action="../controller/index.php?action=create_invoice" target="_blank" method="post">
+        @csrf
         <h1>INVOICE {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>
         <table>
@@ -140,6 +141,6 @@
     </form>
 </main>
 
-<script src="../js/invoice.js" async defer></script>
+<script src="{{asset('js/invoice.js')}}" async defer></script>
 
 <x-footer />

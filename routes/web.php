@@ -35,9 +35,11 @@ Route::get("/receivables", [ReportController::class, "receivables"])->name("rece
 
 //slips
 Route::get("/slip", [SlipController::class, "slip"])->name("slip");
+Route::post("/create_slip", [SlipController::class, "create_slip"])->name("create_slip");
 
 //invoices
 Route::get("/invoice", [InvoiceController::class, "invoice"])->name("invoice");
+Route::post("/create_invoice", [InvoiceController::class, "create_invoice"])->name("create_invoice");
 
 //payments
 Route::get("/payment", [PaymentController::class, "payment"])->name("payment");
@@ -47,3 +49,6 @@ Route::get("/generate_LPB", [ServiceController::class, "generate_LPB"])->name("g
 Route::get("/generate_SJ", [ServiceController::class, "generate_SJ"])->name("generate_SJ");
 Route::get("/getProductSuggestions", [ServiceController::class, "getProductSuggestions"])->name("getProductSuggestions");
 Route::get("/getProductDetails", [ServiceController::class, "getProductDetails"])->name("getProductDetails");
+Route::get("/getOrderByNoSJ", [ServiceController::class, "getOrderByNoSJ"])->name("getOrderByNoSJ");
+Route::get("/getOrderProducts", [ServiceController::class, "getOrderProducts"])->name("getOrderProducts");
+Route::get("/generateNoInvoice", [ServiceController::class, "generateNoInvoice"])->name("generateNoInvoice");

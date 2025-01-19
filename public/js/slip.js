@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 if (!pageState.includes("amend")){
     document.addEventListener("DOMContentLoaded", function() {
-        let invoice_dateEl = document.getElementById("tgl_penerimaan");
+        let invoice_dateEl = document.getElementById("order_date");
     
         // Get today's date
         let today = new Date();
@@ -37,30 +37,6 @@ if (!pageState.includes("amend")){
 }
 
 function applyAutocomplete(element) {
-    var availableTags = [
-        "ActionScript",
-        "AppleScript",
-        "Asp",
-        "BASIC",
-        "C",
-        "C++",
-        "Clojure",
-        "COBOL",
-        "ColdFusion",
-        "Erlang",
-        "Fortran",
-        "Groovy",
-        "Haskell",
-        "Java",
-        "JavaScript",
-        "Lisp",
-        "Perl",
-        "PHP",
-        "Python",
-        "Ruby",
-        "Scala",
-        "Scheme"
-      ];
     $(element).autocomplete({
         source: function(request, response) {
             $.ajax({
@@ -144,7 +120,7 @@ function getLPB(){
     let storageCodeEl = document.getElementById('storageCode').value;
     let noLPBEl = document.getElementById('no_lpb_display');
     let noLPBHiddenEl = document.getElementById('no_LPB');
-    let order_date = document.getElementById("tgl_penerimaan").value;
+    let order_date = document.getElementById("order_date").value;
     let date = new Date(order_date);
 
     let month = date.getMonth() + 1;
@@ -179,7 +155,7 @@ function getLPB(){
 function getSJ(){
     let storageCodeEl = document.getElementById('storageCode').value;
     let no_sjEl = document.getElementById('no_sj');
-    let order_date = document.getElementById("tgl_penerimaan").value;
+    let order_date = document.getElementById("order_date").value;
     let date = new Date(order_date);
 
     let month = date.getMonth() + 1;

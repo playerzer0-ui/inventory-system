@@ -1,7 +1,8 @@
 <x-header :title="$title" />
 
 <main class="main-container">
-    <form id="myForm" action="../controller/index.php?action=create_slip" method="post">
+    <form id="myForm" action="{{route("create_slip")}}" method="post">
+        @csrf
         <h1>SLIP {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>
         <table>
@@ -30,6 +31,7 @@
                 <td>Name Vendor</td>
                 <td>:</td>
                 <td>
+                    <input type="hidden" id="status_mode" name="status_mode" value="1">
                     <select name="vendorCode" id="vendorCode">
                         @foreach ($vendors as $key)
                             @if ($key["vendorCode"] == "NON")
@@ -44,6 +46,7 @@
                 <td>Name customer</td>
                 <td>:</td>
                 <td>
+                    <input type="hidden" id="status_mode" name="status_mode" value="2">
                     <select name="customerCode" id="customerCode">
                         @foreach ($customers as $key)
                             @if ($key["vendorCode"] == "NON")
@@ -73,9 +76,9 @@
                 <td>:</td>
                 <td>
                 @if ($state == "in")
-                <input name="order_date" type="date" id="tgl_penerimaan" onchange="getLPB()" placeholder="fill in" required>
+                <input name="order_date" type="date" id="order_date" onchange="getLPB()" placeholder="fill in" required>
                 @else
-                <input name="order_date" type="date" id="tgl_penerimaan" onchange="getSJ()" placeholder="fill in" required>
+                <input name="order_date" type="date" id="order_date" onchange="getSJ()" placeholder="fill in" required>
                 @endif
                 </td>
             </tr>

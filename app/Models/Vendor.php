@@ -15,6 +15,7 @@ class Vendor extends Model
      * @var string
      */
     protected $table = 'vendors';
+    public $timestamps = false;
 
     /**
      * The primary key for the model.

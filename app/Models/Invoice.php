@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Invoice extends Model
 {
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'invoices';
     public $timestamps = false;
 
     /**
@@ -26,7 +22,7 @@ class User extends Authenticatable
      *
      * @var string
      */
-    protected $primaryKey = 'userID';
+    protected $primaryKey = 'nomor_surat_jalan';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -48,18 +44,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'userID',
-        'email',
-        'password',
-        'userType',
-    ];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
+        'nomor_surat_jalan',
+        'invoice_date',
+        'no_invoice',
+        'no_faktur',
+        'no_moving',
+        'tax',
     ];
 }
