@@ -11,36 +11,6 @@ use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
-    public function generate_LPB(Request $req)
-    {
-        $state = "LPB";
-        $storageCode = $req->storageCode;
-        $month = $req->month;
-        $year = $req->year;
-
-        $uuid = substr(Str::uuid()->toString(), 0, 8);
-        $timestamp = now()->format('YmdHis');
-
-        $format = "$timestamp-$uuid/$state/$storageCode/$month/$year";
-
-        return $format;
-    }
-
-    public function generate_SJ(Request $req)
-    {
-        $state = "SJK";
-        $storageCode = $req->storageCode;
-        $month = $req->month;
-        $year = $req->year;
-
-        $uuid = substr(Str::uuid()->toString(), 0, 8);
-        $timestamp = now()->format('YmdHis');
-
-        $format = "$timestamp-$uuid/$state/$storageCode/$month/$year";
-
-        return $format;
-    }
-
     public function getProductSuggestions(Request $req)
     {
         $code = $req->input("code");
@@ -63,7 +33,7 @@ class ServiceController extends Controller
     {
         $no_sj = $req->no_sj;
 
-        $order = Order::where("no_sj", $no_sj)->first();
+        $order = Order::where("nomor_surat_jalan", $no_sj)->first();
         return $order;
     }
 
@@ -73,21 +43,60 @@ class ServiceController extends Controller
         $status = $req->status;
 
         if($status == "in" || $status == "out"){
-            $order_products = Order_Product::where("nomor_surat_jalan", $no_sj);
+            $orderProducts = DB::table('order_products as op')
+            ->join('products as p', 'op.productCode', '=', 'p.productCode')
+            ->where('op.nomor_surat_jalan', $no_sj)
+            ->select(
+                'op.nomor_surat_jalan',
+                'op.productCode',
+                'p.productName',
+                'op.qty',
+                'op.uom',
+                'op.price_per_UOM',
+                'op.note',
+                'op.product_status'
+            )
+            ->get();
         }
         else if($status == "repack"){
-            $order_products = Order_Product::where("repack_no_repack", $no_sj);
+            $orderProducts = DB::table('order_products as op')
+            ->join('products as p', 'op.productCode', '=', 'p.productCode')
+            ->where('op.repack_no_repack', $no_sj)
+            ->select(
+                'op.repack_no_repack',
+                'op.productCode',
+                'p.productName',
+                'op.qty',
+                'op.uom',
+                'op.price_per_UOM',
+                'op.note',
+                'op.product_status'
+            )
+            ->get();
         }
         else{
-            $order_products = Order_Product::where("moving_no_moving", $no_sj);
+            $orderProducts = DB::table('order_products as op')
+            ->join('products as p', 'op.productCode', '=', 'p.productCode')
+            ->where('op.moving_no_moving', $no_sj)
+            ->select(
+                'op.moving_no_moving',
+                'op.productCode',
+                'p.productName',
+                'op.qty',
+                'op.uom',
+                'op.price_per_UOM',
+                'op.note',
+                'op.product_status'
+            )
+            ->get();
         }
 
-        return $order_products;
+        return $orderProducts;
     }
 
-    public function generateNoInvoice(Request $req)
+    public function generate_LPB_SJK_INV(Request $req)
     {
-        $state = "INV";
+        $state = $req->state;
         $storageCode = $req->storageCode;
         $month = $req->month;
         $year = $req->year;

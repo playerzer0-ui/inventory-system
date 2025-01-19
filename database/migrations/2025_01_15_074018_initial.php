@@ -120,6 +120,7 @@ return new class extends Migration
             $table->integer("qty");
             $table->string("UOM", 20);
             $table->double("price_per_UOM");
+            $table->string("note", 100)->nullable();
             $table->string("product_status", 10);
             $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('orders')->onDelete('cascade');
             $table->foreign('repack_no_repack')->references('no_repack')->on('repacks')->onDelete('cascade');

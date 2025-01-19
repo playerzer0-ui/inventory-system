@@ -43,12 +43,11 @@ Route::post("/create_invoice", [InvoiceController::class, "create_invoice"])->na
 
 //payments
 Route::get("/payment", [PaymentController::class, "payment"])->name("payment");
+Route::post("/create_payment", [PaymentController::class, "create_payment"])->name("create_payment");
 
 //services
-Route::get("/generate_LPB", [ServiceController::class, "generate_LPB"])->name("generate_LPB");
-Route::get("/generate_SJ", [ServiceController::class, "generate_SJ"])->name("generate_SJ");
+Route::get("/generate_LPB_SJK_INV", [ServiceController::class, "generate_LPB_SJK_INV"])->name("generate_LPB_SJK_INV");
 Route::get("/getProductSuggestions", [ServiceController::class, "getProductSuggestions"])->name("getProductSuggestions");
 Route::get("/getProductDetails", [ServiceController::class, "getProductDetails"])->name("getProductDetails");
 Route::get("/getOrderByNoSJ", [ServiceController::class, "getOrderByNoSJ"])->name("getOrderByNoSJ");
 Route::get("/getOrderProducts", [ServiceController::class, "getOrderProducts"])->name("getOrderProducts");
-Route::get("/generateNoInvoice", [ServiceController::class, "generateNoInvoice"])->name("generateNoInvoice");

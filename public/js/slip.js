@@ -128,9 +128,9 @@ function getLPB(){
 
     $.ajax({
         type: "get",
-        url: "/generate_LPB",
+        url: "/generate_LPB_SJK_INV",
         data: {
-            action: "generate_LPB",
+            state: "LPB",
             storageCode: storageCodeEl,
             month: month,
             year: year
@@ -163,9 +163,9 @@ function getSJ(){
 
     $.ajax({
         type: "get",
-        url: "/generate_SJ",
+        url: "/generate_LPB_SJK_INV",
         data: {
-            action: "generate_SJ",
+            state: "SJK",
             storageCode: storageCodeEl,
             month: month,
             year: year

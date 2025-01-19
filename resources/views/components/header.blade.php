@@ -119,5 +119,5 @@
         </div>
     </nav>
     <div class="msg">
-        <p></p>
+        <p>{{session("msg")}}</p>
     </div>

@@ -1,7 +1,7 @@
 <x-header :title="$title" />
 
 <main class="main-container">
-    <form id="myForm" action="../controller/index.php?action=create_invoice" target="_blank" method="post">
+    <form id="myForm" action="{{route('create_invoice')}}" target="_blank" method="post">
         @csrf
         <h1>INVOICE {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>
@@ -122,22 +122,22 @@
                 <th>Factor Code: </th>
                 <td><input type="text" name="no_faktur" id="no_faktur" placeholder="fill in" required></td>
                 <th>Total value of goods: </th>
-                <td><input type="number" inputmode="numeric" name="totalNominal" id="totalNominal" disabled></td>
+                <td><input type="number" inputmode="numeric" name="totalNominal" id="totalNominal" placeholder="Automatic from the system" disabled></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td>Tax(%): <input type="number" name="tax" id="tax" value="11" oninput="calculateTotalNominal()"></td>
-                <td><input type="number" inputmode="numeric" name="taxPPN" id="taxPPN" disabled></td>
+                <td><input type="number" inputmode="numeric" name="taxPPN" id="taxPPN" placeholder="Automatic from the system" disabled></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td>Amount Paid: </td>
-                <td><input type="number" inputmode="numeric" name="amount_paid" id="amount_paid" disabled></td>
+                <td><input type="number" inputmode="numeric" name="amount_paid" id="amount_paid" placeholder="Automatic from the system" disabled></td>
             </tr>
         </table>
-        <button type="submit" class="btn btn-outline-success" onclick="handleFormSubmit(event)">Submit</button>
+        <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
 </main>
 

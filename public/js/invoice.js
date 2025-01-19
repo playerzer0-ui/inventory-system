@@ -190,14 +190,14 @@ function getDetailsFromSJ(){
 
     $.ajax({
         type: "get",
-        url: "../controller/index.php",
+        url: "/getOrderByNoSJ",
         data: {
-            action: 'getOrderByNoSJ',
             no_sj: no_sjEl
         },
-        success: function (response) {
+        success: function (data) {
             const table = document.getElementById('productTable').getElementsByTagName('tbody')[0];
-            const data = JSON.parse(response);
+            console.log(data);
+            //const data = JSON.parse(response);
             
             if(pageState == "in"){
                 storageCodeEl.value = data.storageCode;
@@ -222,15 +222,14 @@ function getDetailsFromSJ(){
 function getOrderProducts(no_id, status){
     $.ajax({
         type: "get",
-        url: "../controller/index.php",
+        url: "/getOrderProducts",
         data: {
-            action: 'getOrderProducts',
             status: status,
             no_sj: no_id
         },
-        success: function (response) {
+        success: function (data) {
             const table = document.getElementById('productTable').getElementsByTagName('tbody')[0];
-            let data = JSON.parse(response);
+            console.log(data);
             let newRow;
             let rowCount = 1;
             table.innerHTML = "";
@@ -277,8 +276,15 @@ function generateNoInvoice(){
     let yea = date.getFullYear();
 
     $.ajax({
-        type: "get",
-        url: "../controller/index.php?action=generateNoInvoice&storageCode=" + sCode + "&month=" + mon + "&year=" + yea,
+        url: '/generate_LPB_SJK_INV',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            state: "INV",
+            storageCode: storageCodeEl,
+            month: month,
+            year: year
+        },
         success: function (response) {
             if(pageState == "amend_invoice_moving"){
                 let xParts = response.split("/");

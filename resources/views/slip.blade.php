@@ -70,7 +70,7 @@
                 @else
                 <td>No SJ</td>
                 <td>:</td>
-                <td colspan="2"><input name="no_sj" type="text" id="no_sj" placeholder="fill in" readonly></td>
+                <td colspan="2"><input name="no_sj" type="text" id="no_sj" placeholder="Automatic from the system" readonly></td>
                 @endif
                 <td>Order Date</td>
                 <td>:</td>

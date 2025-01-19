@@ -65,7 +65,9 @@ class SlipController extends Controller
             ]);
         }
 
-        return redirect()->route("invoice");
+        session()->flash('msg', 'no_SJ: ' . $no_sj);
+
+        return redirect()->route("invoice", ["state" => $pageState]);
     }
 
     public function remove_slip(Request $req)
