@@ -66,8 +66,8 @@
                             edit
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../controller/index.php?action=show_repack">repack</a></li>
-                            <li><a class="dropdown-item" href="../controller/index.php?action=show_moving">moving</a></li>
+                            <li><a class="dropdown-item" href="{{route('repack')}}">repack</a></li>
+                            <li><a class="dropdown-item" href="{{route('moving')}}">moving</a></li>
 
                             <li><a class="dropdown-item" href="../controller/index.php?action=show_invoice&state=moving">invoice moving</a></li>
                             <li><a class="dropdown-item" href="../controller/index.php?action=show_payment&state=moving">payment moving</a></li>

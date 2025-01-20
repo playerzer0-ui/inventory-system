@@ -2,15 +2,15 @@
 
 <main class="main-container">
     <form id="myForm" action="{{ url('controller/index.php?action=create_moving') }}" method="post">
-        <h1 style="text-align:center;">SLIP MOVING BARANG</h1>
+        <h1 style="text-align:center;">MOVING</h1>
         <input type="hidden" id="pageState" name="pageState" value="{{ $pageState }}">
         <table class="header-table">
             <tr>
-                <td>PT Pengirim</td>
+                <td>Storage Sender</td>
                 <td>:</td>
                 <td>
                     <select name="storageCodeSender" id="storageCodeSender" onchange="getMovingNO()" readonly>
-                        @foreach (getAllStorages() as $key)
+                        @foreach ($storages as $key)
                             @if ($key['storageCode'] == 'NON')
                                 <option value="{{ $key['storageCode'] }}" selected>{{ $key['storageName'] }}</option>
                             @else
@@ -19,11 +19,11 @@
                         @endforeach
                     </select>
                 </td>
-                <td>PT Penerima</td>
+                <td>Storage Receiver</td>
                 <td>:</td>
                 <td>
                     <select name="storageCodeReceiver" id="storageCodeReceiver" readonly>
-                        @foreach (getAllStorages() as $key)
+                        @foreach ($storages as $key)
                             @if ($key['storageCode'] == 'NON')
                                 <option value="{{ $key['storageCode'] }}" selected>{{ $key['storageName'] }}</option>
                             @else
@@ -37,7 +37,7 @@
                 <td>NO. moving</td>
                 <td>:</td>
                 <td><input name="no_moving" id="no_moving" type="text" readonly></td>
-                <td>Tgl. moving</td>
+                <td>Moving Date</td>
                 <td>:</td>
                 <td><input name="moving_date" id="moving_date" onchange="getMovingNO()" type="date" required></td>
             </tr>
@@ -47,12 +47,12 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>KD</th>
+                    <th>Code</th>
                     <th>Material</th>
                     <th>QTY</th>
                     <th>UOM</th>
                     <th>price/UOM</th>
-                    <th>nominal</th>
+                    <th>total</th>
                     <th>action</th>
                 </tr>
             </thead>

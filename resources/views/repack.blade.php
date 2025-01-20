@@ -2,15 +2,15 @@
 
 <main class="main-container">
     <form id="myForm" action="{{ url('../controller/index.php?action=create_repack') }}" method="post">
-        <h1 style="text-align:center;">SLIP REPACK BARANG</h1>
+        <h1 style="text-align:center;">REPACK</h1>
         <input type="hidden" id="pageState" name="pageState" value="{{ $pageState }}">
         <table class="header-table">
             <tr>
-                <td>PT</td>
+                <td>Storage</td>
                 <td>:</td>
                 <td>
                     <select name="storageCode" id="storageCode" onchange="getRepackNO()" readonly>
-                        @foreach (getAllStorages() as $key)
+                        @foreach ($storages as $key)
                             <option value="{{ $key['storageCode'] }}" 
                                 {{ $key['storageCode'] == 'NON' ? 'selected' : '' }}>
                                 {{ $key['storageName'] }}
@@ -18,7 +18,7 @@
                         @endforeach
                     </select>
                 </td>
-                <td>Tgl Repack</td>
+                <td>Repack Date</td>
                 <td>:</td>
                 <td><input name="repack_date" id="repack_date" onchange="getRepackNO()" type="date" required></td>
             </tr>
@@ -29,13 +29,13 @@
             </tr>
         </table>
 
-        <h3>Material Awal</h3>
+        <h3>Initial Material</h3>
         <table id="materialAwalTable">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>KD</th>
-                    <th>Material Awal</th>
+                    <th>Code</th>
+                    <th>Initial Material</th>
                     <th>QTY</th>
                     <th>UOM</th>
                     <th>Note</th>
@@ -54,16 +54,16 @@
             </tbody>
         </table>
         <p>
-            <span class="add-row" onclick="addRow('materialAwalTable')">Add Row</span>
+            <span class="add-row" onclick="addRow('materialAwalTable')"><button type="button" class="btn btn-success">add row</button></span>
         </p>
 
-        <h3>Material Baru</h3>
+        <h3>New Material</h3>
         <table id="materialBaruTable">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>KD</th>
-                    <th>Material Baru</th>
+                    <th>Code</th>
+                    <th>New Material</th>
                     <th>QTY</th>
                     <th>UOM</th>
                     <th>Note</th>
@@ -82,19 +82,19 @@
             </tbody>
         </table>
         <p>
-            <span class="add-row" onclick="addRow('materialBaruTable')">Add Row</span>
+            <span class="add-row" onclick="addRow('materialBaruTable')"><button type="button" class="btn btn-success">add row</button></span>
         </p>
 
         <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
 </main>
 
-<script>
+{{-- <script>
     window.onload = function() {
         getRepackNO();
     };
-</script>
-<script src="{{ asset('../js/repack.js') }}"></script>
+</script> --}}
+<script src="{{ asset('js/repack.js') }}"></script>
 
 
 <x-footer />

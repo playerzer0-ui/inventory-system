@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MovingController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RepackController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SlipController;
@@ -44,6 +46,14 @@ Route::post("/create_invoice", [InvoiceController::class, "create_invoice"])->na
 //payments
 Route::get("/payment", [PaymentController::class, "payment"])->name("payment");
 Route::post("/create_payment", [PaymentController::class, "create_payment"])->name("create_payment");
+
+//repacks
+Route::get("/repack", [RepackController::class, "repack"])->name("repack");
+Route::post("/create_repack", [RepackController::class, "create_repack"])->name("create_repack");
+
+//movings
+Route::get("/moving", [MovingController::class, "moving"])->name("moving");
+Route::post("/create_moving", [MovingController::class, "create_moving"])->name("create_moving");
 
 //services
 Route::get("/generate_LPB_SJK_INV", [ServiceController::class, "generate_LPB_SJK_INV"])->name("generate_LPB_SJK_INV");
