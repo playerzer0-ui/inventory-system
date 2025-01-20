@@ -51,6 +51,7 @@ class Order_Product extends Model
         'qty',
         'UOM',
         'price_per_UOM',
+        "note",
         'product_status',
     ];
 }

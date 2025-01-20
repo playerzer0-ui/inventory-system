@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -15,7 +16,19 @@ class PaymentController extends Controller
 
     public function create_payment(Request $req)
     {
-        
+        $no_sj = $req->no_sj;
+        $payment_date = $req->payment_date;
+        $payment_amount = $req->payment_amount;
+
+        Payment::create([
+            "nomor_surat_jalan" => $no_sj,
+            "payment_date" => $payment_date,
+            "payment_amount" => $payment_amount
+        ]);
+
+        session()->flash('msg', 'payment created: ' . $no_sj);
+
+        return redirect()->route("dashboard");
     }
 
     public function remove_payment(Request $req)

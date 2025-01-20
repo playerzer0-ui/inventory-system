@@ -1,7 +1,8 @@
 <x-header :title="$title" />
 
 <main class="main-container">
-    <form id="myForm" action="{{ url('controller/index.php?action=create_payment') }}" method="post">
+    <form id="myForm" action="{{ route('create_payment') }}" method="post">
+        @csrf
         <h1>PAYMENT {{ $state }}</h1>
         <input type="hidden" id="pageState" name="pageState" value="{{ $state }}">
         <table>
