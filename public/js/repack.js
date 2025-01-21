@@ -24,21 +24,21 @@ function addRow(tableId) {
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
 
-    if (tableId === "materialAwalTable") {
+    if (tableId === "materialstartTable") {
         row.innerHTML = `<td>${rowCount}</td>
-        <td><input name="kd_awal[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required/></td>
-        <td><input name="material_awal[]" type="text" placeholder="Automatic From System" readonly/></td>
-        <td><input name="qty_awal[]" type="text" placeholder="fill in" required/></td>
-        <td><input name="uom_awal[]" type="text" placeholder="fill in" required/></td>
-        <td><input name="note_awal[]" type="text" /></td>
+        <td><input name="kd_start[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required/></td>
+        <td><input name="material_start[]" type="text" placeholder="Automatic From System" readonly/></td>
+        <td><input name="qty_start[]" type="text" placeholder="fill in" required/></td>
+        <td><input name="uom_start[]" type="text" placeholder="fill in" required/></td>
+        <td><input name="note_start[]" type="text" /></td>
         <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>`;
     } else {
         row.innerHTML = `<td>${rowCount}</td>
-        <td><input name="kd_akhir[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required/></td>
-        <td><input name="material_akhir[]" type="text" placeholder="Automatic From System" readonly/></td>
-        <td><input name="qty_akhir[]" type="text" placeholder="fill in" required/></td>
-        <td><input name="uom_akhir[]" type="text" placeholder="fill in" required/></td>
-        <td><input name="note_akhir[]" type="text" /></td>
+        <td><input name="kd_end[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required/></td>
+        <td><input name="material_end[]" type="text" placeholder="Automatic From System" readonly/></td>
+        <td><input name="qty_end[]" type="text" placeholder="fill in" required/></td>
+        <td><input name="uom_end[]" type="text" placeholder="fill in" required/></td>
+        <td><input name="note_end[]" type="text" /></td>
         <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>`;
     }
 
@@ -103,16 +103,16 @@ function getProductDetails(input) {
         success: function(data) {
             console.log(data);
             if (data) {
-                if (tableId === "materialAwalTable") {
-                    row.querySelector('input[name="material_awal[]"]').value = data.productName;
+                if (tableId === "materialstartTable") {
+                    row.querySelector('input[name="material_start[]"]').value = data.productName;
                 } else if (tableId === "materialBaruTable") {
-                    row.querySelector('input[name="material_akhir[]"]').value = data.productName;
+                    row.querySelector('input[name="material_end[]"]').value = data.productName;
                 }
             } else {
-                if (tableId === "materialAwalTable") {
-                    row.querySelector('input[name="material_awal[]"]').value = "Automatic From System";
+                if (tableId === "materialstartTable") {
+                    row.querySelector('input[name="material_start[]"]').value = "Automatic From System";
                 } else if (tableId === "materialBaruTable") {
-                    row.querySelector('input[name="material_akhir[]"]').value = "Automatic From System";
+                    row.querySelector('input[name="material_end[]"]').value = "Automatic From System";
                 }
             }
         }

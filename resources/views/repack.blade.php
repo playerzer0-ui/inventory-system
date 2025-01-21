@@ -31,7 +31,7 @@
         </table>
 
         <h3>Initial Material</h3>
-        <table id="materialAwalTable">
+        <table id="materialstartTable">
             <thead>
                 <tr>
                     <th>No</th>
@@ -45,17 +45,17 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td><input name="kd_awal[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required /></td>
-                    <td><input name="material_awal[]" type="text" placeholder="Automatic From System" readonly /></td>
-                    <td><input name="qty_awal[]" type="text" placeholder="fill in" required /></td>
-                    <td><input name="uom_awal[]" type="text" placeholder="fill in" required /></td>
-                    <td><input name="note_awal[]" type="text" /></td>
+                    <td><input name="kd_start[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required /></td>
+                    <td><input name="material_start[]" type="text" placeholder="Automatic From System" readonly /></td>
+                    <td><input name="qty_start[]" type="text" placeholder="fill in" required /></td>
+                    <td><input name="uom_start[]" type="text" placeholder="fill in" required /></td>
+                    <td><input name="note_start[]" type="text" /></td>
                     <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>
                 </tr>
             </tbody>
         </table>
         <p>
-            <span class="add-row" onclick="addRow('materialAwalTable')"><button type="button" class="btn btn-success">add row</button></span>
+            <span class="add-row" onclick="addRow('materialstartTable')"><button type="button" class="btn btn-success">add row</button></span>
         </p>
 
         <h3>New Material</h3>
@@ -73,11 +73,11 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td><input name="kd_akhir[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required /></td>
-                    <td><input name="material_akhir[]" type="text" placeholder="Automatic From System" readonly /></td>
-                    <td><input name="qty_akhir[]" type="text" placeholder="fill in" required /></td>
-                    <td><input name="uom_akhir[]" type="text" placeholder="fill in" required /></td>
-                    <td><input name="note_akhir[]" type="text" /></td>
+                    <td><input name="kd_end[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required /></td>
+                    <td><input name="material_end[]" type="text" placeholder="Automatic From System" readonly /></td>
+                    <td><input name="qty_end[]" type="text" placeholder="fill in" required /></td>
+                    <td><input name="uom_end[]" type="text" placeholder="fill in" required /></td>
+                    <td><input name="note_end[]" type="text" /></td>
                     <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>
                 </tr>
             </tbody>
