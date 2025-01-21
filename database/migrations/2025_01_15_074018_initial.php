@@ -72,7 +72,6 @@ return new class extends Migration
             $table->date("invoice_date");
             $table->string("no_invoice", 100);
             $table->string("no_faktur", 100);
-            $table->string("no_moving", 100);
             $table->double("tax");
             $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('orders')->onDelete('cascade');
         });
@@ -81,7 +80,7 @@ return new class extends Migration
             $table->string("nomor_surat_jalan", 100);
             $table->date("payment_date");
             $table->double("payment_amount");
-            $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('orders')->onDelete('cascade');
+            $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('invoices')->onDelete('cascade');
         });
 
         Schema::create('repacks', function(Blueprint $table){

@@ -48,7 +48,6 @@ class Invoice extends Model
         'invoice_date',
         'no_invoice',
         'no_faktur',
-        'no_moving',
         'tax',
     ];
 }
