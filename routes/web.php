@@ -33,7 +33,9 @@ Route::get("/logout", [HomeController::class, "logout"])->name("logout");
 //reports
 Route::get("/dashboard", [ReportController::class, "dashboard"])->name("dashboard");
 Route::get("/debt", [ReportController::class, "debt"])->name("debt");
+Route::get("/getDebtReport", [ReportController::class, "getDebtReport"])->name("getDebtReport");
 Route::get("/receivables", [ReportController::class, "receivables"])->name("receivables");
+Route::get("/getReceivablesReport", [ReportController::class, "getReceivablesReport"])->name("getReceivablesReport");
 
 //slips
 Route::get("/slip", [SlipController::class, "slip"])->name("slip");
