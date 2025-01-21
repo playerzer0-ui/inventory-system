@@ -121,7 +121,7 @@ return new class extends Migration
             $table->string("UOM", 20);
             $table->double("price_per_UOM");
             $table->string("note", 100)->nullable();
-            $table->string("product_status", 10);
+            $table->string("product_status", 30);
             $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('orders')->onDelete('cascade');
             $table->foreign('repack_no_repack')->references('no_repack')->on('repacks')->onDelete('cascade');
             $table->foreign('moving_no_moving')->references('no_moving')->on('movings')->onDelete('cascade');

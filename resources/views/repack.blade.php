@@ -1,7 +1,8 @@
 <x-header :title="$title" />
 
 <main class="main-container">
-    <form id="myForm" action="{{ url('../controller/index.php?action=create_repack') }}" method="post">
+    <form id="myForm" action="{{ route('create_repack') }}" method="post">
+        @csrf
         <h1 style="text-align:center;">REPACK</h1>
         <input type="hidden" id="pageState" name="pageState" value="{{ $pageState }}">
         <table class="header-table">
@@ -44,10 +45,10 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td><input name="kd_awal[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="di isi" required /></td>
-                    <td><input name="material_awal[]" type="text" placeholder="Otomatis" readonly /></td>
-                    <td><input name="qty_awal[]" type="text" placeholder="di isi" required /></td>
-                    <td><input name="uom_awal[]" type="text" placeholder="di isi" required /></td>
+                    <td><input name="kd_awal[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required /></td>
+                    <td><input name="material_awal[]" type="text" placeholder="Automatic From System" readonly /></td>
+                    <td><input name="qty_awal[]" type="text" placeholder="fill in" required /></td>
+                    <td><input name="uom_awal[]" type="text" placeholder="fill in" required /></td>
                     <td><input name="note_awal[]" type="text" /></td>
                     <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>
                 </tr>
@@ -72,10 +73,10 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td><input name="kd_akhir[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="di isi" required /></td>
-                    <td><input name="material_akhir[]" type="text" placeholder="Otomatis" readonly /></td>
-                    <td><input name="qty_akhir[]" type="text" placeholder="di isi" required /></td>
-                    <td><input name="uom_akhir[]" type="text" placeholder="di isi" required /></td>
+                    <td><input name="kd_akhir[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" required /></td>
+                    <td><input name="material_akhir[]" type="text" placeholder="Automatic From System" readonly /></td>
+                    <td><input name="qty_akhir[]" type="text" placeholder="fill in" required /></td>
+                    <td><input name="uom_akhir[]" type="text" placeholder="fill in" required /></td>
                     <td><input name="note_akhir[]" type="text" /></td>
                     <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>
                 </tr>
@@ -89,11 +90,6 @@
     </form>
 </main>
 
-{{-- <script>
-    window.onload = function() {
-        getRepackNO();
-    };
-</script> --}}
 <script src="{{ asset('js/repack.js') }}"></script>
 
 
