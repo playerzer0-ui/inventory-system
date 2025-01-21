@@ -17,11 +17,13 @@ class PaymentController extends Controller
     public function create_payment(Request $req)
     {
         $no_sj = $req->no_sj;
+        $no_moving = $req->no_moving;
         $payment_date = $req->payment_date;
         $payment_amount = $req->payment_amount;
 
         Payment::create([
-            "nomor_surat_jalan" => $no_sj,
+            "nomor_surat_jalan" => $no_sj ?? "-",
+            "no_moving" => $no_moving ?? "-",
             "payment_date" => $payment_date,
             "payment_amount" => $payment_amount
         ]);

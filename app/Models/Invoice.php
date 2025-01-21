@@ -45,6 +45,7 @@ class Invoice extends Model
      */
     protected $fillable = [
         'nomor_surat_jalan',
+        'no_moving',
         'invoice_date',
         'no_invoice',
         'no_faktur',

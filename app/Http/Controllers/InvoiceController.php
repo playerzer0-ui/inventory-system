@@ -18,10 +18,10 @@ class InvoiceController extends Controller
     public function create_invoice(Request $req)
     {
         $no_sj = $req->no_sj;
+        $no_moving = $req->no_moving;
         $invoice_date = $req->invoice_date;
         $no_invoice = $req->no_invoice;
         $no_faktur = $req->no_faktur;
-        $no_moving = $req->no_moving;
         $tax = $req->tax;
 
         $productCodes = $req->input('kd');
@@ -29,11 +29,11 @@ class InvoiceController extends Controller
         $pageState = $req->pageState;
 
         Invoice::create([
-            "nomor_surat_jalan" => $no_sj ?? $no_moving,
+            "nomor_surat_jalan" => $no_sj ?? "-",
+            "no_moving" => $no_moving ?? "-",
             "invoice_date" => $invoice_date,
             "no_invoice" => $no_invoice,
             "no_faktur" => $no_faktur,
-            "no_moving" => $no_moving,
             "tax" => $tax
         ]);
 

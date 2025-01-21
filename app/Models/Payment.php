@@ -45,6 +45,7 @@ class Payment extends Model
      */
     protected $fillable = [
         'nomor_surat_jalan',
+        'no_moving',
         'payment_date',
         'payment_amount',
     ];

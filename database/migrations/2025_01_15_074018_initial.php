@@ -64,33 +64,9 @@ return new class extends Migration
             $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
             $table->foreign('vendorCode')->references('vendorCode')->on('vendors')->onDelete('cascade');
             $table->foreign('customerCode')->references('customerCode')->on('customers')->onDelete('cascade');
-            }
-        );
-
-        Schema::create('invoices', function(Blueprint $table){
-            $table->string("nomor_surat_jalan", 100);
-            $table->date("invoice_date");
-            $table->string("no_invoice", 100);
-            $table->string("no_faktur", 100);
-            $table->double("tax");
-            $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('orders')->onDelete('cascade');
         });
-
-        Schema::create('payments', function(Blueprint $table){
-            $table->string("nomor_surat_jalan", 100);
-            $table->date("payment_date");
-            $table->double("payment_amount");
-            $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('invoices')->onDelete('cascade');
-        });
-
-        Schema::create('repacks', function(Blueprint $table){
-            $table->string("no_repack", 100)->primary();
-            $table->date("repack_date")->nullable();
-            $table->string("storageCode", 5);
-            $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
-        });
-
-        Schema::create('movings', function(Blueprint $table){
+        
+        Schema::create('movings', function(Blueprint $table) {
             $table->string("no_moving", 100)->primary();
             $table->date("moving_date")->nullable();
             $table->string("storageCodeSender", 5);
@@ -98,6 +74,33 @@ return new class extends Migration
             $table->foreign('storageCodeSender')->references('storageCode')->on('storages')->onDelete('cascade');
             $table->foreign('storageCodeReceiver')->references('storageCode')->on('storages')->onDelete('cascade');
         });
+        
+        Schema::create('invoices', function(Blueprint $table){
+            $table->string("nomor_surat_jalan", 100);
+            $table->string("no_moving", 100)->nullable();
+            $table->date("invoice_date");
+            $table->string("no_invoice", 100);
+            $table->string("no_faktur", 100);
+            $table->double("tax");
+            $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('orders')->onDelete('cascade');
+            $table->foreign('no_moving')->references('no_moving')->on('movings')->onDelete('cascade');
+        });
+        
+        Schema::create('payments', function(Blueprint $table){
+            $table->string("nomor_surat_jalan", 100);
+            $table->string("no_moving", 100)->nullable();
+            $table->date("payment_date");
+            $table->double("payment_amount");
+            $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('invoices')->onDelete('cascade');
+            $table->foreign('no_moving')->references('no_moving')->on('movings')->onDelete('cascade');
+        });
+        
+        Schema::create('repacks', function(Blueprint $table){
+            $table->string("no_repack", 100)->primary();
+            $table->date("repack_date")->nullable();
+            $table->string("storageCode", 5);
+            $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
+        });        
 
         Schema::create('saldos', function(Blueprint $table){
             $table->string("productCode", 5);
