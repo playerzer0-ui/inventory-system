@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Order_Product;
 use App\Models\Storage;
 use DateTime;
 use Illuminate\Http\Request;
@@ -24,13 +25,26 @@ class ReportController extends Controller
         return view("reports.debt", ["title" => "debt", "storages" => $storages]);
     }
 
+    function getProductsDebt($no_sj) {
+        $results = Order_Product::where('nomor_surat_jalan', $no_sj)
+            ->select([
+                'productCode',
+                'qty',
+                'price_per_UOM',
+                DB::raw('(qty * price_per_UOM) AS nominal')
+            ])
+            ->get();
+    
+        return $results;
+    }
+
     public function getDebtReport(Request $req)
     {
         $storageCode = $req->storageCode;
         $month = $req->month;
         $year = $req->year;
 
-        $results = Order::query()
+        $debtDetails = Order::query()
             ->select([
                 'orders.nomor_surat_jalan',
                 'invoices.invoice_date',
@@ -49,7 +63,45 @@ class ReportController extends Controller
             ->where('orders.status_mode', 1)
             ->get();
 
-        return $results;
+        $groupData = [];
+        foreach ($debtDetails as $details) {
+            $hutangKey = $details["nomor_surat_jalan"];
+            if (!isset($groupData[$hutangKey])) {
+                $groupData[$hutangKey] = [
+                    "invoice_date" => $details["invoice_date"],
+                    "no_invoice" => $details["no_invoice"],
+                    "tax" => $details["tax"],
+                    "vendorName" => $details["vendorName"],
+                    "payments" => [],
+                    "products" => []
+                ];
+
+                $productsList = Order_Product::where('nomor_surat_jalan', $hutangKey)
+                    ->select([
+                        'productCode',
+                        'qty',
+                        'price_per_UOM',
+                        DB::raw('(qty * price_per_UOM) AS nominal')
+                    ])
+                    ->get();
+
+                foreach ($productsList as $product) {
+                    array_push($groupData[$hutangKey]["products"], [
+                        "productCode" => $product["productCode"],
+                        "qty" => $product["qty"],
+                        "price_per_UOM" => $product["price_per_UOM"],
+                        "nominal" => $product["nominal"]
+                    ]);
+                }
+            }
+
+            array_push($groupData[$hutangKey]["payments"], [
+                "payment_date" => $details["payment_date"],
+                "payment_amount" => $details["payment_amount"]
+            ]);
+        }
+
+        return array_values($groupData);
     }
 
     public function receivables()
@@ -63,7 +115,7 @@ class ReportController extends Controller
         $month = $req->month;
         $year = $req->year;
 
-        $results = Order::query()
+        $receivablesDetails = Order::query()
             ->select([
                 'orders.nomor_surat_jalan',
                 'invoices.invoice_date',
@@ -82,6 +134,44 @@ class ReportController extends Controller
             ->where('orders.status_mode', 2)
             ->get();
 
-        return $results;
+        $groupData = [];
+        foreach ($receivablesDetails as $details) {
+            $receivablesKey = $details["nomor_surat_jalan"];
+            if (!isset($groupData[$receivablesKey])) {
+                $groupData[$receivablesKey] = [
+                    "invoice_date" => $details["invoice_date"],
+                    "no_invoice" => $details["no_invoice"],
+                    "tax" => $details["tax"],
+                    "customerName" => $details["customerName"],
+                    "payments" => [],
+                    "products" => []
+                ];
+
+                $productsList = Order_Product::where('nomor_surat_jalan', $receivablesKey)
+                    ->select([
+                        'productCode',
+                        'qty',
+                        'price_per_UOM',
+                        DB::raw('(qty * price_per_UOM) AS nominal')
+                    ])
+                    ->get();
+
+                foreach ($productsList as $product) {
+                    array_push($groupData[$receivablesKey]["products"], [
+                        "productCode" => $product["productCode"],
+                        "qty" => $product["qty"],
+                        "price_per_UOM" => $product["price_per_UOM"],
+                        "nominal" => $product["nominal"]
+                    ]);
+                }
+            }
+
+            array_push($groupData[$receivablesKey]["payments"], [
+                "payment_date" => $details["payment_date"],
+                "payment_amount" => $details["payment_amount"]
+            ]);
+        }
+
+        return array_values($groupData);
     }
 }

@@ -65,6 +65,7 @@ Route::get("/getOrderByNoSJ", [ServiceController::class, "getOrderByNoSJ"])->nam
 Route::get("/getOrderProducts", [ServiceController::class, "getOrderProducts"])->name("getOrderProducts");
 Route::get("/getInvoiceByNoSJ", [ServiceController::class, "getInvoiceByNoSJ"])->name("getInvoiceByNoSJ");
 
-
+//testing
+Route::get("/test1", [ReportController::class, "getDebtReport"])->name("test1");
 
 

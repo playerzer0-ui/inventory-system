@@ -24,7 +24,7 @@ function generateReport() {
         },
         success: function (data) {
             // let data = JSON.parse(response);
-            //console.log(response);
+            console.log(data);
             populateTable(data);
             document.getElementById("excel").innerHTML = `<a href="../controller/index.php?action=excel_hutang&storageCode=${storageCodeValue}&month=${monthValue}&year=${yearValue}" target="_blank"><button class="btn btn-success">excel</button></a>`;
         }
