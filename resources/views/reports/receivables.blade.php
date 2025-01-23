@@ -34,6 +34,6 @@
     </div>
 </main>
 
-<script src="{{asset('js/receivable.js')}}"></script>
+<script src="{{asset('js/receiveable.js')}}"></script>
 
 <x-footer />

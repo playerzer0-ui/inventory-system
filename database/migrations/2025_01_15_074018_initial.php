@@ -28,7 +28,7 @@ return new class extends Migration
         );
 
         Schema::create('customers', function (Blueprint $table) {
-            $table->string("customerCode", 5)->primary();
+            $table->string("customerCode", 10)->primary();
             $table->string("customerName", 100);
             $table->string("customerAddress", 100);
             $table->string("customerNPWP", 100);
@@ -36,7 +36,7 @@ return new class extends Migration
         );
 
         Schema::create('vendors', function (Blueprint $table) {
-            $table->string("vendorCode", 5)->primary();
+            $table->string("vendorCode", 10)->primary();
             $table->string("vendorName", 100);
             $table->string("vendorAddress", 100);
             $table->string("vendorNPWP", 100);
@@ -44,7 +44,7 @@ return new class extends Migration
         );
 
         Schema::create('storages', function (Blueprint $table) {
-            $table->string("storageCode", 5)->primary();
+            $table->string("storageCode", 10)->primary();
             $table->string("storageName", 100);
             $table->string("storageAddress", 100);
             $table->string("storageNPWP", 100);
@@ -54,7 +54,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->string("nomor_surat_jalan", 100)->primary();
             $table->string("storageCode", 5);
-            $table->string("no_LPB", 100);
+            $table->string("no_LPB", 100)->nullable();
             $table->string("no_truk", 100);
             $table->string("vendorCode", 5);
             $table->string("customerCode", 5);
@@ -103,13 +103,12 @@ return new class extends Migration
         });        
 
         Schema::create('saldos', function(Blueprint $table){
-            $table->string("productCode", 5);
-            $table->string("storageCode", 5);
+            $table->string("productCode", 10);
+            $table->string("storageCode", 10);
+            $table->double("totalPrice");
             $table->integer("totalQty");
-            $table->double("price_per_qty");
             $table->integer("saldoMonth");
             $table->integer("saldoYear");
-            $table->integer("saldoCount");
             $table->foreign('productCode')->references('productCode')->on('products')->onDelete('cascade');
             $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
         });
