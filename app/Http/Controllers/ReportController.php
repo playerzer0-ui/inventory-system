@@ -15,8 +15,8 @@ class ReportController extends Controller
 {
     public function dashboard()
     {
-        $uuid = substr(Str::uuid()->toString(), 0, 8);
-        return view("reports.dashboard", ["title" => "dashboard", "uuid" => $uuid]);
+        $storages = Storage::all();
+        return view("reports.dashboard", ["title" => "dashboard", "storages" => $storages]);
     }
 
     public function debt()
