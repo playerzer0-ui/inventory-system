@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Storage;
+use App\Service\StorageReport;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -181,12 +182,10 @@ class ReportController extends Controller
         $month = $req->month;
         $year = $req->year;
 
-        $data = [[
-            "storageCode" => $storageCode,
-            "month" => $month,
-            "year" => $year
-        ]];
+        $storageReport = new StorageReport();
 
+        $result = $storageReport->generateSaldo($storageCode, $month, $year);
+        return $result;
         
     }
 }

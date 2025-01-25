@@ -10,10 +10,10 @@
                 @if ($state == "moving")
                 <td>Storage Sender</td>
                 <td>:</td>
-                <td><input type="text" name="storageCodeSender" id="storageCodeSender" placeholder="otomatis" readonly></td>
+                <td><input type="text" name="storageCodeSender" id="storageCodeSender" placeholder="Automatic from the system" readonly></td>
                 <td>Storage Receiver</td>
                 <td>:</td>
-                <td><input type="text" name="storageCodeReceiver" id="storageCodeReceiver" placeholder="otomatis" readonly></td>
+                <td><input type="text" name="storageCodeReceiver" id="storageCodeReceiver" placeholder="Automatic from the system" readonly></td>
                 @else
                 <td>Storage</td>
                 <td>:</td>
