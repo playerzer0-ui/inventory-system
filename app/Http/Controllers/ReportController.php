@@ -174,4 +174,19 @@ class ReportController extends Controller
 
         return array_values($groupData);
     }
+
+    public function getreportStock(Request $req)
+    {
+        $storageCode = $req->storageCode;
+        $month = $req->month;
+        $year = $req->year;
+
+        $data = [[
+            "storageCode" => $storageCode,
+            "month" => $month,
+            "year" => $year
+        ]];
+
+        
+    }
 }

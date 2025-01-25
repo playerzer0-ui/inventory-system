@@ -63,7 +63,7 @@
                     <th rowspan="2">QTY</th>
                     <th rowspan="2">price/qty</th>
                     <th rowspan="2">total</th>
-                    <th colspan="3">Penjualan</th>
+                    <th colspan="3">Sales</th>
                     <th colspan="3">Moving</th>
                     <th colspan="3">Repack</th>
                     <th colspan="3">Total Out</th>
@@ -122,7 +122,7 @@
                     <th colspan="1">Repack</th>
                     <th colspan="1">Total In</th>
                     <th rowspan="2">QTY</th>
-                    <th colspan="1">Penjualan</th>
+                    <th colspan="1">Sales</th>
                     <th colspan="1">Moving</th>
                     <th colspan="1">Repack</th>
                     <th colspan="1">Total Out</th>

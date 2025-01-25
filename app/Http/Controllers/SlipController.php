@@ -51,18 +51,20 @@ class SlipController extends Controller
             'status_mode' => $status_mode,
         ]);
 
-        for($i = 0; $i < count($productCodes); $i++){
-            Order_Product::create([
-                "nomor_surat_jalan" => $no_sj, 
-                "repack_no_repack" => "-",
-                "moving_no_moving" => "-",
-                "productCode" => $productCodes[$i], 
-                "qty" => $qtys[$i], 
-                "UOM" => $uoms[$i], 
-                "price_per_UOM" => 0, 
-                "note" => $notes[$i],
-                "product_status" => $pageState
-            ]);
+        if($productCodes){
+            for($i = 0; $i < count($productCodes); $i++){
+                Order_Product::create([
+                    "nomor_surat_jalan" => $no_sj, 
+                    "repack_no_repack" => "-",
+                    "moving_no_moving" => "-",
+                    "productCode" => $productCodes[$i], 
+                    "qty" => $qtys[$i], 
+                    "UOM" => $uoms[$i], 
+                    "price_per_UOM" => 0, 
+                    "note" => $notes[$i],
+                    "product_status" => $pageState
+                ]);
+            }
         }
 
         session()->flash('msg', 'no_SJ: ' . $no_sj);

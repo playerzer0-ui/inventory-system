@@ -185,3 +185,35 @@ function getSJ(){
     });
 }
 
+function getSJT(){
+    let storageCodeEl = document.getElementById('storageCode').value;
+    let no_sjEl = document.getElementById('no_sj');
+    let order_date = document.getElementById("order_date").value;
+    let date = new Date(order_date);
+
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    $.ajax({
+        type: "get",
+        url: "/generate_LPB_SJK_INV",
+        data: {
+            state: "SJT",
+            storageCode: storageCodeEl,
+            month: month,
+            year: year
+        },
+        success: function (response) {
+            let arr = response.split("/");
+            if(pageState == "amend_slip_out_tax" && NO_SJ[2] === arr[2] && parseInt(NO_SJ[3]) === parseInt(arr[3]) && parseInt(NO_SJ[4]) === parseInt(arr[4])){
+                no_sjEl.value = NO_SJ[0] + "/" + NO_SJ[1] + "/" + NO_SJ[2] + "/" + NO_SJ[3] + "/" + NO_SJ[4];
+            }
+            else{
+                no_sjEl.value = response;
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error: " + error);
+        }
+    });
+}

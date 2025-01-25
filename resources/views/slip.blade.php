@@ -16,7 +16,11 @@
                         <option value="NON" selected>none</option>
                     </select>
                     @else
-                    <select name="storageCode" id="storageCode" onchange="getLPB()" readonly>
+                        @if ($state == "in")
+                        <select name="storageCode" id="storageCode" onchange="getLPB()" readonly>
+                        @else
+                        <select name="storageCode" id="storageCode" onchange="getSJT()" readonly> 
+                        @endif
                     @foreach ($storages as $key)
                         @if ($key["storageCode"] == "NON")
                         <option value="{{ $key["storageCode"] }}" selected>{{ $key["storageName"] }}</option>
@@ -77,8 +81,10 @@
                 <td>
                 @if ($state == "in")
                 <input name="order_date" type="date" id="order_date" onchange="getLPB()" placeholder="fill in" required>
-                @else
+                @elseif($state == "out")
                 <input name="order_date" type="date" id="order_date" onchange="getSJ()" placeholder="fill in" required>
+                @else
+                <input name="order_date" type="date" id="order_date" onchange="getSJT()" placeholder="fill in" required>
                 @endif
                 </td>
             </tr>
