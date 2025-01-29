@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class StorageReport {
 
-    public function getAllProductsMovingSaldo($storageCode, $month, $year)
+    public function getAllProductsMovingSaldo($storageCode, $month, $year, $productCode = null)
     {
         // Query for storageCodeSender
         $senders = DB::table('products as p')
@@ -26,6 +26,9 @@ class StorageReport {
             ->where('m.storageCodeSender', $storageCode)
             ->whereMonth('m.moving_date', $month)
             ->whereYear('m.moving_date', $year)
+            ->when($productCode, function ($query) use ($productCode) {
+                $query->where('p.productCode', $productCode);
+            })
             ->groupBy(
                 'p.productCode',
                 'p.productName',
@@ -53,6 +56,9 @@ class StorageReport {
             ->where('m.storageCodeReceiver', $storageCode)
             ->whereMonth('m.moving_date', $month)
             ->whereYear('m.moving_date', $year)
+            ->when($productCode, function ($query) use ($productCode) {
+                $query->where('p.productCode', $productCode);
+            })
             ->groupBy(
                 'p.productCode',
                 'p.productName',
@@ -66,7 +72,7 @@ class StorageReport {
         return [$senders, $receivers];
     }
 
-    public function getAllProductsForSaldo($storageCode, $month, $year)
+    public function getAllProductsForSaldo($storageCode, $month, $year, $productCode = null)
     {
         $storageCondition = $storageCode !== "NON";
 
@@ -89,6 +95,9 @@ class StorageReport {
             ->whereYear('i.invoice_date', $year)
             ->when($storageCondition, function ($query) use ($storageCode) {
                 $query->where('o.storageCode', $storageCode);
+            })
+            ->when($productCode, function ($query) use ($productCode) {
+                $query->where('p.productCode', $productCode);
             })
             ->where(function ($query) use ($storageCode) {
                 if ($storageCode === "NON") {
@@ -126,6 +135,9 @@ class StorageReport {
             ->when($storageCondition, function ($query) use ($storageCode) {
                 $query->where('r.storageCode', $storageCode);
             })
+            ->when($productCode, function ($query) use ($productCode) {
+                $query->where('p.productCode', $productCode);
+            })
             ->groupBy(
                 'p.productCode',
                 'p.productName',
@@ -147,7 +159,7 @@ class StorageReport {
             ->get();
 
         // Include moving data
-        $movings = $this->getAllProductsMovingSaldo($storageCode, $month, $year);
+        $movings = $this->getAllProductsMovingSaldo($storageCode, $month, $year, $productCode);
 
         return [$results, $movings];
     }
@@ -209,10 +221,9 @@ class StorageReport {
         }
     }
 
-    public function generateSaldo($storageCode, $month, $year) {
-        global $global_repackOut_price_per_qty;
+    public function generateSaldo($storageCode, $month, $year, $productCode = null) {
 
-        $storageReport = $this->getAllProductsForSaldo($storageCode, $month, $year);
+        $storageReport = $this->getAllProductsForSaldo($storageCode, $month, $year, $productCode);
         $inouts = $storageReport[0];
         $movings = $storageReport[1];
         $date = new DateTime($year . "-" . $month . "-" . "01");

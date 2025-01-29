@@ -1,11 +1,11 @@
 let pageState = document.getElementById("pageState").value;
 
-// window.onload = function() {
-//     getMovingNO();
-//     if (pageState === "amend_moving") {
-//         updateCOGSAndNominals();
-//     }
-// };
+window.onload = function() {
+    getMovingNO();
+    if (pageState === "amend_moving") {
+        updateCOGSAndNominals();
+    }
+};
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     const form = document.getElementById('myForm');
@@ -76,12 +76,11 @@ function applyAutocomplete(input) {
     $(input).autocomplete({
         source: function(request, response) {
             $.ajax({
-                url: '../controller/index.php',
+                url: '/getProductSuggestions',
                 type: 'GET',
                 dataType: 'json',
                 data: {
-                    action: 'getProductSuggestions',
-                    term: request.term
+                    code: request.term
                 },
                 success: function(data) {
                     response(data);
@@ -101,64 +100,63 @@ function getProductDetails(input) {
     const row = input.parentElement.parentElement;
 
     $.ajax({
-        url: '../controller/index.php',
+        url: '/getProductDetails',
         type: 'GET',
         dataType: 'json',
         data: {
-            action: 'getProductDetails',
-            productCode: productCode
+            code: productCode
         },
         success: function(data) {
+            console.log(data);
             if (data) {
                 row.querySelector('input[name="productName[]"]').value = data.productName;
                 getHPP(input);
             } else {
-                row.querySelector('input[name="productName[]"]').value = "Terisi Otomatis";
+                row.querySelector('input[name="productName[]"]').value = "Automatic from the system";
             }
         }
     });
 }
 
-// function updateCOGSAndNominals() {
-//     const rows = document.querySelectorAll("#materialTable tbody tr");
+function updateCOGSAndNominals() {
+    const rows = document.querySelectorAll("#materialTable tbody tr");
     
-//     rows.forEach(row => {
-//         const productCodeInput = row.querySelector('.productCode');
-//         const productCode = productCodeInput.value;
+    rows.forEach(row => {
+        const productCodeInput = row.querySelector('.productCode');
+        const productCode = productCodeInput.value;
 
-//         if (productCode) {
-//             getHPP(productCodeInput, updateNominal);
-//         }
-//     });
-// }
+        if (productCode) {
+            getHPP(productCodeInput, updateNominal);
+        }
+    });
+}
 
-// function getHPP(input){
-//     const productCode = input.value;
-//     const row = input.parentElement.parentElement;
-//     const storageCode = document.getElementById("storageCodeSender").value;
-//     let order_date = document.getElementById("moving_date").value;
-//     let date = new Date(order_date);
+function getHPP(input){
+    const productCode = input.value;
+    const row = input.parentElement.parentElement;
+    const storageCode = document.getElementById("storageCodeSender").value;
+    let order_date = document.getElementById("moving_date").value;
+    let date = new Date(order_date);
 
-//     let month = date.getMonth() + 1;
-//     let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
 
-//     $.ajax({
-//         type: "get",
-//         url: "../controller/index.php",
-//         dataType: 'json',
-//         data: {
-//             action: 'getHPP',
-//             productCode: productCode,
-//             storageCode: storageCode,
-//             month: month,
-//             year: year
-//         },
-//         success: function (data) {
-//             row.querySelector('input[name="price_per_uom[]"]').value = data;
-//             calculateNominal(row.querySelector('input[name="qty[]"]'));
-//         }
-//     });
-// }
+    $.ajax({
+        type: "get",
+        url: "/getHPP",
+        dataType: 'json',
+        data: {
+            productCode: productCode,
+            storageCode: storageCode,
+            month: month,
+            year: year
+        },
+        success: function (data) {
+            row.querySelector('input[name="price_per_uom[]"]').value = data;
+            calculateNominal(row.querySelector('input[name="qty[]"]'));
+        }
+    });
+}
 
 function updateNominal(row) {
     const qty = parseFloat(row.querySelector('input[name="qty[]"]').value); // Get the quantity value
@@ -208,9 +206,9 @@ function getMovingNO() {
 
     $.ajax({
         type: "get",
-        url: "../controller/index.php",
+        url: "generate_LPB_SJK_INV",
         data: {
-            action: "generate_SJP",
+            state: "SJP",
             storageCode: storageCodeEl,
             month: month,
             year: year

@@ -188,4 +188,21 @@ class ReportController extends Controller
         return $result;
         
     }
+
+    public function getHPP(Request $req)
+    {
+        $storageCode = $req->storageCode;
+        $month = $req->month;
+        $year = $req->year;
+        $productCode = $req->productCode;
+        $storageReport = new StorageReport();
+        
+        $data = $storageReport->generateSaldo($storageCode, $month, $year);
+        if(isset($data[$productCode]["ready_to_sell_items"]["price_per_qty"])){
+            return $data[$productCode]["ready_to_sell_items"]["price_per_qty"];
+        }
+        else{
+            return 0;
+        }
+    }
 }

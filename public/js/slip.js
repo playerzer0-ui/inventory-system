@@ -44,7 +44,6 @@ function applyAutocomplete(element) {
                 type: 'GET',
                 dataType: 'json',
                 data: {
-                    action: 'getProductSuggestions',
                     code: request.term
                 },
                 success: function(data) {
@@ -87,7 +86,6 @@ function getProductDetails(input) {
         type: 'GET',
         dataType: 'json',
         data: {
-            action: 'getProductDetails',
             code: productCode
         },
         success: function(data) {

@@ -64,46 +64,45 @@ document.addEventListener("DOMContentLoaded", function() {
 //     }
 // }
 
-// function updateCOGSAndNominals() {
-//     const rows = document.querySelectorAll("#productTable tbody tr");
+function updateCOGSAndNominals() {
+    const rows = document.querySelectorAll("#productTable tbody tr");
     
-//     rows.forEach(row => {
-//         const productCodeInput = row.querySelector('.productCode');
-//         const productCode = productCodeInput.value;
+    rows.forEach(row => {
+        const productCodeInput = row.querySelector('.productCode');
+        const productCode = productCodeInput.value;
 
-//         if (productCode) {
-//             getHPP(productCodeInput, updateNominal);
-//         }
-//     });
-// }
+        if (productCode) {
+            getHPP(productCodeInput, updateNominal);
+        }
+    });
+}
 
-// function getHPP(input, callback){
-//     const productCode = input.value;
-//     const row = input.closest('tr');
-//     const storageCode = pageState.includes("moving") ? document.getElementById("storageCodeSender").value : document.getElementById("storageCode").value;
-//     let order_date = document.getElementById("invoice_date").value;
-//     let date = new Date(order_date);
+function getHPP(input, callback){
+    const productCode = input.value;
+    const row = input.closest('tr');
+    const storageCode = pageState.includes("moving") ? document.getElementById("storageCodeSender").value : document.getElementById("storageCode").value;
+    let order_date = document.getElementById("invoice_date").value;
+    let date = new Date(order_date);
 
-//     let month = date.getMonth() + 1;
-//     let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
 
-//     $.ajax({
-//         type: "get",
-//         url: "../controller/index.php",
-//         dataType: 'json',
-//         data: {
-//             action: 'getHPP',
-//             productCode: productCode,
-//             storageCode: storageCode,
-//             month: month,
-//             year: year
-//         },
-//         success: function (data) {
-//             row.querySelector('input[name="price_per_uom[]"]').placeholder = data.toFixed(0);
-//             callback(row);
-//         }
-//     });
-// }
+    $.ajax({
+        type: "get",
+        url: "/getHPP",
+        dataType: 'json',
+        data: {
+            productCode: productCode,
+            storageCode: storageCode,
+            month: month,
+            year: year
+        },
+        success: function (data) {
+            row.querySelector('input[name="price_per_uom[]"]').placeholder = data.toFixed(0);
+            callback(row);
+        }
+    });
+}
 
 function updateNominal(row) {
     const qty = parseFloat(row.querySelector('input[name="qty[]"]').value); // Get the quantity value
@@ -265,27 +264,27 @@ function getOrderProducts(no_id, status){
     });
 }
 
-// function calculateHutang(){
-//     let amount = document.getElementById("payment_amount").value;
-//     let tax = document.getElementById("tax").value;
-//     let remaining = document.getElementById("remaining");
-//     let no_sjEl;
-//     if(pageState.includes("moving")){
-//         no_sjEl = document.getElementById("no_moving").value;
-//     }
-//     else{
-//         no_sjEl = document.getElementById("no_sj").value;
-//     }
+function calculateHutang(){
+    let amount = document.getElementById("payment_amount").value;
+    let tax = document.getElementById("tax").value;
+    let remaining = document.getElementById("remaining");
+    let no_sjEl;
+    if(pageState.includes("moving")){
+        no_sjEl = document.getElementById("no_moving").value;
+    }
+    else{
+        no_sjEl = document.getElementById("no_sj").value;
+    }
 
-//     $.ajax({
-//         type: "get",
-//         url: "../controller/index.php",
-//         data: {action: "calculateHutang", payment_amount: amount, tax: tax, no_sj: no_sjEl},
-//         success: function (response) {
-//             remaining.innerHTML = response;
-//         }
-//     });
-// }
+    $.ajax({
+        type: "get",
+        url: "../controller/index.php",
+        data: {action: "calculateHutang", payment_amount: amount, tax: tax, no_sj: no_sjEl},
+        success: function (response) {
+            remaining.innerHTML = response;
+        }
+    });
+}
 
 function calculateTotalNominal() {
     const nominalInputs = document.querySelectorAll('input[name="nominal[]"]'); // Get all nominal inputs

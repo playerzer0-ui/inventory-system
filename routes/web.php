@@ -65,6 +65,7 @@ Route::get("/getProductDetails", [ServiceController::class, "getProductDetails"]
 Route::get("/getOrderByNoSJ", [ServiceController::class, "getOrderByNoSJ"])->name("getOrderByNoSJ");
 Route::get("/getOrderProducts", [ServiceController::class, "getOrderProducts"])->name("getOrderProducts");
 Route::get("/getInvoiceByNoSJ", [ServiceController::class, "getInvoiceByNoSJ"])->name("getInvoiceByNoSJ");
+Route::get("/getHPP", [ReportController::class, "getHPP"])->name("getHPP");
 
 //testing
 Route::get("/test1", [ReportController::class, "getreportStock"])->name("test1");
