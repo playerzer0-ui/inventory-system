@@ -113,14 +113,6 @@ class ServiceController extends Controller
         return $orderProducts;
     }
 
-    public function getInvoiceByNoSJ(Request $req)
-    {
-        $no_sj = $req->no_sj;
-
-        $invoice = Invoice::where("nomor_surat_jalan", $no_sj)->first();
-        return $invoice;
-    }
-
     public function generate_LPB_SJK_INV(Request $req)
     {
         $state = $req->state;

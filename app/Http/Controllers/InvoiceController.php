@@ -50,6 +50,20 @@ class InvoiceController extends Controller
         return redirect()->route("payment", ["state" => $pageState]);
     }
 
+    public function getInvoiceDetails(Request $req)
+    {
+        $no_moving = $req->no_moving;
+        $no_sj = $req->no_sj;
+
+        if($no_sj){
+            $result = Invoice::where("nomor_surat_jalan", $no_sj)->first();
+        }
+        else{
+            $result = Invoice::where("no_moving", $no_moving)->first();
+        }
+        return $result;
+    }
+
     public function remove_invoice(Request $req)
     {
         

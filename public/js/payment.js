@@ -6,63 +6,11 @@ $(document).ready(function () {
     }
 });
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     const form = document.getElementById('myForm');
-
-//     form.addEventListener('keydown', function(event) {
-//         if (event.key === 'Enter') {
-//             event.preventDefault();
-//             return false;
-//         }
-//     });
-// });
-
 document.addEventListener("DOMContentLoaded", function() {
     if (pageState === "amend_payment_moving") {
         updateCOGSAndNominals();
     }
 });
-
-// function handleFormSubmit(event) {
-//     event.preventDefault(); // Prevent the default form submission
-
-//     var form = document.getElementById('myForm');
-
-//     // Check if the form is valid
-//     if (!form.checkValidity()) {
-//         // If the form is not valid, trigger the browser's validation UI
-//         form.reportValidity();
-//         return;
-//     }
-//     if (pageState.includes("amend")){
-//         form.submit();
-//     }
-//     else{
-//         var formData = new FormData(form);
-    
-//         // Add a flag to indicate PDF generation
-//         formData.append('generate_pdf', '1');
-    
-//         // Create a new tab for the PDF
-//         var pdfWindow = window.open('', '_blank');
-    
-//         fetch('../controller/index.php?action=create_payment', {
-//             method: 'POST',
-//             body: formData
-//         }).then(response => response.blob())
-//         .then(blob => {
-//             var url = URL.createObjectURL(blob);
-//             pdfWindow.location.href = url; // Load the PDF in the new tab
-    
-//             // Redirect to the dashboard after a short delay
-//             setTimeout(() => {
-//                 window.location.href = `../controller/index.php?action=dashboard&msg=payment_made`;
-//             }, 2000); // Adjust the delay as needed
-//         }).catch(error => {
-//             console.error('Error:', error);
-//         });
-//     }
-// }
 
 function updateCOGSAndNominals() {
     const rows = document.querySelectorAll("#productTable tbody tr");
@@ -129,9 +77,8 @@ function getMovingDetailsFromMovingNo(){
 
     $.ajax({
         type: "get",
-        url: "../controller/index.php",
+        url: "/getMovingDetails",
         data: {
-            action: "getMovingDetails",
             no_moving: no_moving
         }
     }).done(function (response) {
@@ -142,10 +89,9 @@ function getMovingDetailsFromMovingNo(){
 
         $.ajax({
             type: "get",
-            url: "../controller/index.php",
+            url: "/getInvoiceDetails",
             data: {
-                action: 'getInvoiceMovingByNoSJ',
-                no_sj: no_moving
+                no_moving: no_moving
             }
         }).done(function (response) {
             const data = JSON.parse(response);
@@ -214,9 +160,9 @@ function getDetailsFromSJ(){
 
     $.ajax({
         type: "get",
-        url: "/getInvoiceByNoSJ",
+        url: "/getInvoiceDetails",
         data: {
-            action: 'getInvoiceByNoSJ',
+            action: 'getInvoiceDetails',
             no_sj: no_sjEl
         },
         success: function (data) {
@@ -264,7 +210,7 @@ function getOrderProducts(no_id, status){
     });
 }
 
-function calculateHutang(){
+function calculateDebt(){
     let amount = document.getElementById("payment_amount").value;
     let tax = document.getElementById("tax").value;
     let remaining = document.getElementById("remaining");
@@ -278,8 +224,8 @@ function calculateHutang(){
 
     $.ajax({
         type: "get",
-        url: "../controller/index.php",
-        data: {action: "calculateHutang", payment_amount: amount, tax: tax, no_sj: no_sjEl},
+        url: "/calculateDebt",
+        data: {payment_amount: amount, tax: tax, no_sj: no_sjEl},
         success: function (response) {
             remaining.innerHTML = response;
         }

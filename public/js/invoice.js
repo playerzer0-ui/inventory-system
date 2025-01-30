@@ -1,16 +1,5 @@
 var pageState = document.getElementById("pageState").value;
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     const form = document.getElementById('myForm');
-
-//     form.addEventListener('keydown', function(event) {
-//         if (event.key === 'Enter') {
-//             event.preventDefault();
-//             return false;
-//         }
-//     });
-// });
-
 document.addEventListener("DOMContentLoaded", function() {
     if (pageState === "amend_invoice_moving") {
         updateCOGSAndNominals();
@@ -36,52 +25,6 @@ if (!pageState.includes("amend")){
         invoice_dateEl.value = formattedDate;
     });
 }
-
-
-// function handleFormSubmit(event) {
-//     let pageState = document.getElementById("pageState").value;
-//     let no_sj;
-//     if(!pageState.includes("moving")){
-//         no_sj = document.getElementById("no_sj").value;
-//     }
-//     else{
-//         no_sj = document.getElementById("no_moving").value;
-//     }
-//     event.preventDefault(); // Prevent the default form submission
-
-//     var form = document.getElementById('myForm');
-
-//     // Check if the form is valid
-//     if (!form.checkValidity()) {
-//         // If the form is not valid, trigger the browser's validation UI
-//         form.reportValidity();
-//         return;
-//     }
-//     var formData = new FormData(form);
-
-//     // Add a flag to indicate PDF generation
-//     formData.append('generate_pdf', '1');
-
-//     // Create a new tab for the PDF
-//     var pdfWindow = window.open('', '_blank');
-
-//     fetch('../controller/index.php?action=create_invoice', {
-//         method: 'POST',
-//         body: formData
-//     }).then(response => response.blob())
-//     .then(blob => {
-//         var url = URL.createObjectURL(blob);
-//         pdfWindow.location.href = url; // Load the PDF in the new tab
-
-//         // Redirect to the dashboard after a short delay
-//         setTimeout(() => {
-//             window.location.href = `../controller/index.php?action=show_payment&msg=NO_sj:${no_sj}&state=${pageState}`;
-//         }, 2000); // Adjust the delay as needed
-//     }).catch(error => {
-//         console.error('Error:', error);
-//     });
-// }
-
 
 function updateCOGSAndNominals() {
     const rows = document.querySelectorAll("#productTable tbody tr");
@@ -146,7 +89,7 @@ function getMovingDetailsFromMovingNo(){
     // First AJAX call to get moving details
     $.ajax({
         type: "get",
-        url: "../controller/index.php",
+        url: "/getMovingDetails",
         data: {
             action: "getMovingDetails",
             no_moving: no_moving

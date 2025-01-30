@@ -127,7 +127,7 @@
             <tr>
                 <td>Payment Amount: </td>
                 <td>
-                    <input type="number" inputmode="numeric" name="payment_amount" id="payment_amount" required>
+                    <input type="number" inputmode="numeric" name="payment_amount" id="payment_amount" oninput="calculateDebt()" required>
                 </td>
                 <td>Tax(%): <input type="number" name="tax" id="tax" oninput="calculateTotalNominal()" readonly></td>
                 <td><input type="number" inputmode="numeric" name="taxPPN" id="taxPPN" disabled></td>
@@ -139,7 +139,7 @@
                 <td><input type="number" inputmode="numeric" name="amount_paid" id="amount_paid" disabled></td>
             </tr>
         </table>
-        <button type="submit" class="btn btn-outline-success" onclick="handleFormSubmit(event)">Submit</button>
+        <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
 </main>
 

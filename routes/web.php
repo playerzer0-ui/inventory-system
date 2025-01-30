@@ -49,6 +49,7 @@ Route::post("/create_invoice", [InvoiceController::class, "create_invoice"])->na
 //payments
 Route::get("/payment", [PaymentController::class, "payment"])->name("payment");
 Route::post("/create_payment", [PaymentController::class, "create_payment"])->name("create_payment");
+Route::get("/calculateDebt", [PaymentController::class, "calculateDebt"])->name("calculateDebt");
 
 //repacks
 Route::get("/repack", [RepackController::class, "repack"])->name("repack");
@@ -64,7 +65,7 @@ Route::get("/getProductSuggestions", [ServiceController::class, "getProductSugge
 Route::get("/getProductDetails", [ServiceController::class, "getProductDetails"])->name("getProductDetails");
 Route::get("/getOrderByNoSJ", [ServiceController::class, "getOrderByNoSJ"])->name("getOrderByNoSJ");
 Route::get("/getOrderProducts", [ServiceController::class, "getOrderProducts"])->name("getOrderProducts");
-Route::get("/getInvoiceByNoSJ", [ServiceController::class, "getInvoiceByNoSJ"])->name("getInvoiceByNoSJ");
+Route::get("/getInvoiceDetails", [InvoiceController::class, "getInvoiceDetails"])->name("getInvoiceDetails");
 Route::get("/getHPP", [ReportController::class, "getHPP"])->name("getHPP");
 
 //testing
