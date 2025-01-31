@@ -62,7 +62,7 @@
                     <td><input name="no_invoice" type="text" id="no_invoice" placeholder="Automatic from the system" readonly></td>
                     <td>Invoice Date</td>
                     <td>:</td>
-                    <td colspan="2"><input name="invoice_date" type="date" id="invoice_date" placeholder="fill in" oninput="generateNoInvoice()" required></td>
+                    <td colspan="2"><input name="invoice_date" type="date" id="invoice_date" placeholder="fill in" required></td>
                 @else
                     @if ($state == 'in')
                         <td>No SJ</td>

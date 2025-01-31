@@ -78,11 +78,12 @@ function getMovingDetailsFromMovingNo(){
     $.ajax({
         type: "get",
         url: "/getMovingDetails",
+        dataType: 'json',
         data: {
             no_moving: no_moving
         }
-    }).done(function (response) {
-        const data = JSON.parse(response);
+    }).done(function (data) {
+        console.log(data);
         storageCodeSender.value = data.storageCodeSender;
         storageCodeReceiver.value = data.storageCodeReceiver;
         moving_date.value = data.moving_date;
@@ -90,6 +91,7 @@ function getMovingDetailsFromMovingNo(){
         $.ajax({
             type: "get",
             url: "/getInvoiceDetails",
+            dataType: 'json',
             data: {
                 no_moving: no_moving
             }

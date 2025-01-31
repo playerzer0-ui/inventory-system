@@ -45,7 +45,7 @@ class InvoiceController extends Controller
             }
         }
 
-        session()->flash('msg', 'no_SJ: ' . $no_sj);
+        session()->flash('msg', 'no_SJ: ' . $no_sj ?? $no_moving);
 
         return redirect()->route("payment", ["state" => $pageState]);
     }

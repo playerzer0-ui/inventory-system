@@ -45,6 +45,7 @@ Route::post("/create_slip", [SlipController::class, "create_slip"])->name("creat
 //invoices
 Route::get("/invoice", [InvoiceController::class, "invoice"])->name("invoice");
 Route::post("/create_invoice", [InvoiceController::class, "create_invoice"])->name("create_invoice");
+Route::get("/getInvoiceDetails", [InvoiceController::class, "getInvoiceDetails"])->name("getInvoiceDetails");
 
 //payments
 Route::get("/payment", [PaymentController::class, "payment"])->name("payment");
@@ -58,6 +59,7 @@ Route::post("/create_repack", [RepackController::class, "create_repack"])->name(
 //movings
 Route::get("/moving", [MovingController::class, "moving"])->name("moving");
 Route::post("/create_moving", [MovingController::class, "create_moving"])->name("create_moving");
+Route::get("/getMovingDetails", [MovingController::class, "getMovingDetails"])->name("getMovingDetails");
 
 //services
 Route::get("/generate_LPB_SJK_INV", [ServiceController::class, "generate_LPB_SJK_INV"])->name("generate_LPB_SJK_INV");
@@ -65,7 +67,6 @@ Route::get("/getProductSuggestions", [ServiceController::class, "getProductSugge
 Route::get("/getProductDetails", [ServiceController::class, "getProductDetails"])->name("getProductDetails");
 Route::get("/getOrderByNoSJ", [ServiceController::class, "getOrderByNoSJ"])->name("getOrderByNoSJ");
 Route::get("/getOrderProducts", [ServiceController::class, "getOrderProducts"])->name("getOrderProducts");
-Route::get("/getInvoiceDetails", [InvoiceController::class, "getInvoiceDetails"])->name("getInvoiceDetails");
 Route::get("/getHPP", [ReportController::class, "getHPP"])->name("getHPP");
 
 //testing

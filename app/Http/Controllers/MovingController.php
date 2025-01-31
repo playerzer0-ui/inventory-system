@@ -59,7 +59,7 @@ class MovingController extends Controller
     public function getMovingDetails(Request $req)
     {
         $no_moving = $req->no_moving;
-        $moving = Moving::where("no_moving", $no_moving);
+        $moving = Moving::where("no_moving", $no_moving)->first();
         return $moving;
     }
 

@@ -1,7 +1,7 @@
 <x-header :title="$title" />
 
 <main class="main-container">
-    <form id="myForm" action="{{ url('controller/index.php?action=create_moving') }}" method="post">
+    <form id="myForm" action="{{ route('create_moving') }}" method="post">
         @csrf
         <h1 style="text-align:center;">MOVING</h1>
         <input type="hidden" id="pageState" name="pageState" value="{{ $pageState }}">

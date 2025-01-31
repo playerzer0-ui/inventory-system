@@ -91,11 +91,10 @@ function getMovingDetailsFromMovingNo(){
         type: "get",
         url: "/getMovingDetails",
         data: {
-            action: "getMovingDetails",
             no_moving: no_moving
         }
-    }).done(function(response) {
-        const data = JSON.parse(response);
+    }).done(function(data) {
+        //const data = JSON.parse(response);
         storageCodeSender.value = data.storageCodeSender;
         storageCodeReceiver.value = data.storageCodeReceiver;
         moving_date.value = data.moving_date;
@@ -222,7 +221,7 @@ function generateNoInvoice(){
         type: 'GET',
         data: {
             state: "INV",
-            storageCode: "NON",
+            storageCode: sCode,
             month: month,
             year: year
         },

@@ -29,7 +29,7 @@ class PaymentController extends Controller
             "payment_amount" => $payment_amount
         ]);
 
-        session()->flash('msg', 'payment created: ' . $no_sj);
+        session()->flash('msg', 'payment created: ' . $no_sj ?? $no_moving);
 
         return redirect()->route("dashboard");
     }
