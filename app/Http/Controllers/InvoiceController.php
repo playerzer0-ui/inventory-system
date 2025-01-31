@@ -39,13 +39,16 @@ class InvoiceController extends Controller
 
         if($productCodes){
             for($i = 0; $i < count($productCodes); $i++){
-                Order_Product::where('nomor_surat_jalan', $no_sj ?? $no_moving)
-                ->where('productCode', $productCodes[$i])
-                ->update(['price_per_UOM' => $price_per_uom[$i]]);
+                $column = $no_sj ? 'nomor_surat_jalan' : 'moving_no_moving';
+                $value = $no_sj ?? $no_moving;
+            
+                Order_Product::where($column, $value)
+                    ->where('productCode', $productCodes[$i])
+                    ->update(['price_per_UOM' => $price_per_uom[$i]]);
             }
         }
-
-        session()->flash('msg', 'no_SJ: ' . $no_sj ?? $no_moving);
+        
+        session()->flash('msg', 'no_SJ: ' . ($no_sj ?? $no_moving));
 
         return redirect()->route("payment", ["state" => $pageState]);
     }

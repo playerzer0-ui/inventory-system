@@ -95,8 +95,8 @@ function getMovingDetailsFromMovingNo(){
             data: {
                 no_moving: no_moving
             }
-        }).done(function (response) {
-            const data = JSON.parse(response);
+        }).done(function (data) {
+            //const data = JSON.parse(response);
             invoice_dateEl.value = data.invoice_date;
             no_invoiceEl.value = data.no_invoice;
             tax.value = data.tax;
