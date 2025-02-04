@@ -29,6 +29,11 @@ class HomeController extends Controller
         }
     }
 
+    public function amends(Request $req)
+    {
+        
+    }
+
     public function logout(Request $req)
     {
         $req->session()->flush();

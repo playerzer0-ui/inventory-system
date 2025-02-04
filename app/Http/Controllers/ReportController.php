@@ -14,6 +14,13 @@ use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
+    protected $storageReport;
+
+    public function __construct(StorageReport $storageReport)
+    {
+        $this->storageReport = $storageReport;
+    }
+
     public function dashboard()
     {
         $storages = Storage::all();
@@ -182,9 +189,7 @@ class ReportController extends Controller
         $month = $req->month;
         $year = $req->year;
 
-        $storageReport = new StorageReport();
-
-        $result = $storageReport->generateSaldo($storageCode, $month, $year);
+        $result = $this->storageReport->generateSaldo($storageCode, $month, $year);
         return $result;
         
     }
@@ -195,9 +200,8 @@ class ReportController extends Controller
         $month = $req->month;
         $year = $req->year;
         $productCode = $req->productCode;
-        $storageReport = new StorageReport();
         
-        $data = $storageReport->generateSaldo($storageCode, $month, $year);
+        $data = $this->storageReport->generateSaldo($storageCode, $month, $year);
         if(isset($data[$productCode]["ready_to_sell_items"]["price_per_qty"])){
             return $data[$productCode]["ready_to_sell_items"]["price_per_qty"];
         }

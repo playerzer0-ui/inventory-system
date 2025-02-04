@@ -8,9 +8,17 @@ use App\Models\Order_Product;
 use App\Models\Storage;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use App\Services\OrderProductService;
 
 class SlipController extends Controller
 {
+    protected $orderProductService;
+
+    public function __construct(OrderProductService $orderProductService)
+    {
+        $this->orderProductService = $orderProductService;
+    }
+
     public function slip(Request $req)
     {
         $state = $req->state;
@@ -79,6 +87,16 @@ class SlipController extends Controller
 
     public function amend_slip(Request $req)
     {
+        $state = $req->state;
+        $no_sj = $req->no_sj;
+        $title = "AMEND SLIP " . $state;
+        $storages = Storage::all();
+        $vendors = Vendor::all();
+        $customers = Customer::all();
+
+        $result = $this->orderProductService->getOrderByNoSJ($no_sj);
+        $products = $this->orderProductService->getOrderProducts($no_sj, $state);
         
+        return view("amend_slip", ["title" => $title, "state" => $state, "vendors" => $vendors, "storages" => $storages, "customers" => $customers, "result" => $result, "products" => $products]);
     }
 }
