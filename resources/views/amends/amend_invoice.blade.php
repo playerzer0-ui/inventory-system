@@ -3,7 +3,7 @@
 <main class="main-container">
     <form id="myForm" action="{{route('create_invoice')}}" method="post">
         @csrf
-        <h1>INVOICE {{$state}}</h1>
+        <h1>AMEND INVOICE {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>
         <table>
             <tr class="form-header">
@@ -114,6 +114,40 @@
             </thead>
             <tbody>
                 <!-- Rows will be added here dynamically -->
+                @php 
+                $count = 1; 
+                $totalNominal = 0;
+                @endphp
+
+                @foreach($products as $key)
+                <tr>
+                    <td>{{ $count++ }}</td>
+                    <td>
+                        <input type="text" name="kd[]" value="{{ $key['productCode'] }}" class="productCode" readonly>
+                    </td>
+                    <td>
+                        <input style="width: 300px;" value="{{ $key['productName'] }}" type="text" name="material_display[]" readonly>
+                        <input type="hidden" value="{{ $key['productName'] }}" name="material[]">
+                    </td>
+                    <td>
+                        <input type="number" value="{{ $key['qty'] }}" name="qty[]" readonly>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ $key['uom'] }}" name="uom[]" readonly>
+                    </td>
+                    <td>
+                        <input type="number" value="{{ $key['price_per_UOM'] }}" inputmode="numeric" 
+                            name="price_per_uom[]" placeholder="Fill in" oninput="calculateNominal(this)" required>
+                    </td>
+                    <td>
+                        <input type="text" name="nominal[]" placeholder="Automatic from the system" 
+                            value="{{ (int)$key['qty'] * (double)$key['price_per_UOM'] }}" readonly>
+                    </td>
+                </tr>
+                @php
+                    $totalNominal += (int)$key['qty'] * (double)$key['price_per_UOM'];
+                @endphp
+                @endforeach
             </tbody>
         </table>
 

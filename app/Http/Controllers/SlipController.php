@@ -97,6 +97,6 @@ class SlipController extends Controller
         $result = $this->orderProductService->getOrderByNoSJ($no_sj);
         $products = $this->orderProductService->getOrderProducts($no_sj, $state);
         
-        return view("amend_slip", ["title" => $title, "state" => $state, "vendors" => $vendors, "storages" => $storages, "customers" => $customers, "result" => $result, "products" => $products]);
+        return view("amends.amend_slip", ["title" => $title, "state" => $state, "vendors" => $vendors, "storages" => $storages, "customers" => $customers, "result" => $result, "products" => $products]);
     }
 }

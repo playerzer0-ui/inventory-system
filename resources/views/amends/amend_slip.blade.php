@@ -2,7 +2,7 @@
 
 <main class="main-container">
     <form id="myForm" action="../controller/index.php?action=amend_update_data&data=slip" method="post">
-        <h1>SLIP {{$state}}</h1>
+        <h1>AMEND SLIP {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>
         <input name="old_sj" type="hidden" id="old_sj" value="{{$result['nomor_surat_jalan']}}">
         <table>

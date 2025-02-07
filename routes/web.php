@@ -29,6 +29,7 @@ Route::get('/', function () {
 Route::get("/home", [HomeController::class, "index"])->name("home");
 Route::post("/login", [HomeController::class, "login"])->name("login");
 Route::get("/logout", [HomeController::class, "logout"])->name("logout");
+Route::get("/amends", [HomeController::class, "amends"])->name("amends");
 
 //reports
 Route::get("/dashboard", [ReportController::class, "dashboard"])->name("dashboard");
@@ -41,16 +42,19 @@ Route::get("/getReportStock", [ReportController::class, "getReportStock"])->name
 //slips
 Route::get("/slip", [SlipController::class, "slip"])->name("slip");
 Route::post("/create_slip", [SlipController::class, "create_slip"])->name("create_slip");
+Route::post("/amend_slip", [SlipController::class, "amend_slip"])->name("amend_slip");
 
 //invoices
 Route::get("/invoice", [InvoiceController::class, "invoice"])->name("invoice");
 Route::post("/create_invoice", [InvoiceController::class, "create_invoice"])->name("create_invoice");
 Route::get("/getInvoiceDetails", [InvoiceController::class, "getInvoiceDetails"])->name("getInvoiceDetails");
+Route::post("/amend_invoice", [InvoiceController::class, "amend_invoice"])->name("amend_invoice");
 
 //payments
 Route::get("/payment", [PaymentController::class, "payment"])->name("payment");
 Route::post("/create_payment", [PaymentController::class, "create_payment"])->name("create_payment");
 Route::get("/calculateDebt", [PaymentController::class, "calculateDebt"])->name("calculateDebt");
+Route::post("/amend_payment", [PaymentController::class, "amend_payment"])->name("amend_payment");
 
 //repacks
 Route::get("/repack", [RepackController::class, "repack"])->name("repack");

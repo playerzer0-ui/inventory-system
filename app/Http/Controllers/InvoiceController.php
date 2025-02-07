@@ -3,11 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Moving;
 use App\Models\Order_Product;
+use App\Services\OrderProductService;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
+    protected $orderProductService;
+
+    public function __construct(OrderProductService $orderProductService)
+    {
+        $this->orderProductService = $orderProductService;
+    }
+
     public function invoice(Request $req)
     {
         $state = $req->state;
@@ -74,6 +83,20 @@ class InvoiceController extends Controller
 
     public function amend_invoice(Request $req)
     {
-        
+        $state = $req->state;
+        $no_sj = $req->no_sj;
+        $no_moving = $req->no_moving;
+        $title = "AMEND INVOICE " . $state;
+        if($no_moving){
+            $result = Moving::where("no_moving", $no_moving)->first();
+            $products = $this->orderProductService->getOrderProducts($no_moving, $state);
+        }
+        else{
+            $result = $this->orderProductService->getOrderByNoSJ($no_sj);
+            $products = $this->orderProductService->getOrderProducts($no_sj, $state);
+        }
+        $invoice = $this->getInvoiceDetails($req);
+
+        return view("amends.amend_invoice", ["title" => $title, "state" => $state, "result" => $result, "invoice" => $invoice, "products" => $products]);
     }
 }

@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Moving;
 use App\Models\Order_Product;
 use App\Models\Payment;
+use App\Services\OrderProductService;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+    protected $orderProductService;
+
+    public function __construct(OrderProductService $orderProductService)
+    {
+        $this->orderProductService = $orderProductService;
+    }
+
     public function payment(Request $req)
     {
         $state = $req->state;
@@ -34,7 +43,8 @@ class PaymentController extends Controller
         return redirect()->route("dashboard");
     }
 
-    function calculateDebt(Request $req) {
+    function calculateDebt(Request $req) 
+    {
         $no_sj = $req->no_sj;
         $payment_amount = $req->payment_amount;
         $tax = $req->tax;
