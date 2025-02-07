@@ -353,48 +353,56 @@ class TestSeed extends Seeder
                 'no_moving' => '-',
                 'payment_date' => '2024-08-09',
                 'payment_amount' => 1997000000.00,
+                'payment_id' => 'PAY-2fws31ed/2024-08-09'
             ],
             [
                 'nomor_surat_jalan' => 'H810005211',
                 'no_moving' => '-',
                 'payment_date' => '2024-08-08',
                 'payment_amount' => 4595400000.00,
+                'payment_id' => 'PAY-2ffo31ed/2024-08-08'
             ],
             [
                 'nomor_surat_jalan' => '1/SJK/NON/08/2024',
                 'no_moving' => '-',
                 'payment_date' => '2024-08-08',
                 'payment_amount' => 1400000000.00,
+                'payment_id' => 'PAY-2ffo31xe/2024-08-08'
             ],
             [
                 'nomor_surat_jalan' => '2/SJK/NON/08/2024',
                 'no_moving' => '-',
                 'payment_date' => '2024-08-09',
                 'payment_amount' => 500000000.00,
+                'payment_id' => 'PAY-2ffom1ed/2024-08-09'
             ],
             [
                 'nomor_surat_jalan' => '-',
                 'no_moving' => '1/SJP/APA/08/2024',
                 'payment_date' => '2024-08-08',
                 'payment_amount' => 815850000.00,
+                'payment_id' => 'PAY-2pao31ed/2024-08-08'
             ],
             [
                 'nomor_surat_jalan' => '-',
                 'no_moving' => '2/SJP/APA/08/2024',
                 'payment_date' => '2024-08-09',
                 'payment_amount' => 500000000.00,
+                'payment_id' => 'PAY-2ynoa1ed/2024-08-09'
             ],
             [
                 'nomor_surat_jalan' => '1/SJT/APA/08/2024',
                 'no_moving' => '-',
                 'payment_date' => '2024-08-08',
                 'payment_amount' => 3832275000.00,
+                'payment_id' => 'PAY-2paasf1ed/2024-08-08'
             ],
             [
                 'nomor_surat_jalan' => '2/SJT/APA/08/2024',
                 'no_moving' => '-',
                 'payment_date' => '2024-08-09',
                 'payment_amount' => 1696300000.00,
+                'payment_id' => 'PAY-2290i3td/2024-08-09'
             ],
         ]);
 

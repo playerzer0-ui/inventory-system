@@ -7,10 +7,18 @@
         @foreach($no_SJs as $key)
             <div class="row align-items-start">
                 <div class="col">
-                    @if($key["nomor_surat_jalan"] != "-")
-                        <b>{{$key["nomor_surat_jalan"]}}</b>
+                    @if ($state == "payment")
+                        @if($key["nomor_surat_jalan"] != "-")
+                            <b>{{$key["nomor_surat_jalan"]}}   |   payment_id: {{$key["payment_id"]}}</b>
+                        @else
+                            <b>{{$key["no_moving"]}}   |   payment_id: {{$key["payment_id"]}}</b>
+                        @endif
                     @else
-                        <b>{{$key["no_moving"]}}</b>
+                        @if($key["nomor_surat_jalan"] != "-")
+                            <b>{{$key["nomor_surat_jalan"]}}</b>
+                        @else
+                            <b>{{$key["no_moving"]}}</b>
+                        @endif
                     @endif
                 </div>
                 <div class="col">

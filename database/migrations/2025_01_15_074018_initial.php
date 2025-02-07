@@ -91,6 +91,7 @@ return new class extends Migration
             $table->string("no_moving", 100)->nullable();
             $table->date("payment_date");
             $table->double("payment_amount");
+            $table->string("payment_id")->primary();
             $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('invoices')->onDelete('cascade');
             $table->foreign('no_moving')->references('no_moving')->on('movings')->onDelete('cascade');
         });
