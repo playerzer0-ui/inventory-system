@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AmendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MovingController;
@@ -76,6 +77,9 @@ Route::get("/getProductDetails", [ServiceController::class, "getProductDetails"]
 Route::get("/getOrderByNoSJ", [ServiceController::class, "getOrderByNoSJ"])->name("getOrderByNoSJ");
 Route::get("/getOrderProducts", [ServiceController::class, "getOrderProducts"])->name("getOrderProducts");
 Route::get("/getHPP", [ReportController::class, "getHPP"])->name("getHPP");
+
+//amends data
+Route::post("/amend_slip_data", [AmendController::class, "amend_slip_data"])->name("amend_slip_data");
 
 //testing
 Route::get("/test1", [ReportController::class, "getreportStock"])->name("test1");

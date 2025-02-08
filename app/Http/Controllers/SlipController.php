@@ -87,16 +87,27 @@ class SlipController extends Controller
 
     public function amend_slip(Request $req)
     {
-        $state = $req->state;
         $no_sj = $req->no_sj;
         
-        $title = "AMEND " . $state;
         $storages = Storage::all();
         $vendors = Vendor::all();
         $customers = Customer::all();
 
         $result = $this->orderProductService->getOrderByNoSJ($no_sj);
-        $products = $this->orderProductService->getOrderProducts($no_sj, "in");
+        switch($result["status_mode"]){
+            case 1:
+                $state = "in";
+                break;
+            case 2:
+                $state = "out";
+                break;
+            case 3:
+                $state = "out_tax";
+                break;
+            }
+        $title = "AMEND SLIP " . $state;
+
+        $products = $this->orderProductService->getOrderProducts($no_sj, $state);
         
         return view("amends.amend_slip", ["title" => $title, "state" => $state, "vendors" => $vendors, "storages" => $storages, "customers" => $customers, "result" => $result, "products" => $products]);
     }

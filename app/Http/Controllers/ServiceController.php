@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Services\OrderProductService;
+use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -11,7 +11,7 @@ class ServiceController extends Controller
 {
     protected $orderProductService;
 
-    public function __construct(OrderProductService $orderProductService)
+    public function __construct(ServiceOrderProductService $orderProductService)
     {
         $this->orderProductService = $orderProductService;
     }

@@ -1,8 +1,9 @@
 <x-header :title="$title" />
 
 <main class="main-container">
-    <form id="myForm" action="../controller/index.php?action=amend_update_data&data=slip" method="post">
-        <h1>AMEND {{$state}}</h1>
+    <form id="myForm" action="{{route('amend_slip_data')}}" method="post">
+        @csrf
+        <h1>AMEND SLIP {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>
         <input name="old_sj" type="hidden" id="old_sj" value="{{$result['nomor_surat_jalan']}}">
         <table>

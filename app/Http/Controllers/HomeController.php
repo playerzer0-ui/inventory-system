@@ -74,19 +74,19 @@ class HomeController extends Controller
 
         switch($state){
             case "slip":
-                return redirect()->route("amend_slip", ["no_sj" => $no_sj, "state" => $state]);
+                return redirect()->route("amend_slip", ["no_sj" => $no_sj]);
                 break;
             case "invoice":
-                return redirect()->route("amend_invoice", ["no_sj" => $no_sj, "state" => $state]);
+                return redirect()->route("amend_invoice", ["no_sj" => $no_sj]);
                 break;
             case "payment":
-                return redirect()->route("amend_payment", ["no_sj" => $no_sj, "state" => $state]);
+                return redirect()->route("amend_payment", ["no_sj" => $no_sj]);
                 break;
             case "repack":
-                return redirect()->route("amend_payment", ["no_sj" => $no_sj, "state" => $state]);
+                return redirect()->route("amend_payment", ["no_sj" => $no_sj]);
                 break;
             case "moving":
-                return redirect()->route("amend_payment", ["no_sj" => $no_sj, "state" => $state]);
+                return redirect()->route("amend_payment", ["no_sj" => $no_sj]);
                 break;
         }
     }
