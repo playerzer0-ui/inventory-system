@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Services;
+namespace App\Service;
 
 use Illuminate\Support\Facades\DB;
 
@@ -8,7 +8,7 @@ class OrderProductService
 {
     public function getOrderProducts($no_sj, $status)
     {
-        if ($status == "in" || $status == "out") {
+        if ($status == "in" || $status == "out" || $status == "out_tax") {
             return DB::table('order_products as op')
                 ->join('products as p', 'op.productCode', '=', 'p.productCode')
                 ->where('op.nomor_surat_jalan', $no_sj)
@@ -58,7 +58,7 @@ class OrderProductService
 
     public function getOrderByNoSJ($no_sj)
     {
-        $result = DB::table('orders as o')
+        $result = (array) DB::table('orders as o')
         ->join('customers as c', 'o.customerCode', '=', 'c.customerCode')
         ->where('o.nomor_surat_jalan', $no_sj)
         ->select(

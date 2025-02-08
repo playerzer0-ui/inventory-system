@@ -2,7 +2,7 @@
 
 <main class="main-container">
     <form id="myForm" action="../controller/index.php?action=amend_update_data&data=slip" method="post">
-        <h1>AMEND SLIP {{$state}}</h1>
+        <h1>AMEND {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>
         <input name="old_sj" type="hidden" id="old_sj" value="{{$result['nomor_surat_jalan']}}">
         <table>
@@ -137,21 +137,21 @@
                     <td>{{ $count++ }}</td>
                     <td>
                         <input type="text" name="kd[]" placeholder="Fill in" class="productCode" 
-                               oninput="applyAutocomplete(this)" value="{{ $key['productCode'] }}" required>
+                               oninput="applyAutocomplete(this)" value="{{ $key->productCode }}" required>
                     </td>
                     <td>
                         <input style="width: 300px;" type="text" name="material_display[]" 
-                               value="{{ $key['productName'] }}" readonly>
+                               value="{{ $key->productName }}" readonly>
                         <input type="hidden" name="material[]">
                     </td>
                     <td>
-                        <input type="number" name="qty[]" placeholder="Fill in" value="{{ $key['qty'] }}" required>
+                        <input type="number" name="qty[]" placeholder="Fill in" value="{{ $key->qty }}" required>
                     </td>
                     <td>
-                        <input type="text" name="uom[]" placeholder="Fill in" value="{{ $key['uom'] }}" required>
+                        <input type="text" name="uom[]" placeholder="Fill in" value="{{ $key->uom }}" required>
                     </td>
                     <td>
-                        <input type="text" name="note[]" value="{{ $key['note'] }}" placeholder="">
+                        <input type="text" name="note[]" value="{{ $key->note }}" placeholder="">
                     </td>
                     <td>
                         <button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>

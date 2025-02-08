@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Moving;
 use App\Models\Order_Product;
-use App\Services\OrderProductService;
+use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
     protected $orderProductService;
 
-    public function __construct(OrderProductService $orderProductService)
+    public function __construct(ServiceOrderProductService $orderProductService)
     {
         $this->orderProductService = $orderProductService;
     }
@@ -86,16 +86,23 @@ class InvoiceController extends Controller
         $state = $req->state;
         $no_sj = $req->no_sj;
         $no_moving = $req->no_moving;
-        $title = "AMEND INVOICE " . $state;
+        $title = "AMEND " . $state;
+
         if($no_moving){
             $result = Moving::where("no_moving", $no_moving)->first();
-            $products = $this->orderProductService->getOrderProducts($no_moving, $state);
+            $products = $this->orderProductService->getOrderProducts($no_moving, "moving");
         }
         else{
             $result = $this->orderProductService->getOrderByNoSJ($no_sj);
-            $products = $this->orderProductService->getOrderProducts($no_sj, $state);
+            $products = $this->orderProductService->getOrderProducts($no_sj, "in");
         }
-        $invoice = $this->getInvoiceDetails($req);
+
+        if($no_sj){
+            $invoice = Invoice::where("nomor_surat_jalan", $no_sj)->first();
+        }
+        else{
+            $invoice = Invoice::where("no_moving", $no_moving)->first();
+        }
 
         return view("amends.amend_invoice", ["title" => $title, "state" => $state, "result" => $result, "invoice" => $invoice, "products" => $products]);
     }

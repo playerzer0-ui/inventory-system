@@ -24,19 +24,19 @@
                 <div class="col">
                     @if($state == "payment")
                         @if($key["nomor_surat_jalan"] != "-")
-                            <a href=<?php echo "../controller/index.php?action=amend_update&data=" . $state . "&payment_id=" . $key["payment_id"] . "&code=" . $key["nomor_surat_jalan"]; ?>><button class="btn btn-info">EDIT</button></a>
-                            <a href=<?php echo "../controller/index.php?action=master_delete&data=" . $state . "&payment_id=" . $key["payment_id"] . "&code=" . $key["nomor_surat_jalan"]; ?>><button class="btn btn-danger">DELETE</button></a>
+                            <a href="{{route('amend_update', ['state' => $state, 'payment_id' => $key['payment_id'], 'code' => $key["nomor_surat_jalan"]])}}"><button class="btn btn-info">EDIT</button></a>
+                            <a href="{{route('master_delete', ['state' => $state, 'payment_id' => $key['payment_id'], 'code' => $key["nomor_surat_jalan"]])}}"><button class="btn btn-danger">DELETE</button></a>
                         @else
-                            <a href=<?php echo "../controller/index.php?action=amend_update&data=" . $state . "&payment_id=" . $key["payment_id"] . "&code=" . $key["no_moving"]; ?>><button class="btn btn-info">EDIT</button></a>
-                            <a href=<?php echo "../controller/index.php?action=master_delete&data=" . $state . "&payment_id=" . $key["payment_id"] . "&code=" . $key["no_moving"]; ?>><button class="btn btn-danger">DELETE</button></a>
+                            <a href="{{route('amend_update', ['state' => $state, 'payment_id' => $key['payment_id'], 'code' => $key["no_moving"]])}}"><button class="btn btn-info">EDIT</button></a>
+                            <a href="{{route('master_delete', ['state' => $state, 'payment_id' => $key['payment_id'], 'code' => $key["no_moving"]])}}"><button class="btn btn-danger">DELETE</button></a>
                         @endif
                     @else
                         @if($key["nomor_surat_jalan"] != "-")
-                            <a href=<?php echo "../controller/index.php?action=amend_update&data=" . $state . "&code=" . $key["nomor_surat_jalan"]; ?>><button class="btn btn-info">EDIT</button></a>
-                            <a href=<?php echo "../controller/index.php?action=master_delete&data=" . $state . "&code=" . $key["nomor_surat_jalan"]; ?>><button class="btn btn-danger">DELETE</button></a>
+                            <a href="{{route('amend_update', ['state' => $state, 'code' => $key["nomor_surat_jalan"]])}}"><button class="btn btn-info">EDIT</button></a>
+                            <a href="{{route('master_delete', ['state' => $state, 'code' => $key["nomor_surat_jalan"]])}}"><button class="btn btn-danger">DELETE</button></a>
                         @else
-                            <a href=<?php echo "../controller/index.php?action=amend_update&data=" . $state . "&code=" . $key["no_moving"]; ?>><button class="btn btn-info">EDIT</button></a>
-                            <a href=<?php echo "../controller/index.php?action=master_delete&data=" . $state . "&code=" . $key["no_moving"]; ?>><button class="btn btn-danger">DELETE</button></a>
+                            <a href="{{route('amend_update', ['state' => $state, 'code' => $key["no_moving"]])}}"><button class="btn btn-info">EDIT</button></a>
+                            <a href="{{route('master_delete', ['state' => $state, 'code' => $key["no_moving"]])}}"><button class="btn btn-danger">DELETE</button></a>
                         @endif
                     @endif
                 </div>

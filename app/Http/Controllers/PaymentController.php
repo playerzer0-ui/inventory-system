@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Moving;
 use App\Models\Order_Product;
 use App\Models\Payment;
-use App\Services\OrderProductService;
+use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
     protected $orderProductService;
 
-    public function __construct(OrderProductService $orderProductService)
+    public function __construct(ServiceOrderProductService $orderProductService)
     {
         $this->orderProductService = $orderProductService;
     }
