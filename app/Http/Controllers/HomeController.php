@@ -84,10 +84,10 @@ class HomeController extends Controller
                 return redirect()->route("amend_payment", ["no_sj" => $no_sj, "payment_id" => $payment_id]);
                 break;
             case "repack":
-                return redirect()->route("amend_repack", ["no_sj" => $no_sj]);
+                return redirect()->route("amend_repack", ["no_repack" => $no_sj]);
                 break;
             case "moving":
-                return redirect()->route("amend_moving", ["no_sj" => $no_sj]);
+                return redirect()->route("amend_moving", ["no_moving" => $no_sj]);
                 break;
         }
     }

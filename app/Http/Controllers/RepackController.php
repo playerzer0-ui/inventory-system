@@ -6,9 +6,17 @@ use App\Models\Order_Product;
 use App\Models\Repack;
 use Illuminate\Http\Request;
 use App\Models\Storage;
+use App\Service\OrderProductService;
 
 class RepackController extends Controller
 {
+    protected $orderProductService;
+
+    public function __construct(OrderProductService $orderProductService)
+    {
+        $this->orderProductService = $orderProductService;
+    }
+
     public function repack(Request $req)
     {
         $title = "REPACK";
@@ -77,6 +85,12 @@ class RepackController extends Controller
 
     public function amend_repack(Request $req)
     {
-        
+        $no_repack = $req->no_repack;
+        $storages = Storage::all();
+        $repack = Repack::where("no_repack", $no_repack)->first();
+        $products = $this->orderProductService->getOrderProducts($no_repack, "repack");
+        dd($products);
+        $title = "AMEND REPACK";
+        return view("amends.amend_repack", ["title" => $title, "storages" => $storages, "repack" => $repack, "products" => $products]);
     }
 }

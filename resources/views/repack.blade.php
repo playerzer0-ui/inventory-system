@@ -4,7 +4,6 @@
     <form id="myForm" action="{{ route('create_repack') }}" method="post">
         @csrf
         <h1 style="text-align:center;">REPACK</h1>
-        <input type="hidden" id="pageState" name="pageState" value="{{ $pageState }}">
         <table class="header-table">
             <tr>
                 <td>Storage</td>
