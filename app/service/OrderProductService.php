@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
 
 class OrderProductService
@@ -105,6 +106,17 @@ class OrderProductService
         )
         ->first();
 
+        return $result;
+    }
+
+    public function getInvoiceDetails($no_sj, $no_moving)
+    {
+        if($no_sj){
+            $result = Invoice::where("nomor_surat_jalan", $no_sj)->first();
+        }
+        else{
+            $result = Invoice::where("no_moving", $no_moving)->first();
+        }
         return $result;
     }
 }

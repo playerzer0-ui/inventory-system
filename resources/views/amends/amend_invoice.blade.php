@@ -161,7 +161,7 @@
             <tr>
                 <td></td>
                 <td></td>
-                <td>Tax(%): <input type="number" name="tax" id="tax" value="11" oninput="calculateTotalNominal()"></td>
+                <td>Tax(%): <input type="number" name="tax" id="tax" value="{{$invoice['tax']}}" oninput="calculateTotalNominal()"></td>
                 <td><input type="number" inputmode="numeric" name="taxPPN" id="taxPPN" placeholder="Automatic from the system" disabled></td>
             </tr>
             <tr>

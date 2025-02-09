@@ -71,6 +71,7 @@ class HomeController extends Controller
     {
         $state = $req->state;
         $no_sj = $req->code;
+        $payment_id = $req->payment_id;
 
         switch($state){
             case "slip":
@@ -80,13 +81,13 @@ class HomeController extends Controller
                 return redirect()->route("amend_invoice", ["no_sj" => $no_sj]);
                 break;
             case "payment":
-                return redirect()->route("amend_payment", ["no_sj" => $no_sj]);
+                return redirect()->route("amend_payment", ["no_sj" => $no_sj, "payment_id" => $payment_id]);
                 break;
             case "repack":
-                return redirect()->route("amend_payment", ["no_sj" => $no_sj]);
+                return redirect()->route("amend_repack", ["no_sj" => $no_sj]);
                 break;
             case "moving":
-                return redirect()->route("amend_payment", ["no_sj" => $no_sj]);
+                return redirect()->route("amend_moving", ["no_sj" => $no_sj]);
                 break;
         }
     }

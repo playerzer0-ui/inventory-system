@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Order_Product;
+use App\Models\Payment;
 use App\Service\OrderProductService;
 use Exception;
 use Illuminate\Http\Request;
@@ -159,6 +160,32 @@ class AmendController extends Controller
             session()->flash('msg', 'updated successfully');
             return redirect()->route("dashboard");
         } catch (Exception $e) {
+            DB::rollBack();
+            session()->flash('msg', 'ERROR: ' . $e->getMessage());
+            return redirect()->route("dashboard");
+        }
+    }
+
+    public function amend_payment_data(Request $req)
+    {
+        $payment_date = $req->payment_date;
+        $payment_amount = $req->payment_amount;
+        $payment_id = $req->payment_id;
+
+        try{
+            DB::beginTransaction();
+
+            $payment = Payment::where("payment_id", $payment_id);
+            $payment->update([
+                "payment_date" => $payment_date,
+                "payment_amount" => $payment_amount
+            ]);
+
+            DB::commit();
+            session()->flash('msg', 'updated successfully');
+            return redirect()->route("dashboard");
+        }
+        catch (Exception $e) {
             DB::rollBack();
             session()->flash('msg', 'ERROR: ' . $e->getMessage());
             return redirect()->route("dashboard");
