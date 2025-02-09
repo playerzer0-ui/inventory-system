@@ -80,6 +80,10 @@ Route::get("/getHPP", [ReportController::class, "getHPP"])->name("getHPP");
 
 //amends data
 Route::post("/amend_slip_data", [AmendController::class, "amend_slip_data"])->name("amend_slip_data");
+Route::post("/amend_invoice_data", [AmendController::class, "amend_invoice_data"])->name("amend_invoice_data");
+Route::post("/amend_payment_data", [AmendController::class, "amend_payment_data"])->name("amend_payment_data");
+Route::post("/amend_repack_data", [AmendController::class, "amend_repack_data"])->name("amend_repack_data");
+Route::post("/amend_moving_data", [AmendController::class, "amend_moving_data"])->name("amend_moving_data");
 
 //testing
 Route::get("/test1", [ReportController::class, "getreportStock"])->name("test1");

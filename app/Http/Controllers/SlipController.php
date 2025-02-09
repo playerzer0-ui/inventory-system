@@ -104,7 +104,7 @@ class SlipController extends Controller
             case 3:
                 $state = "out_tax";
                 break;
-            }
+        }
         $title = "AMEND SLIP " . $state;
 
         $products = $this->orderProductService->getOrderProducts($no_sj, $state);

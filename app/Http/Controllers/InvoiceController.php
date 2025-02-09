@@ -86,7 +86,6 @@ class InvoiceController extends Controller
         $state = $req->state;
         $no_sj = $req->no_sj;
         $no_moving = $req->no_moving;
-        $title = "AMEND " . $state;
 
         if($no_moving){
             $result = Moving::where("no_moving", $no_moving)->first();
@@ -97,12 +96,20 @@ class InvoiceController extends Controller
             $products = $this->orderProductService->getOrderProducts($no_sj, "in");
         }
 
-        if($no_sj){
-            $invoice = Invoice::where("nomor_surat_jalan", $no_sj)->first();
+        switch($result["status_mode"]){
+            case 1:
+                $state = "in";
+                break;
+            case 2:
+                $state = "out";
+                break;
+            case 3:
+                $state = "out_tax";
+                break;
         }
-        else{
-            $invoice = Invoice::where("no_moving", $no_moving)->first();
-        }
+
+        $title = "AMEND INVOICE " . $state;
+        $invoice =  $this->getInvoiceDetails($req);
 
         return view("amends.amend_invoice", ["title" => $title, "state" => $state, "result" => $result, "invoice" => $invoice, "products" => $products]);
     }
