@@ -2,7 +2,7 @@ var pageState = document.getElementById("pageState").value;
 
 $(document).ready(function () {
     if(pageState.includes("amend")){
-        calculateHutang();
+        calculateDebt();
     }
 });
 

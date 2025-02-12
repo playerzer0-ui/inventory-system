@@ -70,6 +70,12 @@ class MovingController extends Controller
 
     public function amend_moving(Request $req)
     {
-        
+        $no_moving = $req->no_moving;
+        $title = "AMEND MOVING";
+        $storages = Storage::all();
+
+        $moving = Moving::where("no_moving", $no_moving)->first();
+
+        return view("amend_moving", []);
     }
 }

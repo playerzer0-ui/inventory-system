@@ -1,9 +1,6 @@
 let rowCount = document.querySelectorAll('#productTable tbody tr').length;
 let pageState = document.getElementById("pageState").value;
 
-if(pageState.includes("slip_in")){
-    var NO_LPB = document.getElementById("no_LPB").value.split("/");
-}
 var NO_SJ = document.getElementById("no_sj").value.split("/");
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -134,15 +131,8 @@ function getLPB(){
             year: year
         },
         success: function (response) {
-            let arr = response.split("/");
-            if(pageState == "amend_slip_in" && NO_LPB[2] === arr[2] && parseInt(NO_LPB[3]) === parseInt(arr[3]) && parseInt(NO_LPB[4]) === parseInt(arr[4])){
-                noLPBEl.value = NO_LPB[0] + "/" + NO_LPB[1] + "/" + NO_LPB[2] + "/" + NO_LPB[3] + "/" + NO_LPB[4];
-                noLPBHiddenEl.value = NO_LPB[0] + "/" + NO_LPB[1] + "/" + NO_LPB[2] + "/" + NO_LPB[3] + "/" + NO_LPB[4];
-            }
-            else{
-                noLPBEl.value = response;
-                noLPBHiddenEl.value = response;
-            }
+            noLPBEl.value = response;
+            noLPBHiddenEl.value = response;
         },
         error: function(xhr, status, error) {
             console.error("Error: " + error);

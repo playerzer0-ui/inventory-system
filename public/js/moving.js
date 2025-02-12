@@ -214,19 +214,7 @@ function getMovingNO() {
             year: year
         },
         success: function(response) {
-            let arr = response.split("/");
-            if(pageState == "amend_moving"){
-                let old_moving = document.getElementById("old_moving").value.split("/");
-                if(old_moving[2] == arr[2] && parseInt(old_moving[3]) === parseInt(arr[3]) && parseInt(old_moving[4]) === parseInt(arr[4])){
-                    noMovingEl.value = document.getElementById("old_moving").value;
-                }
-                else{
-                    noMovingEl.value = response;
-                }
-            }
-            else{
-                noMovingEl.value = response;
-            }
+            noMovingEl.value = response;
         },
         error: function(xhr, status, error) {
             console.error("Error: " + error);

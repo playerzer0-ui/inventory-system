@@ -262,5 +262,10 @@ class AmendController extends Controller
             session()->flash('msg', 'ERROR: ' . $e->getMessage());
             return redirect()->route("dashboard");
         }
-    }  
+    } 
+
+    public function amend_moving_data()
+    {
+        
+    }
 }
