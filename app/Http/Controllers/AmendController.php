@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Payment;
+use App\Models\Repack;
 use App\Service\OrderProductService;
 use Exception;
 use Illuminate\Http\Request;
@@ -191,4 +192,75 @@ class AmendController extends Controller
             return redirect()->route("dashboard");
         }
     }
+
+    public function amend_repack_data(Request $req)
+    {
+        $storageCode = $req->storageCode;
+        $no_repack = $req->no_repack;
+        $old_repack = $req->old_repack;
+        $repack_date = $req->repack_date;
+
+        $kd_start = $req->input("kd_start", []);
+        $qty_start = $req->input("qty_start", []);
+        $uom_start = $req->input("uom_start", []);
+        $note_start = $req->input("note_start", []);
+
+        $kd_end = $req->input("kd_end", []);
+        $qty_end = $req->input("qty_end", []);
+        $uom_end = $req->input("uom_end", []);
+        $note_end = $req->input("note_end", []);
+
+        
+        try {
+            DB::beginTransaction();
+
+            // Delete old order products
+            Order_Product::where('repack_no_repack', $old_repack)->delete();
+
+            // Update the repack
+            Repack::where('no_repack', $old_repack)->update([
+                'no_repack' => $no_repack,
+                'repack_date' => $repack_date,
+                'storageCode' => $storageCode,
+            ]);
+
+            // Add new order products for 'repack_start'
+            foreach ($kd_start as $i => $kd) {
+                Order_Product::create([
+                    'nomor_surat_jalan' => '-',
+                    'repack_no_repack' => $no_repack,
+                    'moving_no_moving' => '-',
+                    'productCode' => $kd,
+                    'qty' => $qty_start[$i],
+                    'UOM' => $uom_start[$i],
+                    'price_per_UOM' => 0,
+                    'note' => $note_start[$i] ?? null,
+                    'product_status' => 'repack_start',
+                ]);
+            }
+
+            // Add new order products for 'repack_end'
+            foreach ($kd_end as $i => $kd) {
+                Order_Product::create([
+                    'nomor_surat_jalan' => '-',
+                    'repack_no_repack' => $no_repack,
+                    'moving_no_moving' => '-',
+                    'productCode' => $kd,
+                    'qty' => $qty_end[$i],
+                    'UOM' => $uom_end[$i],
+                    'price_per_UOM' => 0,
+                    'note' => $note_end[$i] ?? null,
+                    'product_status' => 'repack_end',
+                ]);
+            }
+
+            DB::commit();
+            session()->flash('msg', 'updated successfully');
+            return redirect()->route("dashboard");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('msg', 'ERROR: ' . $e->getMessage());
+            return redirect()->route("dashboard");
+        }
+    }  
 }

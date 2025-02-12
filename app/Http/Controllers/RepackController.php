@@ -89,7 +89,7 @@ class RepackController extends Controller
         $storages = Storage::all();
         $repack = Repack::where("no_repack", $no_repack)->first();
         $products = $this->orderProductService->getOrderProducts($no_repack, "repack");
-        dd($products);
+        // dd($products);
         $title = "AMEND REPACK";
         return view("amends.amend_repack", ["title" => $title, "storages" => $storages, "repack" => $repack, "products" => $products]);
     }

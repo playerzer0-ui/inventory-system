@@ -1,23 +1,23 @@
-let pageState = document.getElementById("pageState").value;
+// let pageState = document.getElementById("pageState").value;
 
-if (!pageState.includes("amend")){
-    document.addEventListener("DOMContentLoaded", function() {
-        let invoice_dateEl = document.getElementById("repack_date");
+// if (!pageState.includes("amend")){
+//     document.addEventListener("DOMContentLoaded", function() {
+//         let invoice_dateEl = document.getElementById("repack_date");
     
-        // Get today's date
-        let today = new Date();
+//         // Get today's date
+//         let today = new Date();
     
-        // Format the date to YYYY-MM-DD
-        let year = today.getFullYear();
-        let month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1 and pad with zero if needed
-        let day = String(today.getDate()).padStart(2, '0'); // Pad day with zero if needed
+//         // Format the date to YYYY-MM-DD
+//         let year = today.getFullYear();
+//         let month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1 and pad with zero if needed
+//         let day = String(today.getDate()).padStart(2, '0'); // Pad day with zero if needed
     
-        let formattedDate = `${year}-${month}-${day}`;
+//         let formattedDate = `${year}-${month}-${day}`;
     
-        // Set the value of the date input to today's date
-        invoice_dateEl.value = formattedDate;
-    });
-}
+//         // Set the value of the date input to today's date
+//         invoice_dateEl.value = formattedDate;
+//     });
+// }
 
 function addRow(tableId) {
     var table = document.getElementById(tableId);
@@ -138,19 +138,7 @@ function getRepackNO() {
             year: year
         },
         success: function(response) {
-            let arr = response.split("/");
-            if(pageState == "amend_repack"){
-                let old_repack = document.getElementById("old_rpeack").value.split("/");
-                if(old_repack[2] == arr[2] && parseInt(old_repack[3]) === parseInt(arr[3]) && parseInt(old_repack[4]) === parseInt(arr[4])){
-                    noRepackEl.value = document.getElementById("old_rpeack").value;
-                }
-                else{
-                    noRepackEl.value = response;
-                }
-            }
-            else{
-                noRepackEl.value = response;
-            }
+            noRepackEl.value = response;
         },
         error: function(xhr, status, error) {
             console.error("Error: " + error);

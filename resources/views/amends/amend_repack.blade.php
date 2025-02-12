@@ -4,6 +4,7 @@
     <form id="myForm" action="{{ route('amend_repack_data') }}" method="post">
         @csrf
         <h1 style="text-align:center;">AMEND REPACK</h1>
+        <input type="hidden" id="old_rpeack" name="old_repack" value="{{$repack["no_repack"]}}">
         <table class="header-table">
             <tr>
                 <td>Storage</td>
@@ -46,17 +47,17 @@
                 $count = 1; 
                 @endphp
                 @foreach($products as $key)
-                    @if($key->product_status == "repack_start")
-                        <tr>
-                            <td>{{$count++}}</td>
-                            <td><input name="kd_start[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" values="{{$key->productCode}}" required /></td>
-                            <td><input name="material_start[]" type="text" placeholder="Automatic From System" values="{{$key->productName}}" readonly /></td>
-                            <td><input name="qty_start[]" type="text" placeholder="fill in" values="{{$key->qty}}" required /></td>
-                            <td><input name="uom_start[]" type="text" placeholder="fill in" values="{{$key->uom}}" required /></td>
-                            <td><input name="note_start[]" type="text" values="{{$key->note}}" /></td>
-                            <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>
-                        </tr>
-                    @endif
+                @if($key->product_status == "repack_start")
+                <tr>
+                    <td>{{$count++}}</td>
+                    <td><input name="kd_start[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" value="{{$key->productCode}}" required /></td>
+                    <td><input name="material_start[]" type="text" placeholder="Automatic From System" value="{{$key->productName}}" readonly /></td>
+                    <td><input name="qty_start[]" type="text" placeholder="fill in" value="{{$key->qty}}" required /></td>
+                    <td><input name="uom_start[]" type="text" placeholder="fill in" value="{{$key->uom}}" required /></td>
+                    <td><input name="note_start[]" type="text" value="{{$key->note}}" /></td>
+                    <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>
+                </tr>
+                @endif
                 @endforeach
             </tbody>
         </table>
@@ -84,11 +85,11 @@
                     @if($key->product_status == "repack_end")
                         <tr>
                             <td>{{$count++}}</td>
-                            <td><input name="kd_end[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" values="{{$key->productCode}}" required /></td>
-                            <td><input name="material_end[]" type="text" placeholder="Automatic From System" values="{{$key->productName}}" readonly /></td>
-                            <td><input name="qty_end[]" type="text" placeholder="fill in" values="{{$key->qty}}" required /></td>
-                            <td><input name="uom_end[]" type="text" placeholder="fill in" values="{{$key->uom}}" required /></td>
-                            <td><input name="note_end[]" type="text" values="{{$key->note}}" /></td>
+                            <td><input name="kd_end[]" class="productCode" oninput="applyAutocomplete(this)" type="text" placeholder="fill in" value="{{$key->productCode}}" required /></td>
+                            <td><input name="material_end[]" type="text" placeholder="Automatic From System" value="{{$key->productName}}" readonly /></td>
+                            <td><input name="qty_end[]" type="text" placeholder="fill in" value="{{$key->qty}}" required /></td>
+                            <td><input name="uom_end[]" type="text" placeholder="fill in" value="{{$key->uom}}" required /></td>
+                            <td><input name="note_end[]" type="text" value="{{$key->note}}" /></td>
                             <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>
                         </tr>
                     @endif
