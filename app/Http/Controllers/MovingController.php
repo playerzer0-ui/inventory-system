@@ -6,9 +6,16 @@ use App\Models\Moving;
 use App\Models\Order_Product;
 use Illuminate\Http\Request;
 use App\Models\Storage;
+use App\Service\OrderProductService;
 
 class MovingController extends Controller
 {
+    protected $orderProductService;
+
+    public function __construct(OrderProductService $orderProductService){
+        $this->orderProductService = $orderProductService;
+    }
+
     public function moving(Request $req)
     {
         $title = "MOVING ";
@@ -75,7 +82,8 @@ class MovingController extends Controller
         $storages = Storage::all();
 
         $moving = Moving::where("no_moving", $no_moving)->first();
+        $products = $this->orderProductService->getOrderProducts($no_moving, "moving");
 
-        return view("amend_moving", []);
+        return view("amends.amend_moving", ["title" => $title, "storages" => $storages, "moving" => $moving, "products" => $products]);
     }
 }

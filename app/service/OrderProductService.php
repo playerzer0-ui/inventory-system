@@ -85,6 +85,34 @@ class OrderProductService
         });
     }
 
+    public function update_Moving($old_moving, $new_moving)
+    {
+        DB::transaction(function () use ($old_moving, $new_moving) {
+            // Update invoices first
+            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+            DB::update("
+                UPDATE invoices 
+                SET no_moving = ? 
+                WHERE no_moving = ?
+            ", [$new_moving, $old_moving]);
+        
+            // Update payments next
+            DB::update("
+                UPDATE payments 
+                SET no_moving = ? 
+                WHERE no_moving = ?
+            ", [$new_moving, $old_moving]);
+        
+            // Finally, update orders
+            DB::update("
+                UPDATE movings 
+                SET no_moving = ? 
+                WHERE no_moving = ?
+            ", [$new_moving, $old_moving]);
+            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        });
+    }
+
     public function getOrderByNoSJ($no_sj)
     {
         $result = (array) DB::table('orders as o')

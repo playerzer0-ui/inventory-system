@@ -102,33 +102,33 @@ class PaymentController extends Controller
     {
         $state = $req->state;
         $no_sj = $req->no_sj;
-        $no_moving = $req->no_moving;
+        $no_moving = $req->no_sj;
         $payment_id = $req->payment_id;
 
-        if($no_moving){
+        if(strpos($no_moving, "SJP")){
             $result = Moving::where("no_moving", $no_moving)->first();
             $products = $this->orderProductService->getOrderProducts($no_moving, "moving");
-            
+            $state = "moving";
+            $invoice =  $this->orderProductService->getInvoiceDetails(null, $no_moving);
         }
         else{
             $result = $this->orderProductService->getOrderByNoSJ($no_sj);
             $products = $this->orderProductService->getOrderProducts($no_sj, "in");
+            switch($result["status_mode"]){
+                case 1:
+                    $state = "in";
+                    break;
+                case 2:
+                    $state = "out";
+                    break;
+                case 3:
+                    $state = "out_tax";
+                    break;
+            }
+            $invoice =  $this->orderProductService->getInvoiceDetails($no_sj, null);
         }
 
-        $invoice = $this->orderProductService->getInvoiceDetails($no_sj, $no_moving);
         $payment = Payment::where("payment_id", $payment_id)->first();
-
-        switch($result["status_mode"]){
-            case 1:
-                $state = "in";
-                break;
-            case 2:
-                $state = "out";
-                break;
-            case 3:
-                $state = "out_tax";
-                break;
-        }
 
         $title = "AMEND PAYMENT " . $state;
         return view("amends.amend_payment", ["title" => $title, "state" => $state, "result" => $result, "invoice" => $invoice, "payment" => $payment, "products" => $products]);

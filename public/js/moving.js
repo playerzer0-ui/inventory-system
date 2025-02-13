@@ -1,11 +1,11 @@
-let pageState = document.getElementById("pageState").value;
+// let pageState = document.getElementById("pageState").value;
 
-window.onload = function() {
-    getMovingNO();
-    if (pageState === "amend_moving") {
-        updateCOGSAndNominals();
-    }
-};
+// window.onload = function() {
+//     getMovingNO();
+//     if (pageState === "amend_moving") {
+//         updateCOGSAndNominals();
+//     }
+// };
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     const form = document.getElementById('myForm');
@@ -22,24 +22,24 @@ window.onload = function() {
 // document.getElementById('moving_date').addEventListener('change', updateAllHPP);
 
 
-if (!pageState.includes("amend")){
-    document.addEventListener("DOMContentLoaded", function() {
-        let invoice_dateEl = document.getElementById("moving_date");
+// if (!pageState.includes("amend")){
+//     document.addEventListener("DOMContentLoaded", function() {
+//         let invoice_dateEl = document.getElementById("moving_date");
     
-        // Get today's date
-        let today = new Date();
+//         // Get today's date
+//         let today = new Date();
     
-        // Format the date to YYYY-MM-DD
-        let year = today.getFullYear();
-        let month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1 and pad with zero if needed
-        let day = String(today.getDate()).padStart(2, '0'); // Pad day with zero if needed
+//         // Format the date to YYYY-MM-DD
+//         let year = today.getFullYear();
+//         let month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1 and pad with zero if needed
+//         let day = String(today.getDate()).padStart(2, '0'); // Pad day with zero if needed
     
-        let formattedDate = `${year}-${month}-${day}`;
+//         let formattedDate = `${year}-${month}-${day}`;
     
-        // Set the value of the date input to today's date
-        invoice_dateEl.value = formattedDate;
-    });
-}
+//         // Set the value of the date input to today's date
+//         invoice_dateEl.value = formattedDate;
+//     });
+// }
 
 function addRow(tableId) {
     var table = document.getElementById(tableId);

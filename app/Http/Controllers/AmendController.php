@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Moving;
 use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Payment;
@@ -105,6 +106,9 @@ class AmendController extends Controller
                         ->whereIn('productCode', $productsToDelete)
                         ->delete();
                 }
+            }
+            else{
+                Order_Product::where("nomor_surat_jalan", $no_sj)->delete();
             }
     
             DB::commit();
@@ -257,15 +261,98 @@ class AmendController extends Controller
             DB::commit();
             session()->flash('msg', 'updated successfully');
             return redirect()->route("dashboard");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             session()->flash('msg', 'ERROR: ' . $e->getMessage());
             return redirect()->route("dashboard");
         }
     } 
 
-    public function amend_moving_data()
+    public function amend_moving_data(Request $req)
     {
-        
+        $storageCodeSender = $req->storageCodeSender;
+        $storageCodeReceiver = $req->storageCodeReceiver;
+        $no_moving = $req->no_moving;
+        $old_moving = $req->old_moving;
+        $moving_date = $req->moving_date;
+
+        $productCodes = $req->input('kd');
+        $qtys = $req->input('qty');
+        $uoms = $req->input('uom');
+        $price_per_uom = $req->input("price_per_uom");
+        $notes = $req->input('note');
+
+        try {
+            DB::beginTransaction();
+
+            // Update moving number in related records
+            $this->orderProductService->update_Moving($old_moving, $no_moving);
+
+            // Update the moving record
+            Moving::where("no_moving", $no_moving)->update([
+                "storageCodeSender" => $storageCodeSender,
+                "storageCodeReceiver" => $storageCodeReceiver,
+                "no_moving" => $no_moving,
+                "moving_date" => $moving_date,
+            ]);
+
+            // Process products
+            if ($productCodes) {
+                // Get existing product codes for this moving
+                $existingProducts = Order_Product::where('moving_no_moving', $no_moving)
+                    ->pluck('productCode')
+                    ->toArray();
+
+                // Update existing products
+                foreach ($productCodes as $i => $productCode) {
+                    $qty = $qtys[$i];
+                    $uom = $uoms[$i];
+                    $note = $notes[$i] ?? null;
+
+                    Order_Product::where('moving_no_moving', $no_moving)
+                        ->where('productCode', $productCode)
+                        ->update([
+                            'qty' => $qty,
+                            'UOM' => $uom,
+                            'note' => $note,
+                        ]);
+                }
+
+                // Insert new products that don’t exist
+                $newProducts = array_diff($productCodes, $existingProducts);
+                foreach ($newProducts as $i => $productCode) {
+                    Order_Product::create([
+                        'nomor_surat_jalan' => '-',
+                        'repack_no_repack' => '-',
+                        'moving_no_moving' => $no_moving,
+                        'productCode' => $productCode,
+                        'qty' => $qtys[$i],
+                        'UOM' => $uoms[$i],
+                        'price_per_UOM' => $price_per_uom[$i] ?? 0,
+                        'note' => $notes[$i] ?? null,
+                        'product_status' => 'moving',
+                    ]);
+                }
+
+                // Delete products that are no longer in the request
+                $productsToDelete = array_diff($existingProducts, $productCodes);
+                if (!empty($productsToDelete)) {
+                    Order_Product::where('moving_no_moving', $no_moving)
+                        ->whereIn('productCode', $productsToDelete)
+                        ->delete();
+                }
+            } else {
+                // If no products are provided, delete all products for this moving
+                Order_Product::where('moving_no_moving', $no_moving)->delete();
+            }
+
+            DB::commit();
+            session()->flash('msg', 'Updated successfully');
+            return redirect()->route("dashboard");
+        } catch (Exception $e) {
+            DB::rollBack();
+            session()->flash('msg', 'ERROR: ' . $e->getMessage());
+            return redirect()->route("dashboard");
+        }
     }
 }

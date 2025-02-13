@@ -11,7 +11,7 @@
                 @if ($state == 'moving')
                     <td>Storage Sender</td>
                     <td>:</td>
-                    <td><input type="text" name="storageCodeSender" id="storageCodeSender" placeholder="Automatic from the system" value="{{$invoice['storageCodeSender']}}" readonly></td>
+                    <td><input type="text" name="storageCodeSender" id="storageCodeSender" placeholder="Automatic from the system" value="{{$result['storageCodeSender']}}" readonly></td>
                     <td>Storage Receiver</td>
                     <td>:</td>
                     <td><input type="text" name="storageCodeReceiver" id="storageCodeReceiver" placeholder="Automatic from the system" value="{{$result['storageCodeReceiver']}}" readonly></td>

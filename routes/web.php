@@ -68,7 +68,7 @@ Route::get("/amend_repack", [RepackController::class, "amend_repack"])->name("am
 Route::get("/moving", [MovingController::class, "moving"])->name("moving");
 Route::post("/create_moving", [MovingController::class, "create_moving"])->name("create_moving");
 Route::get("/getMovingDetails", [MovingController::class, "getMovingDetails"])->name("getMovingDetails");
-Route::get("/amend_moving", [RepackController::class, "amend_moving"])->name("amend_moving");
+Route::get("/amend_moving", [MovingController::class, "amend_moving"])->name("amend_moving");
 
 //services
 Route::get("/generate_LPB_SJK_INV", [ServiceController::class, "generate_LPB_SJK_INV"])->name("generate_LPB_SJK_INV");
