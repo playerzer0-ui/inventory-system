@@ -3,6 +3,7 @@
 use App\Http\Controllers\AmendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MovingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RepackController;
@@ -84,6 +85,12 @@ Route::post("/amend_invoice_data", [AmendController::class, "amend_invoice_data"
 Route::post("/amend_payment_data", [AmendController::class, "amend_payment_data"])->name("amend_payment_data");
 Route::post("/amend_repack_data", [AmendController::class, "amend_repack_data"])->name("amend_repack_data");
 Route::post("/amend_moving_data", [AmendController::class, "amend_moving_data"])->name("amend_moving_data");
+
+//master
+Route::get("/master_create", [MasterController::class, "create"])->name("master_create");
+Route::get("/master_read", [MasterController::class, "read"])->name("master_read");
+Route::get("/master_update", [MasterController::class, "update"])->name("master_update");
+Route::get("/master_delete", [MasterController::class, "delete"])->name("master_delete");
 
 //testing
 Route::get("/test1", [ReportController::class, "getreportStock"])->name("test1");
