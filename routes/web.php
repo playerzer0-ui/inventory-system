@@ -92,6 +92,7 @@ Route::get("/master_read", [MasterController::class, "read"])->name("master_read
 Route::get("/master_update", [MasterController::class, "update"])->name("master_update");
 Route::post("/master_update_data", [MasterController::class, "update_data"])->name("master_update_data");
 Route::get("/master_delete", [MasterController::class, "delete"])->name("master_delete");
+Route::post("/master_delete_data", [MasterController::class, "delete_data"])->name("master_delete_data");
 
 //testing
 Route::get("/test1", [ReportController::class, "getreportStock"])->name("test1");

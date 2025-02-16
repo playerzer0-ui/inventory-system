@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MasterController extends Controller
 {
@@ -65,7 +66,7 @@ class MasterController extends Controller
                 User::create([
                     "userID" => Str::uuid()->toString(),
                     "email" => $input_data[0],
-                    "password" => $input_data[1],
+                    "password" => Hash::make($input_data[1]),
                     "userType" => $input_data[2]
                 ]);
                 break;
@@ -102,12 +103,12 @@ class MasterController extends Controller
     public function update_data(Request $req)
     {
         $data = $req->data;
-        $code = $req->code;
+        $oldCode = $req->oldCode;
         $input_data = $req->input("input_data");
 
         switch($data){
             case "vendor":
-                Vendor::where("vendorCode", $code)->update([
+                Vendor::where("vendorCode", $oldCode)->update([
                     "vendorCode" => $input_data[0],
                     "vendorName" => $input_data[1],
                     "vendorAddress" => $input_data[2],
@@ -115,7 +116,7 @@ class MasterController extends Controller
                 ]);
                 break;
             case "customer":
-                Customer::where("customerCode", $code)->update([
+                Customer::where("customerCode", $oldCode)->update([
                     "customerCode" => $input_data[0],
                     "customerName" => $input_data[1],
                     "customerAddress" => $input_data[2],
@@ -123,13 +124,13 @@ class MasterController extends Controller
                 ]);
                 break;
             case "product":
-                Product::where("productCode", $code)->update([
+                Product::where("productCode", $oldCode)->update([
                     "productCode" => $input_data[0],
                     "productName" => $input_data[1]
                 ]);
                 break;
             case "storage":
-                Storage::where("storageCode", $code)->update([
+                Storage::where("storageCode", $oldCode)->update([
                     "storageCode" => $input_data[0],
                     "storageName" => $input_data[1],
                     "storageAddress" => $input_data[2],
@@ -137,9 +138,9 @@ class MasterController extends Controller
                 ]);
                 break;  
             case "user":
-                User::where("userID", $code)->get()->update([
+                User::where("userID", $oldCode)->update([
                     "email" => $input_data[0],
-                    "password" => $input_data[1],
+                    "password" => Hash::make($input_data[1]),
                     "userType" => $input_data[2]
                 ]);
                 break;

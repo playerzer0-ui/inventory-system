@@ -2,7 +2,7 @@
 
 <main>
     <h1>create {{$data}}</h1>
-    <form action="{{route('master_update_data', ["data" => $data])}}" method="post">
+    <form action="{{route('master_create_data', ["data" => $data])}}" method="post">
         @csrf
         @foreach($keyNames as $key)
             <label>{{$key}}: </label>
