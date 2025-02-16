@@ -33,7 +33,6 @@ Route::post("/login", [HomeController::class, "login"])->name("login");
 Route::get("/logout", [HomeController::class, "logout"])->name("logout");
 Route::get("/amends", [HomeController::class, "amends"])->name("amends");
 Route::get("/amend_update", [HomeController::class, "amend_update"])->name("amend_update");
-Route::get("/master_delete", [HomeController::class, "master_delete"])->name("master_delete");
 
 //reports
 Route::get("/dashboard", [ReportController::class, "dashboard"])->name("dashboard");
@@ -88,8 +87,10 @@ Route::post("/amend_moving_data", [AmendController::class, "amend_moving_data"])
 
 //master
 Route::get("/master_create", [MasterController::class, "create"])->name("master_create");
+Route::post("/master_create_data", [MasterController::class, "create_data"])->name("master_create_data");
 Route::get("/master_read", [MasterController::class, "read"])->name("master_read");
 Route::get("/master_update", [MasterController::class, "update"])->name("master_update");
+Route::post("/master_update_data", [MasterController::class, "update_data"])->name("master_update_data");
 Route::get("/master_delete", [MasterController::class, "delete"])->name("master_delete");
 
 //testing

@@ -33,10 +33,10 @@
                     @else
                         @if($key["nomor_surat_jalan"] != "-")
                             <a href="{{route('amend_update', ['state' => $state, 'code' => $key["nomor_surat_jalan"]])}}"><button class="btn btn-info">EDIT</button></a>
-                            <a href="{{route('master_delete', ['state' => $state, 'code' => $key["nomor_surat_jalan"]])}}"><button class="btn btn-danger">DELETE</button></a>
+                            <a href="{{route('master_delete', ['data' => $state, 'code' => $key["nomor_surat_jalan"]])}}"><button class="btn btn-danger">DELETE</button></a>
                         @else
                             <a href="{{route('amend_update', ['state' => $state, 'code' => $key["no_moving"]])}}"><button class="btn btn-info">EDIT</button></a>
-                            <a href="{{route('master_delete', ['state' => $state, 'code' => $key["no_moving"]])}}"><button class="btn btn-danger">DELETE</button></a>
+                            <a href="{{route('master_delete', ['data' => $state, 'code' => $key["no_moving"]])}}"><button class="btn btn-danger">DELETE</button></a>
                         @endif
                     @endif
                 </div>
