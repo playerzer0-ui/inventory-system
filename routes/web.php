@@ -33,6 +33,7 @@ Route::post("/login", [HomeController::class, "login"])->name("login");
 Route::get("/logout", [HomeController::class, "logout"])->name("logout");
 Route::get("/amends", [HomeController::class, "amends"])->name("amends");
 Route::get("/amend_update", [HomeController::class, "amend_update"])->name("amend_update");
+Route::get("/amend_delete", [HomeController::class, "amend_delete"])->name("amend_delete");
 
 //reports
 Route::get("/dashboard", [ReportController::class, "dashboard"])->name("dashboard");
@@ -84,6 +85,7 @@ Route::post("/amend_invoice_data", [AmendController::class, "amend_invoice_data"
 Route::post("/amend_payment_data", [AmendController::class, "amend_payment_data"])->name("amend_payment_data");
 Route::post("/amend_repack_data", [AmendController::class, "amend_repack_data"])->name("amend_repack_data");
 Route::post("/amend_moving_data", [AmendController::class, "amend_moving_data"])->name("amend_moving_data");
+Route::post("/amend_delete_data", [AmendController::class, "amend_delete_data"])->name("amend_delete_data");
 
 //master
 Route::get("/master_create", [MasterController::class, "create"])->name("master_create");

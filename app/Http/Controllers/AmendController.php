@@ -355,4 +355,53 @@ class AmendController extends Controller
             return redirect()->route("dashboard");
         }
     }
+
+    public function amend_delete_data(Request $req)
+    {
+        $data = $req->data;
+        $code = $req->code;
+
+        try {
+            DB::beginTransaction();
+
+            switch ($data) {
+                case "slip":
+                    DB::delete("DELETE FROM order_products WHERE nomor_surat_jalan = ?", [$code]);
+                    DB::delete("DELETE FROM payments WHERE nomor_surat_jalan = ?", [$code]);
+                    DB::delete("DELETE FROM invoices WHERE nomor_surat_jalan = ?", [$code]);
+                    DB::delete("DELETE FROM orders WHERE nomor_surat_jalan = ?", [$code]);
+                    break;
+                case "invoice":
+                    if (strpos($code, "SJP")) {
+                        DB::update("UPDATE order_products SET price_per_UOM = 0 WHERE moving_no_moving = ?", [$code]);
+                        DB::delete("DELETE FROM payments WHERE no_moving = ?", [$code]);
+                        DB::delete("DELETE FROM invoices WHERE no_moving = ?", [$code]);
+                    } else {
+                        DB::update("UPDATE order_products SET price_per_UOM = 0 WHERE nomor_surat_jalan = ?", [$code]);
+                        DB::delete("DELETE FROM payments WHERE nomor_surat_jalan = ?", [$code]);
+                        DB::delete("DELETE FROM invoices WHERE nomor_surat_jalan = ?", [$code]);
+                    }
+                    break;
+                case "payment":
+                    DB::delete("DELETE FROM payments WHERE payment_id = ?", [$code]);
+                    break;
+                case "repack":
+                    DB::delete("DELETE FROM order_products WHERE repack_no_repack = ?", [$code]);
+                    DB::delete("DELETE FROM repacks WHERE no_repack = ?", [$code]);
+                    break;
+                case "moving":
+                    DB::delete("DELETE FROM order_products WHERE moving_no_moving = ?", [$code]);
+                    DB::delete("DELETE FROM movings WHERE no_moving = ?", [$code]);
+                    break;
+            }
+
+            DB::commit();
+            session()->flash('msg', 'Record deleted successfully');
+            return redirect()->route("dashboard");
+        } catch (Exception $e) {
+            DB::rollBack();
+            session()->flash('msg', 'ERROR: ' . $e->getMessage());
+            return redirect()->route("dashboard");
+        }
+    }
 }

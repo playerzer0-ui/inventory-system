@@ -92,9 +92,18 @@ class HomeController extends Controller
         }
     }
 
-    public function master_delete(Request $req)
+    public function amend_delete(Request $req)
     {
+        $title = "delete";
+        $state = $req->state;
+        $no_sj = $req->code;
+        $payment_id = $req->payment_id;
 
+        if($state == "payment"){
+            return view("master.delete", ["title" => $title, "data" => $state, "code" => $payment_id]);
+        }
+        //dd($state);
+        return view("master.delete", ["title" => $title, "data" => $state, "code" => $no_sj]);
     }
 
     public function logout(Request $req)
