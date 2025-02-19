@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Order_Product;
+use App\Models\Product;
 use App\Models\Storage;
 use App\Service\StorageReport;
 use DateTime;
@@ -19,6 +20,12 @@ class ReportController extends Controller
     public function __construct(StorageReport $storageReport)
     {
         $this->storageReport = $storageReport;
+    }
+
+    public function forecast()
+    {
+        $products = Product::all();
+        return view("reports.forecast", ["title" => "forecast", "products" => $products]);
     }
 
     public function dashboard()

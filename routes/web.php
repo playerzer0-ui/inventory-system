@@ -36,6 +36,7 @@ Route::get("/amend_update", [HomeController::class, "amend_update"])->name("amen
 Route::get("/amend_delete", [HomeController::class, "amend_delete"])->name("amend_delete");
 
 //reports
+Route::get("/forecast", [ReportController::class, "forecast"])->name("forecast");
 Route::get("/dashboard", [ReportController::class, "dashboard"])->name("dashboard");
 Route::get("/debt", [ReportController::class, "debt"])->name("debt");
 Route::get("/getDebtReport", [ReportController::class, "getDebtReport"])->name("getDebtReport");

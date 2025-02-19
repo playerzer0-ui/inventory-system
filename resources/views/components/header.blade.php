@@ -33,14 +33,17 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route("forecast") }}"><button class="btn btn-info">forecast</button></a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route("dashboard") }}"><button class="btn btn-info">storage</button></a>
                     </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route("debt") }}"><button class="btn btn-info">debt report</button></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route("receivables") }}"><button class="btn btn-info">receiveables report</button></a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route("debt") }}"><button class="btn btn-info">debt report</button></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route("receivables") }}"><button class="btn btn-info">receiveables report</button></a>
+                    </li>
                     <li class="nav-item dropdown btn btn-outline-primary">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             in

@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(NeutralValues::class);
         //$this->call(InitialData::class);
         $this->call(TestSeed::class);
+        $this->call(FakerData2025Seeder::class);
     }
 }
