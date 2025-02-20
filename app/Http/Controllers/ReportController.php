@@ -216,4 +216,23 @@ class ReportController extends Controller
             return 0;
         }
     }
+
+    public function getProductData(Request $req)
+    {
+        $productCode = $req->productCode;
+        $results = Order_Product::select(
+            'order_products.productCode',
+            'orders.orderDate',
+            DB::raw('SUM(order_products.qty) as total_qty'),
+            'order_products.product_status'
+        )
+        ->join('orders', 'orders.nomor_surat_jalan', '=', 'order_products.nomor_surat_jalan')
+        ->where('order_products.product_status', 'out')
+        ->where('order_products.productCode', $productCode)
+        ->groupBy('orders.orderDate', 'order_products.product_status', 'order_products.productCode')
+        ->orderBy('orders.orderDate')
+        ->get();
+    
+        return $results;
+    }
 }

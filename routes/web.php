@@ -43,6 +43,7 @@ Route::get("/getDebtReport", [ReportController::class, "getDebtReport"])->name("
 Route::get("/receivables", [ReportController::class, "receivables"])->name("receivables");
 Route::get("/getReceivablesReport", [ReportController::class, "getReceivablesReport"])->name("getReceivablesReport");
 Route::get("/getReportStock", [ReportController::class, "getReportStock"])->name("getReportStock");
+Route::get("/getProductData", [ReportController::class, "getProductData"])->name("getProductData");
 
 //slips
 Route::get("/slip", [SlipController::class, "slip"])->name("slip");
