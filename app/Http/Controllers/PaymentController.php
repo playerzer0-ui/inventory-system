@@ -91,12 +91,6 @@ class PaymentController extends Controller
     
         return $remaining;
     }
-    
-
-    public function remove_payment(Request $req)
-    {
-        
-    }
 
     public function amend_payment(Request $req)
     {

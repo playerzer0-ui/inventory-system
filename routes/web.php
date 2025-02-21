@@ -40,6 +40,8 @@ Route::get("/show_customer_login", [CustomerController::class, "show_customer_lo
 Route::post("/customer_login", [CustomerController::class, "customer_login"])->name("customer_login");
 Route::get("/customer_dashboard", [CustomerController::class, "customer_dashboard"])->name("customer_dashboard");
 Route::get("/purchase_order", [CustomerController::class, "purchase_order"])->name("purchase_order");
+Route::post("/create_purchase", [CustomerController::class, "create_purchase"])->name("create_purchase");
+
 
 //reports
 Route::get("/forecast", [ReportController::class, "forecast"])->name("forecast");

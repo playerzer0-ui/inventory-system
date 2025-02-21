@@ -62,11 +62,6 @@ class InvoiceController extends Controller
         return redirect()->route("payment", ["state" => $pageState]);
     }
 
-    public function remove_invoice(Request $req)
-    {
-        
-    }
-
     public function amend_invoice(Request $req)
     {
         $state = $req->state;

@@ -15,5 +15,5 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script src="{{asset('js/forecast.js')}}"></script>
+<script src="{{asset('js/forecast.js')}}" async defer></script>
 <x-footer />

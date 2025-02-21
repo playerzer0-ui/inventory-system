@@ -65,6 +65,7 @@ class SlipController extends Controller
                     "nomor_surat_jalan" => $no_sj, 
                     "repack_no_repack" => "-",
                     "moving_no_moving" => "-",
+                    "PO_no_PO" => "-",
                     "productCode" => $productCodes[$i], 
                     "qty" => $qtys[$i], 
                     "UOM" => $uoms[$i], 
@@ -79,12 +80,7 @@ class SlipController extends Controller
 
         return redirect()->route("invoice", ["state" => $pageState]);
     }
-
-    public function remove_slip(Request $req)
-    {
-        
-    }
-
+    
     public function amend_slip(Request $req)
     {
         $no_sj = $req->no_sj;

@@ -51,6 +51,7 @@ class RepackController extends Controller
                 "nomor_surat_jalan" => "-", 
                 "repack_no_repack" => $no_repack,
                 "moving_no_moving" => "-",
+                "PO_no_PO" => "-",
                 "productCode" => $kd_start[$i], 
                 "qty" => $qty_start[$i], 
                 "UOM" => $uom_start[$i], 
@@ -64,6 +65,7 @@ class RepackController extends Controller
                 "nomor_surat_jalan" => "-", 
                 "repack_no_repack" => $no_repack,
                 "moving_no_moving" => "-",
+                "PO_no_PO" => "-",
                 "productCode" => $kd_end[$i], 
                 "qty" => $qty_end[$i], 
                 "UOM" => $uom_end[$i], 
@@ -76,11 +78,6 @@ class RepackController extends Controller
         session()->flash('msg', 'repack created: ' . $no_repack);
 
         return redirect()->route("dashboard");
-    }
-
-    public function remove_repack(Request $req)
-    {
-        
     }
 
     public function amend_repack(Request $req)

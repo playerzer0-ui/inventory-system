@@ -48,6 +48,7 @@ class MovingController extends Controller
                     "nomor_surat_jalan" => "-", 
                     "repack_no_repack" => "-",
                     "moving_no_moving" => $no_moving,
+                    "PO_no_PO" => "-",
                     "productCode" => $productCodes[$i], 
                     "qty" => $qtys[$i], 
                     "UOM" => $uoms[$i], 
@@ -68,11 +69,6 @@ class MovingController extends Controller
         $no_moving = $req->no_moving;
         $moving = Moving::where("no_moving", $no_moving)->first();
         return $moving;
-    }
-
-    public function remove_moving(Request $req)
-    {
-        
     }
 
     public function amend_moving(Request $req)
