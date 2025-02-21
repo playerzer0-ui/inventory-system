@@ -93,7 +93,7 @@ class TestSeed extends Seeder
             [
                 'customerCode' => 'TOM',
                 'customerName' => 'tomi',
-                'customerEmail' => 'jerikuland@gmail.com',
+                'customerEmail' => 'fatherland@gmail.com',
                 'customerPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'customerAddress' => 'jln seen',
                 'customerNPWP' => '123.112.111.111-111',
@@ -101,7 +101,7 @@ class TestSeed extends Seeder
             [
                 'customerCode' => 'ZEN',
                 'customerName' => 'zeno',
-                'customerEmail' => 'jerikuland@gmail.com',
+                'customerEmail' => 'pythontest190@gmail.com',
                 'customerPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'customerAddress' => 'jln asdf',
                 'customerNPWP' => '123.001.111.111-111',

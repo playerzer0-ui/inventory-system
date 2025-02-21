@@ -2,9 +2,9 @@
 
 <main class="main-container">
     <div class="form-container bg-white">
-    <form action="{{ route("login") }}" method="post">
+    <form action="{{ route("customer_login") }}" method="post">
         @csrf
-        <h1>LOGIN</h1>
+        <h1>CUSTOMER LOGIN</h1>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">email</label>
             <input type="email" name="email" class="form-control">
@@ -15,7 +15,7 @@
         </div>
         <button type="submit" class="btn btn-primary">login</button>
     </form>
-    <a href="{{ route('show_customer_login') }}"><button type="submit" class="btn btn-secondary">I am a customer</button></a>
+    <a href="{{ route('home') }}"><button type="submit" class="btn btn-secondary">I am a supplier</button></a>
     </div>
 </main>
 

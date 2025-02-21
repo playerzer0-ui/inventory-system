@@ -29,12 +29,13 @@ return new class extends Migration
         );
 
         Schema::create('customers', function (Blueprint $table) {
-            $table->string("customerCode", 10)->primary();
+            $table->string("customerCode", 10);
             $table->string("customerName", 100);
             $table->string("customerEmail", 255);
             $table->string("customerPassword", 255);
             $table->string("customerAddress", 100);
             $table->string("customerNPWP", 100);
+            $table->primary(['customerCode', 'customerEmail']);
             }
         );
 

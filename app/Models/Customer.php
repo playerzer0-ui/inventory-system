@@ -22,7 +22,7 @@ class Customer extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'customerCode';
+    protected $primaryKey = ['customerCode', 'customerEmail'];
 
     /**
      * Indicates if the IDs are auto-incrementing.

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AmendController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MasterController;
@@ -34,6 +35,10 @@ Route::get("/logout", [HomeController::class, "logout"])->name("logout");
 Route::get("/amends", [HomeController::class, "amends"])->name("amends");
 Route::get("/amend_update", [HomeController::class, "amend_update"])->name("amend_update");
 Route::get("/amend_delete", [HomeController::class, "amend_delete"])->name("amend_delete");
+
+Route::get("/show_customer_login", [CustomerController::class, "show_customer_login"])->name("show_customer_login");
+Route::post("/customer_login", [CustomerController::class, "customer_login"])->name("customer_login");
+Route::get("/customer_dashboard", [CustomerController::class, "customer_dashboard"])->name("customer_dashboard");
 
 //reports
 Route::get("/forecast", [ReportController::class, "forecast"])->name("forecast");

@@ -19,8 +19,10 @@
                 @if (session("userType"))
                     @if (session("userType") == 1)
                         <a class="disabled yellow-text" aria-disabled="true">ADMIN</a>
+                    @elseif(session("userType") == 2)
+                        <a class="disabled" aria-disabled="true">customer</a>
                     @else
-                        <a class="disabled" aria-disabled="true">normal</a>
+                        <a class="disabled" aria-disabled="true">supplier</a>
                     @endif                    
                 @endif
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
