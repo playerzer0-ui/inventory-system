@@ -35,6 +35,12 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route("customer_dashboard") }}"><button class="btn btn-secondary">customer dashboard</button></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route("purchase_order") }}"><button class="btn btn-secondary">puchase order</button></a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route("forecast") }}"><button class="btn btn-info">forecast</button></a>
                     </li>
                     <li class="nav-item">

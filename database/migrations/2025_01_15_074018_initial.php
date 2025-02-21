@@ -22,7 +22,7 @@ return new class extends Migration
         );
 
         Schema::create('products', function (Blueprint $table) {
-            $table->string("productCode", 50)->primary();
+            $table->string("productCode", 10)->primary();
             $table->string("productName", 100);
             $table->double("productPrice");
             }
@@ -57,11 +57,11 @@ return new class extends Migration
 
         Schema::create('orders', function (Blueprint $table) {
             $table->string("nomor_surat_jalan", 100)->primary();
-            $table->string("storageCode", 5);
+            $table->string("storageCode", 10);
             $table->string("no_LPB", 100)->nullable();
             $table->string("no_truk", 100);
-            $table->string("vendorCode", 5);
-            $table->string("customerCode", 5);
+            $table->string("vendorCode", 10);
+            $table->string("customerCode", 10);
             $table->date("orderDate")->nullable();
             $table->string("purchase_order", 30);
             $table->integer("status_mode");
@@ -73,8 +73,8 @@ return new class extends Migration
         Schema::create('movings', function(Blueprint $table) {
             $table->string("no_moving", 100)->primary();
             $table->date("moving_date")->nullable();
-            $table->string("storageCodeSender", 5);
-            $table->string("storageCodeReceiver", 5);
+            $table->string("storageCodeSender", 10);
+            $table->string("storageCodeReceiver", 10);
             $table->foreign('storageCodeSender')->references('storageCode')->on('storages')->onDelete('cascade');
             $table->foreign('storageCodeReceiver')->references('storageCode')->on('storages')->onDelete('cascade');
         });
@@ -103,7 +103,7 @@ return new class extends Migration
         Schema::create('repacks', function(Blueprint $table){
             $table->string("no_repack", 100)->primary();
             $table->date("repack_date")->nullable();
-            $table->string("storageCode", 5);
+            $table->string("storageCode", 10);
             $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
         });        
 
@@ -118,11 +118,18 @@ return new class extends Migration
             $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
         });
 
+        Schema::create('purchase_orders', function(Blueprint $table){
+            $table->string("no_PO", 100)->primary();
+            $table->date("purchaseDate")->nullable();
+            $table->string("customerCode", 10);
+        });
+
         Schema::create('order_products', function(Blueprint $table){
             $table->string("nomor_surat_jalan", 100);
             $table->string("repack_no_repack", 100);
             $table->string("moving_no_moving", 100);
-            $table->string("productCode", 50);
+            $table->string("PO_no_PO", 100);
+            $table->string("productCode", 10);
             $table->integer("qty");
             $table->string("UOM", 20);
             $table->double("price_per_UOM");
@@ -132,6 +139,7 @@ return new class extends Migration
             $table->foreign('repack_no_repack')->references('no_repack')->on('repacks')->onDelete('cascade');
             $table->foreign('moving_no_moving')->references('no_moving')->on('movings')->onDelete('cascade');
             $table->foreign('productCode')->references('productCode')->on('products')->onDelete('cascade');
+            $table->foreign('PO_no_PO')->references('no_PO')->on('purchase_orders')->onDelete('cascade');
         });
     }
 

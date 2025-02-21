@@ -39,6 +39,7 @@ Route::get("/amend_delete", [HomeController::class, "amend_delete"])->name("amen
 Route::get("/show_customer_login", [CustomerController::class, "show_customer_login"])->name("show_customer_login");
 Route::post("/customer_login", [CustomerController::class, "customer_login"])->name("customer_login");
 Route::get("/customer_dashboard", [CustomerController::class, "customer_dashboard"])->name("customer_dashboard");
+Route::get("/purchase_order", [CustomerController::class, "purchase_order"])->name("purchase_order");
 
 //reports
 Route::get("/forecast", [ReportController::class, "forecast"])->name("forecast");

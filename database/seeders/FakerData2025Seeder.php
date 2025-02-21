@@ -55,6 +55,7 @@ class FakerData2025Seeder extends Seeder
                 'nomor_surat_jalan' => $orderNumber,
                 'repack_no_repack' => "-",
                 'moving_no_moving' => "-",
+                'PO_no_PO' => "-",
                 'productCode' => $productCode,
                 'qty' => $faker->numberBetween(1, 100),
                 'UOM' => $faker->randomElement(['kg', 'pcs', 'box']),

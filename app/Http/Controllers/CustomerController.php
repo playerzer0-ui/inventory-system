@@ -21,7 +21,8 @@ class CustomerController extends Controller
         $user = Customer::where("customerEmail", $email)->first();
 
         if($user && Hash::check($password, $user->customerPassword)){
-            $req->session()->put("email", $user->email);
+            $req->session()->put("email", $user->customerCode);
+            $req->session()->put("email", $user->customerEmail);
             $req->session()->put("userType", 2);
             return redirect()->route("customer_dashboard", ["title" => "customer login"]);
         }
@@ -38,6 +39,6 @@ class CustomerController extends Controller
 
     public function purchase_order()
     {
-        
+        return view("customers.purchase_order", ["title" => "purchase order"]);
     }
 }
