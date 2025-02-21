@@ -46,6 +46,8 @@ class Customer extends Model
     protected $fillable = [
         'customerCode',
         'customerName',
+        'customerEmail',
+        'customerPassword',
         'customerAddress',
         'customerNPWP',
     ];

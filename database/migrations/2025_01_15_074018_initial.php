@@ -24,12 +24,15 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->string("productCode", 50)->primary();
             $table->string("productName", 100);
+            $table->double("productPrice");
             }
         );
 
         Schema::create('customers', function (Blueprint $table) {
             $table->string("customerCode", 10)->primary();
             $table->string("customerName", 100);
+            $table->string("customerEmail", 255);
+            $table->string("customerPassword", 255);
             $table->string("customerAddress", 100);
             $table->string("customerNPWP", 100);
             }

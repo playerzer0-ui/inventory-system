@@ -25,6 +25,7 @@ class FakerData2025Seeder extends Seeder
         Product::insert([
             'productCode' => $productCode,
             'productName' => $faker->word,
+            'productPrice' => 200.12
         ]);
 
         // Seed Orders Table (Only tracking "out" orders)

@@ -85,18 +85,24 @@ class TestSeed extends Seeder
             [
                 'customerCode' => 'DED',
                 'customerName' => 'dedi',
+                'customerEmail' => 'jerikuland@gmail.com',
+                'customerPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'customerAddress' => 'jln',
                 'customerNPWP' => '123.111.111.111-111',
             ],
             [
                 'customerCode' => 'TOM',
                 'customerName' => 'tomi',
+                'customerEmail' => 'jerikuland@gmail.com',
+                'customerPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'customerAddress' => 'jln seen',
                 'customerNPWP' => '123.112.111.111-111',
             ],
             [
                 'customerCode' => 'ZEN',
                 'customerName' => 'zeno',
+                'customerEmail' => 'jerikuland@gmail.com',
+                'customerPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'customerAddress' => 'jln asdf',
                 'customerNPWP' => '123.001.111.111-111',
             ],
@@ -106,30 +112,37 @@ class TestSeed extends Seeder
             [
                 'productCode' => 'MK-100-BB',
                 'productName' => 'Mild Kapsul 100 Blueberry',
+                'productPrice' => 112.12
             ],
             [
                 'productCode' => 'MM-100-A',
                 'productName' => 'Mild Mono 100 Acetatow',
+                'productPrice' => 126.12
             ],
             [
                 'productCode' => 'MM-120-A',
                 'productName' => 'Mild Mono 120 Acetatow',
+                'productPrice' => 121.12
             ],
             [
                 'productCode' => 'RF-100-A',
                 'productName' => 'Reguler Falvour 100 Acetatow',
+                'productPrice' => 121.12
             ],
             [
                 'productCode' => 'RF-120-A',
                 'productName' => 'Reguler Falvour 120 Acetatow',
+                'productPrice' => 98.12
             ],
             [
                 'productCode' => 'RR-100-A',
                 'productName' => 'Reguler Mono 100 Acetatow',
+                'productPrice' => 112.12
             ],
             [
                 'productCode' => 'RR-120-A',
                 'productName' => 'Reguler Mono 120 Acetatow',
+                'productPrice' => 122.12
             ],
         ]);
 

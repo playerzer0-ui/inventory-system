@@ -8,7 +8,7 @@ ORDER BY o.orderDate;
 
 task:
 [X] delete slips, invoice, payment, moving, repack
-make moving average
+[X] make moving average
 customer interface
 pdf excel
 cloud
