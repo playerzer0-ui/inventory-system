@@ -12,9 +12,7 @@
                 <td>:</td>
                 <td colspan="2">
                     @if ($state == "out")
-                    <select name="storageCode" id="storageCode" readonly>
-                        <option value="NON" selected>none</option>
-                    </select>
+                    <input type="text" name="storageCode" id="storageCode" value="NON" readonly>
                     @else
                         @if ($state == "in")
                         <select name="storageCode" id="storageCode" onchange="getLPB()" readonly>
@@ -100,7 +98,7 @@
                 @endif
                 <td>Purchase Order</td>
                 <td>:</td>
-                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="fill in" required></td>
+                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required onchange="getPurchaseOrderProducts(this.value)"></td>
             </tr>
             <tr>
                 @if ($state == "in")
@@ -133,7 +131,7 @@
                 <!-- Rows will be added here dynamically -->
             </tbody>
         </table>
-        <button type="button" class="btn btn-success" onclick="addRow()">Add Row</button>
+        <button type="button" class="btn btn-success" id="addRow" onclick="addRow()">Add Row</button>
         <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
 </main>

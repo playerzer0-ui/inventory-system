@@ -106,4 +106,24 @@ class CustomerController extends Controller
         $products = $this->orderProductService->getOrderProducts($no_PO, "purchase");
         return view("amends.amend_purchase", ["title" => "amend purchase", "result" => $result, "products" => $products]);
     }
+
+    public function getPurchaseOrderProducts(Request $request)
+    {
+        $no_PO = $request->input('no_PO'); // Get the purchase order number from the request
+
+        // Fetch the purchase order
+        $purchaseOrder = Purchase_Order::where('no_PO', $no_PO)->first();
+
+        if (!$purchaseOrder) {
+            return response()->json(['error' => 'Purchase order not found'], 404);
+        }
+
+        // Fetch the associated products
+        $products = $this->orderProductService->getOrderProducts($no_PO, "purchase");
+
+        return response()->json([
+            'purchaseOrder' => $purchaseOrder,
+            'products' => $products,
+        ]);
+    }
 }

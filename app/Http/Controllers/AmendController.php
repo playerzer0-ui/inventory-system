@@ -486,6 +486,8 @@ class AmendController extends Controller
                 case "purchase":
                     DB::delete("DELETE FROM order_products WHERE PO_no_PO = ?", [$code]);
                     DB::delete("DELETE FROM purchase_orders WHERE no_PO = ?", [$code]);
+                    session()->flash('msg', 'Record deleted successfully');
+                    return redirect()->route("customer_dashboard");
             }
 
             DB::commit();

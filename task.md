@@ -6,6 +6,8 @@ WHERE op.product_status = "out" AND op.productCode = 'P3766'
 GROUP BY (o.orderDate) 
 ORDER BY o.orderDate;
 
+PO-f35791ce
+
 task:
 [X] delete slips, invoice, payment, moving, repack
 [X] make moving average

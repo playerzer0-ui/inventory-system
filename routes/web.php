@@ -36,6 +36,7 @@ Route::get("/amends", [HomeController::class, "amends"])->name("amends");
 Route::get("/amend_update", [HomeController::class, "amend_update"])->name("amend_update");
 Route::get("/amend_delete", [HomeController::class, "amend_delete"])->name("amend_delete");
 
+//customer
 Route::get("/show_customer_login", [CustomerController::class, "show_customer_login"])->name("show_customer_login");
 Route::post("/customer_login", [CustomerController::class, "customer_login"])->name("customer_login");
 Route::get("/customer_dashboard", [CustomerController::class, "customer_dashboard"])->name("customer_dashboard");
@@ -43,6 +44,7 @@ Route::get("/purchase_order", [CustomerController::class, "purchase_order"])->na
 Route::post("/create_purchase", [CustomerController::class, "create_purchase"])->name("create_purchase");
 Route::get("/list_purchase", [CustomerController::class, "list_purchase"])->name("list_purchase");
 Route::get("/amend_purchase", [CustomerController::class, "amend_purchase"])->name("amend_purchase");
+Route::get('/getPurchaseOrderProducts', [CustomerController::class, 'getPurchaseOrderProducts']);
 
 //reports
 Route::get("/forecast", [ReportController::class, "forecast"])->name("forecast");

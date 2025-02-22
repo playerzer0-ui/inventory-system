@@ -74,6 +74,51 @@ function addRow() {
     `;
 }
 
+function getPurchaseOrderProducts(no_PO) {
+    $.ajax({
+        type: "GET",
+        url: "/getPurchaseOrderProducts",
+        data: {
+            no_PO: no_PO, // Pass the purchase order number
+        },
+        success: function (response) {
+            const table = document.getElementById('productTable').getElementsByTagName('tbody')[0];
+            table.innerHTML = ""; // Clear the table
+
+            if (response.error) {
+                alert(response.error); // Show error message if purchase order not found
+                return;
+            }
+
+            document.getElementById("order_date").value = response.purchaseOrder.purchaseDate;
+
+            // Populate the table with products
+            let rowCount = 1;
+            response.products.forEach(item => {
+                const newRow = table.insertRow();
+                newRow.innerHTML = `
+                    <td>${rowCount}</td>
+                    <td><input type="text" name="kd[]" value="${item.productCode}" class="productCode" readonly></td>
+                    <td>
+                        <input style="width: 300px;" value="${item.productName}" type="text" name="material_display[]" readonly>
+                        <input type="hidden" value="${item.productName}" name="material[]">
+                    </td>
+                    <td><input type="number" value="${item.qty}" name="qty[]" readonly></td>
+                    <td><input type="text" value="${item.uom}" name="uom[]" readonly></td>
+                    <td><input type="text" name="note[]" value="${item.note}"></td>
+                `;
+                rowCount++;
+            });
+
+            document.getElementById('addRow').remove();
+            getSJ();
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error: " + status + error); // Log any AJAX errors
+        }
+    });
+}
+
 function getProductDetails(input) {
     const productCode = input.value;
     const row = input.parentElement.parentElement;
