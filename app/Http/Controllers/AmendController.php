@@ -7,6 +7,7 @@ use App\Models\Moving;
 use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Payment;
+use App\Models\Purchase_Order;
 use App\Models\Repack;
 use App\Service\OrderProductService;
 use Exception;
@@ -362,7 +363,87 @@ class AmendController extends Controller
 
     public function amend_purchase_data(Request $req)
     {
-        
+        $no_PO = $req->no_PO; // The purchase order number to update
+        $purchaseDate = $req->purchaseDate;
+        $customerCode = $req->customerCode;
+
+        $productCodes = $req->input('kd');
+        $qtys = $req->input('qty');
+        $uoms = $req->input('uom');
+        $price_per_uom = $req->input('price_per_uom');
+        $notes = $req->input('note');
+
+        try {
+            DB::beginTransaction();
+
+            // Update the purchase order
+            $purchaseOrder = Purchase_Order::where('no_PO', $no_PO)->firstOrFail();
+            $purchaseOrder->update([
+                'purchaseDate' => $purchaseDate,
+                'customerCode' => $customerCode,
+            ]);
+
+            // Process products
+            if ($productCodes) {
+                // Get existing product codes for this purchase order
+                $existingProducts = Order_Product::where('PO_no_PO', $no_PO)
+                    ->pluck('productCode')
+                    ->toArray();
+
+                // Update existing products
+                foreach ($productCodes as $i => $productCode) {
+                    $qty = $qtys[$i];
+                    $uom = $uoms[$i];
+                    $price = $price_per_uom[$i];
+                    $note = $notes[$i] ?? null;
+
+                    Order_Product::where('PO_no_PO', $no_PO)
+                        ->where('productCode', $productCode)
+                        ->update([
+                            'qty' => $qty,
+                            'UOM' => $uom,
+                            'price_per_UOM' => $price,
+                            'note' => $note,
+                        ]);
+                }
+
+                // Insert new products that don’t exist
+                $newProducts = array_diff($productCodes, $existingProducts);
+                foreach ($newProducts as $i => $productCode) {
+                    Order_Product::create([
+                        'nomor_surat_jalan' => '-',
+                        'repack_no_repack' => '-',
+                        'moving_no_moving' => '-',
+                        'PO_no_PO' => $no_PO,
+                        'productCode' => $productCode,
+                        'qty' => $qtys[$i],
+                        'UOM' => $uoms[$i],
+                        'price_per_UOM' => $price_per_uom[$i],
+                        'note' => $notes[$i] ?? null,
+                        'product_status' => 'purchase_order',
+                    ]);
+                }
+
+                // Delete products that are no longer in the request
+                $productsToDelete = array_diff($existingProducts, $productCodes);
+                if (!empty($productsToDelete)) {
+                    Order_Product::where('PO_no_PO', $no_PO)
+                        ->whereIn('productCode', $productsToDelete)
+                        ->delete();
+                }
+            } else {
+                // If no products are provided, delete all products for this purchase order
+                Order_Product::where('PO_no_PO', $no_PO)->delete();
+            }
+
+            DB::commit();
+            session()->flash('msg', 'Purchase order updated successfully');
+            return redirect()->route("customer_dashboard");
+        } catch (Exception $e) {
+            DB::rollBack();
+            session()->flash('msg', 'ERROR: ' . $e->getMessage());
+            return redirect()->route("customer_dashboard");
+        }
     }
 
     public function amend_delete_data(Request $req)
@@ -402,6 +483,9 @@ class AmendController extends Controller
                     DB::delete("DELETE FROM order_products WHERE moving_no_moving = ?", [$code]);
                     DB::delete("DELETE FROM movings WHERE no_moving = ?", [$code]);
                     break;
+                case "purchase":
+                    DB::delete("DELETE FROM order_products WHERE PO_no_PO = ?", [$code]);
+                    DB::delete("DELETE FROM purchase_orders WHERE no_PO = ?", [$code]);
             }
 
             DB::commit();

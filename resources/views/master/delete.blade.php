@@ -2,7 +2,7 @@
 
 <main>
     <h1>CONFIRM DELETE <span style="color: red;">{{$code}}</span>?</h1>
-    @if($data == "slip" || $data == "invoice" || $data == "payment" || $data == "repack" || $data == "moving")
+    @if($data == "slip" || $data == "invoice" || $data == "payment" || $data == "repack" || $data == "moving" || $data == "purchase")
     <form action="{{route('amend_delete_data', ["data" => $data, "code" => $code])}}" method="post">
     @else
     <form action="{{route('master_delete_data', ["data" => $data, "code" => $code])}}" method="post">

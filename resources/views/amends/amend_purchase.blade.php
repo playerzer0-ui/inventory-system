@@ -5,6 +5,7 @@
     <form action="{{route('amend_purchase_data')}}" method="POST">
         @csrf
         <label>purchase date</label>
+        <input type="hidden" name="no_PO" value="{{$result['no_PO']}}">
         <input type="date" name="purchaseDate" value="{{$result['purchaseDate']}}">
         <input type="hidden" name="customerCode" value="{{$result['customerCode']}}">
         <br>
