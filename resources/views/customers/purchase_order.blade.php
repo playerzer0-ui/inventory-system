@@ -2,7 +2,7 @@
 
 <main>
     <h1>purchase order</h1>
-    <form action="" method="POST">
+    <form action="{{route('create_purchase')}}" method="POST">
         @csrf
         <label>purchase date</label>
         <input type="date" name="purchaseDate">

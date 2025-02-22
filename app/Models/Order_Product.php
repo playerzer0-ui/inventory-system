@@ -47,6 +47,7 @@ class Order_Product extends Model
         'nomor_surat_jalan',
         'repack_no_repack',
         'moving_no_moving',
+        "PO_no_PO",
         'productCode',
         'qty',
         'UOM',

@@ -89,6 +89,9 @@ class HomeController extends Controller
             case "moving":
                 return redirect()->route("amend_moving", ["no_moving" => $no_sj]);
                 break;
+            case "purchase":
+                return redirect()->route("amend_purchase", ["no_PO" => $no_sj]);
+                break;
         }
     }
 

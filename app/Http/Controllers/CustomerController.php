@@ -8,9 +8,18 @@ use App\Models\Product;
 use App\Models\Purchase_Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Service\OrderProductService as ServiceOrderProductService;
 
 class CustomerController extends Controller
 {
+    protected $orderProductService;
+
+    public function __construct(ServiceOrderProductService $orderProductService)
+    {
+        $this->orderProductService = $orderProductService;
+    }
+
     public function show_customer_login()
     {
         return view("customers.customer_login", ["title" => "customer login"]);
@@ -47,17 +56,18 @@ class CustomerController extends Controller
     public function create_purchase(Request $req)
     {
         $customerCode = $req->customerCode;
-        $purchase_date = $req->purchase_date;
-        $no_PO = "";
+        $purchaseDate = $req->purchaseDate;
+        $no_PO = "PO-" . substr(Str::uuid()->toString(), 0, 8);
 
         $productCodes = $req->input('kd');
         $qtys = $req->input('qty');
         $uoms = $req->input('uom');
+        $price_per_uom = $req->input("price_per_uom");
         $notes = $req->input('note');
 
         Purchase_Order::create([
-            "no_PO" => "sa",
-            "purchaseDate" => $purchase_date,
+            "no_PO" => $no_PO,
+            "purchaseDate" => $purchaseDate,
             "customerCode" => $customerCode
         ]);
         
@@ -67,20 +77,33 @@ class CustomerController extends Controller
                     "nomor_surat_jalan" => "-", 
                     "repack_no_repack" => "-",
                     "moving_no_moving" => "-",
-                    "PO_no_PO" => "-",
+                    "PO_no_PO" => $no_PO,
                     "productCode" => $productCodes[$i], 
                     "qty" => $qtys[$i], 
                     "UOM" => $uoms[$i], 
-                    "price_per_UOM" => 0, 
+                    "price_per_UOM" => $price_per_uom[$i], 
                     "note" => $notes[$i],
                     "product_status" => "purchase_order"
                 ]);
             }
         }
 
-        session()->flash('msg', 'no_SJ: ' . $no_PO);
+        session()->flash('msg', 'no_PO: ' . $no_PO);
 
-        return redirect()->route("customer_dashbaord");
+        return redirect()->route("customer_dashboard");
+    }
 
+    public function list_purchase()
+    {
+        $purchases = Purchase_Order::where("customerCode", session('customerCode'))->get();
+        return view("customers.list_purchase", ["title" => "list purchases", "purchases" => $purchases]);
+    }
+
+    public function amend_purchase(Request $req)
+    {
+        $no_PO = $req->no_PO;
+        $result = Purchase_Order::where("no_PO", $no_PO)->first();
+        $products = $this->orderProductService->getOrderProducts($no_PO, "purchase");
+        return view("amends.amend_purchase", ["title" => "amend purchase", "result" => $result, "products" => $products]);
     }
 }

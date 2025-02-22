@@ -41,7 +41,8 @@ Route::post("/customer_login", [CustomerController::class, "customer_login"])->n
 Route::get("/customer_dashboard", [CustomerController::class, "customer_dashboard"])->name("customer_dashboard");
 Route::get("/purchase_order", [CustomerController::class, "purchase_order"])->name("purchase_order");
 Route::post("/create_purchase", [CustomerController::class, "create_purchase"])->name("create_purchase");
-
+Route::get("/list_purchase", [CustomerController::class, "list_purchase"])->name("list_purchase");
+Route::get("/amend_purchase", [CustomerController::class, "amend_purchase"])->name("amend_purchase");
 
 //reports
 Route::get("/forecast", [ReportController::class, "forecast"])->name("forecast");
@@ -96,6 +97,7 @@ Route::post("/amend_payment_data", [AmendController::class, "amend_payment_data"
 Route::post("/amend_repack_data", [AmendController::class, "amend_repack_data"])->name("amend_repack_data");
 Route::post("/amend_moving_data", [AmendController::class, "amend_moving_data"])->name("amend_moving_data");
 Route::post("/amend_delete_data", [AmendController::class, "amend_delete_data"])->name("amend_delete_data");
+Route::post("/amend_purchase_data", [AmendController::class, "amend_purchase_data"])->name("amend_purchase_data");
 
 //master
 Route::get("/master_create", [MasterController::class, "create"])->name("master_create");

@@ -360,6 +360,11 @@ class AmendController extends Controller
         }
     }
 
+    public function amend_purchase_data(Request $req)
+    {
+        
+    }
+
     public function amend_delete_data(Request $req)
     {
         $data = $req->data;
