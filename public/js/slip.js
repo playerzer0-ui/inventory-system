@@ -106,11 +106,29 @@ function getPurchaseOrderProducts(no_PO) {
                     <td><input type="number" value="${item.qty}" name="qty[]" readonly></td>
                     <td><input type="text" value="${item.uom}" name="uom[]" readonly></td>
                     <td><input type="text" name="note[]" value="${item.note}"></td>
+                    <td>
+                        <select name="purchase_status[]" id="purchase_status">
+                            <option value="approve" selected>approve</option>
+                            <option value="pending">pending</option>
+                        </select>
+                    </td>
                 `;
                 rowCount++;
             });
 
             document.getElementById('addRow').remove();
+            const selectElement = document.getElementById('customerCode');
+
+            const selectedValue = selectElement.value;
+
+            const inputElement = document.createElement('input');
+            inputElement.type = 'text';
+            inputElement.id = 'customerCode';
+            inputElement.name = 'customerCode';
+            inputElement.value = response.purchaseOrder.customerCode || 'NON';
+            inputElement.readOnly = true;
+
+            selectElement.replaceWith(inputElement);
             getSJ();
         },
         error: function (xhr, status, error) {

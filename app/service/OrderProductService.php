@@ -58,6 +58,7 @@ class OrderProductService
             return DB::table('order_products as op')
                 ->join('products as p', 'op.productCode', '=', 'p.productCode')
                 ->where('op.PO_no_PO', $no_sj)
+                ->where('op.product_status', 'purchase_order')
                 ->select(
                     'op.PO_no_PO',
                     'op.productCode',

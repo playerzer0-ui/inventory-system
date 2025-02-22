@@ -45,6 +45,7 @@ class SlipController extends Controller
         $qtys = $req->input('qty');
         $uoms = $req->input('uom');
         $notes = $req->input('note');
+        $purchase_status = $req->input("purchase_status");
         $pageState = $req->pageState;
 
         Order::create([
@@ -60,19 +61,43 @@ class SlipController extends Controller
         ]);
 
         if($productCodes){
-            for($i = 0; $i < count($productCodes); $i++){
-                Order_Product::create([
-                    "nomor_surat_jalan" => $no_sj, 
-                    "repack_no_repack" => "-",
-                    "moving_no_moving" => "-",
-                    "PO_no_PO" => "-",
-                    "productCode" => $productCodes[$i], 
-                    "qty" => $qtys[$i], 
-                    "UOM" => $uoms[$i], 
-                    "price_per_UOM" => 0, 
-                    "note" => $notes[$i],
-                    "product_status" => $pageState
-                ]);
+            if($pageState == "in" || $pageState == "out_tax"){
+                for($i = 0; $i < count($productCodes); $i++){
+                    Order_Product::create([
+                        "nomor_surat_jalan" => $no_sj, 
+                        "repack_no_repack" => "-",
+                        "moving_no_moving" => "-",
+                        "PO_no_PO" => "-",
+                        "productCode" => $productCodes[$i], 
+                        "qty" => $qtys[$i], 
+                        "UOM" => $uoms[$i], 
+                        "price_per_UOM" => 0, 
+                        "note" => $notes[$i],
+                        "product_status" => $pageState
+                    ]);
+                }
+            }
+            else{
+                for($i = 0; $i < count($productCodes); $i++){
+                    if($purchase_status[$i] == "approve"){
+                        Order_Product::create([
+                            "nomor_surat_jalan" => $no_sj, 
+                            "repack_no_repack" => "-",
+                            "moving_no_moving" => "-",
+                            "PO_no_PO" => "-",
+                            "productCode" => $productCodes[$i], 
+                            "qty" => $qtys[$i], 
+                            "UOM" => $uoms[$i], 
+                            "price_per_UOM" => 0, 
+                            "note" => $notes[$i],
+                            "product_status" => $pageState
+                        ]);
+
+                        Order_Product::where("PO_no_PO", $purchase_order)->where("productCode", $productCodes[$i])->update([
+                            "product_status" => "purchase_approved"
+                        ]);
+                    }
+                }
             }
         }
 

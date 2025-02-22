@@ -51,7 +51,7 @@
                     <input type="hidden" id="status_mode" name="status_mode" value="2">
                     <select name="customerCode" id="customerCode">
                         @foreach ($customers as $key)
-                            @if ($key["vendorCode"] == "NON")
+                            @if ($key["customerCode"] == "NON")
                             <option value="{{$key["customerCode"]}}" selected>{{$key["customerName"]}}</option>
                             @else
                             <option value="{{$key["customerCode"]}}">{{$key["customerName"]}}</option>
