@@ -3,10 +3,12 @@
 namespace App\Service;
 
 use App\Service\StorageReport;
-use Exception;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class ExcelService
 {
@@ -339,186 +341,181 @@ class ExcelService
 
     }
 
-    function excel_debt_receivable($storageCode, $month, $year, $mode) {
+    function excel_debt($storageCode, $month, $year) {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        if($mode == "debt"){
-            $data = $this->storageReport->getDebtReport($storageCode, $month, $year);
-        }
-        else{
-            $data = $this->storageReport->getreceivablesReport($month, $year);
-        }
+        $data = $this->storageReport->getDebtReport($storageCode, $month, $year);
 
-        $totalQty = 0;
-        $totalNominal = 0;
-        $totalNominalAfterTax = 0;
-        $totalNilaiBayar = 0;
-        $totalSisaHutang = 0;
+        // Set Headers
+        $headers = [
+            'No.', 'Invoice Date', 'Vendor Name', 'No Invoice', 'Material', 'QTY', 'Price/UOM',
+            'Nominal', 'Total Nominal', 'Tax (%)', 'Nominal After Tax', 'Payment Date', 'Amount Paid', 'Remaining'
+        ];
+        
+        $sheet->fromArray($headers, NULL, 'A1');
 
-        $spreadsheet->getProperties()->setCreator("user")
-        ->setLastModifiedBy("user")
-        ->setTitle("report_" . $storageCode . "_" . $month . "_" . $year)
-        ->setSubject("report_" . $storageCode . "_" . $month . "_" . $year)
-        ->setDescription("monthly report generated")
-        ->setKeywords("Office Excel open XML php")
-        ->setCategory("report file");
+        $row = 2;
+        $no = 1;
 
-        for($i = 0; $i < 14; $i++){
-            $sheet->getColumnDimension($this->letters[$i])->setAutoSize(true);
-        }
+        foreach ($data as $item) {
+            $firstRow = $row;
+            $totalNominal = 0;
+            $tax = $item['tax'] ?? 0;
 
-        $sheet->mergeCells("A1:G1");
-        $sheet->getStyle("A1")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle("A1")->getFont()->setBold(5)->setSize(36);
-        if($mode == "debt"){
-            $sheet->setCellValue("A1", "REPORT DEBT: " . $storageCode);
-        }
-        else{
-            $sheet->setCellValue("A1", "REPORT RECEIVABLE: " . $storageCode);
-        }
-        $sheet->setCellValue("A2", "MONTH: " . $month);
-        $sheet->setCellValue("A3", "YEAR: " . $year);
+            foreach ($item['products'] as $product) {
+                $nominal = $product['qty'] * $product['price_per_UOM'];
+                $totalNominal += $nominal;
+                
+                $sheet->fromArray([
+                    $no,
+                    $item['invoice_date'],
+                    $item['vendorName'],
+                    $item['no_invoice'],
+                    $product['productCode'],
+                    $product['qty'],
+                    $product['price_per_UOM'],
+                    $nominal,
+                    '', // Total Nominal (To be set later)
+                    $tax,
+                    '', // Nominal After Tax (To be set later)
+                    '', // Payment Date (To be set later)
+                    '', // Amount Paid (To be set later)
+                    ''  // Remaining (To be set later)
+                ], NULL, "A$row");
 
-        $sheet->setCellValue("A5", "No.");
-        $sheet->setCellValue("B5", "Invoice Date");
-        if($mode == "debt"){
-            $sheet->setCellValue("C5", "Vendor Name");
-        }
-        else{
-            $sheet->setCellValue("C5", "Customer Name");
-        }
-        $sheet->setCellValue("D5", "No Invoice");
-        $sheet->setCellValue("E5", "Material");
-        $sheet->setCellValue("F5", "QTY");
-        $sheet->setCellValue("G5", "Price/UOM");
-        $sheet->setCellValue("H5", "Nominal");
-        $sheet->setCellValue("I5", "Total Nominal");
-        $sheet->setCellValue("J5", "Tax (%)");
-        $sheet->setCellValue("K5", "Nominal After Tax");
-        $sheet->setCellValue("L5", "Payment Date");
-        $sheet->setCellValue("M5", "Amount Paid");
-        $sheet->setCellValue("N5", "Remaining");
-
-        $rowNumber = 6; // Starting row for data
-        $index = 1;
-        $previousNo = ''; // Track previous 'No.' value
-
-        foreach($data as $invoice){
-            $productCount = count($invoice['products']);
-            $paymentCount = count($invoice['payments']);
-            $rowCount = max($productCount, $paymentCount);
-            $firstRow = true;
-
-            $invoiceTotalNominal = array_reduce($invoice['products'], function($sum, $product) {
-                return $sum + (float)$product['nominal'];
-            }, 0);
-            $tax = (float)$invoice['tax'];
-            $nominalAfterTax = $invoiceTotalNominal + ($invoiceTotalNominal * ($tax / 100));
-            $invoiceTotalPayment = array_reduce($invoice['payments'], function($sum, $payment) {
-                return $sum + (float)$payment['payment_amount'];
-            }, 0);
-            $invoiceRemaining = $nominalAfterTax - $invoiceTotalPayment;
-
-            // Update totals
-            $totalQty += array_sum(array_column($invoice['products'], 'qty'));
-            $totalNominal += $invoiceTotalNominal;
-            $totalNominalAfterTax += $nominalAfterTax;
-            $totalNilaiBayar += $invoiceTotalPayment;
-            $totalSisaHutang += $invoiceRemaining;
-
-            for ($i = 0; $i < $rowCount; $i++) {
-                // Handle 'No.' merging
-                if ($previousNo === $index) {
-                    $sheet->mergeCells("A" . ($rowNumber - 1) . ":A{$rowNumber}");
-                } else {
-                    $sheet->setCellValue("A{$rowNumber}", $index);
-                    $previousNo = $index;
-                }
-
-                if ($firstRow) {
-                    $sheet->mergeCells("B{$rowNumber}:B" . ($rowNumber + $rowCount - 1));
-                    $sheet->mergeCells("C{$rowNumber}:C" . ($rowNumber + $rowCount - 1));
-                    $sheet->mergeCells("D{$rowNumber}:D" . ($rowNumber + $rowCount - 1));
-                    $sheet->mergeCells("I{$rowNumber}:I" . ($rowNumber + $rowCount - 1));
-                    $sheet->getStyle("I{$rowNumber}:I" . ($rowNumber + $rowCount - 1))->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-                    $sheet->mergeCells("J{$rowNumber}:J" . ($rowNumber + $rowCount - 1));
-                    $sheet->mergeCells("K{$rowNumber}:K" . ($rowNumber + $rowCount - 1));
-                    $sheet->getStyle("K{$rowNumber}:K" . ($rowNumber + $rowCount - 1))->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-                    $sheet->mergeCells("N{$rowNumber}:N" . ($rowNumber + $rowCount - 1));
-                    $sheet->getStyle("N{$rowNumber}:N" . ($rowNumber + $rowCount - 1))->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-                    $sheet->setCellValue("B{$rowNumber}", $invoice['invoice_date']);
-                    if($mode == "debt"){
-                        $sheet->setCellValue("C{$rowNumber}", $invoice['vendorName']);
-                    }
-                    else{
-                        $sheet->setCellValue("C{$rowNumber}", $invoice['customerName']);
-                    }
-                    $sheet->setCellValue("D{$rowNumber}", $invoice['no_invoice']);
-                    $sheet->setCellValue("I{$rowNumber}", $invoiceTotalNominal);
-                    $sheet->setCellValue("J{$rowNumber}", $tax);
-                    $sheet->setCellValue("K{$rowNumber}", $nominalAfterTax);
-                    $sheet->setCellValue("N{$rowNumber}", $invoiceRemaining);
-                }
-
-                if ($i < $productCount) {
-                    $product = $invoice['products'][$i];
-                    $sheet->setCellValue("E{$rowNumber}", $product['productCode']);
-                    $sheet->setCellValue("F{$rowNumber}", $product['qty']);
-                    $sheet->setCellValue("G{$rowNumber}", $product['price_per_UOM']);
-                    $sheet->setCellValue("H{$rowNumber}", $product['nominal']);
-                }
-
-                if ($i < $paymentCount) {
-                    $payment = $invoice['payments'][$i];
-                    $sheet->setCellValue("L{$rowNumber}", $payment['payment_date']);
-                    $sheet->setCellValue("M{$rowNumber}", $payment['payment_amount']);
-                    $sheet->getStyle("M{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-                }
-
-                $rowNumber++;
-                $firstRow = false;
+                $row++;
             }
 
-            $index++;
+            // Merge 'No.' column for multiple rows of the same invoice
+            if ($firstRow !== $row - 1) {
+                $sheet->mergeCells("A{$firstRow}:A" . ($row - 1));
+            }
+
+            // Calculate totals
+            $nominalAfterTax = $totalNominal + ($totalNominal * $tax / 100);
+            $totalPayments = array_sum(array_column($item['payments'], 'payment_amount'));
+            $remaining = $nominalAfterTax - $totalPayments;
+
+            // Fill in Total Nominal, Nominal After Tax, Payment Date, Amount Paid, Remaining
+            $sheet->setCellValue("I$firstRow", $totalNominal);
+            $sheet->setCellValue("K$firstRow", $nominalAfterTax);
+            $sheet->setCellValue("L$firstRow", implode(', ', array_column($item['payments'], 'payment_date')));
+            $sheet->setCellValue("M$firstRow", $totalPayments);
+            $sheet->setCellValue("N$firstRow", $remaining);
+
+            $no++;
         }
 
-        // Adding Totals Row
-        $sheet->setCellValue("E{$rowNumber}", "Total");
-        $sheet->setCellValue("F{$rowNumber}", $totalQty);
-        $sheet->setCellValue("H{$rowNumber}", $totalNominal);
-        $sheet->setCellValue("K{$rowNumber}", $totalNominalAfterTax);
-        $sheet->setCellValue("M{$rowNumber}", $totalNilaiBayar);
-        $sheet->setCellValue("N{$rowNumber}", $totalSisaHutang);
-
-        // Optionally format the totals row (e.g., bold font)
-        $sheet->getStyle("E{$rowNumber}:N{$rowNumber}")->getFont()->setBold(true);
-
-        $sheet->getStyle("F6:F{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-        $sheet->getStyle("G6:G{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-        $sheet->getStyle("H6:H{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-        $sheet->getStyle("I{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-        $sheet->getStyle("K{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-        $sheet->getStyle("M{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-        $sheet->getStyle("N{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
-
-        if ($mode == "debt") {
-            $filePath = public_path("report_debt_{$storageCode}_{$month}_{$year}.xlsx");
-        } else {
-            $filePath = public_path("report_receivable_{$month}_{$year}.xlsx");
+        // Apply number format for currency
+        $currencyColumns = ['G', 'H', 'I', 'K', 'M', 'N'];
+        foreach ($currencyColumns as $col) {
+            $sheet->getStyle($col . '2:' . $col . $row)
+                ->getNumberFormat()
+                ->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
         }
 
+        // Auto-size columns
+        foreach (range('A', 'N') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // Download the file
+        $fileName = "Debt_Report_{$storageCode}_{$month}_{$year}.xlsx";
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        
+        return response()->streamDownload(function () use ($writer) {
+            $writer->save('php://output');
+        }, $fileName);
+    }
+
+    public function excel_receivable($month, $year){
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set headers
+        $sheet->setCellValue('A1', 'REPORT RECEIVABLES:')->mergeCells('A1:L1');
+        $sheet->setCellValue('A3', 'MONTH:')->setCellValue('B3', str_pad($month, 2, '0', STR_PAD_LEFT));
+        $sheet->setCellValue('A4', 'YEAR:')->setCellValue('B4', $year);
+
+        // Column headers
+        $headers = ['No.', 'Invoice Date', 'Customer Name', 'No Invoice', 'Material', 'QTY', 'Price/UOM', 'Nominal', 'Total Nominal', 'Tax (%)', 'Nominal After Tax', 'Payment Date', 'Payment Amount', 'Remaining'];
+        $sheet->fromArray($headers, null, 'A6');
+
+        // Apply styles to header
+        $headerStyle = [
+            'font' => ['bold' => true],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
+            'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]],
+        ];
+        $sheet->getStyle('A6:N6')->applyFromArray($headerStyle);
+
+        $data = $this->storageReport->getreceivablesReport($month, $year);
+        $row = 7;
+        $no = 1;
+
+        foreach ($data as $entry) {
+            $invoiceDate = $entry['invoice_date'];
+            $customerName = $entry['customerName'];
+            $noInvoice = $entry['no_invoice'];
+            $tax = $entry['tax'];
+
+            $totalNominal = 0;
+            foreach ($entry['products'] as $product) {
+                $sheet->setCellValue("A{$row}", $no);
+                $sheet->setCellValue("B{$row}", $invoiceDate);
+                $sheet->setCellValue("C{$row}", $customerName);
+                $sheet->setCellValue("D{$row}", $noInvoice);
+                $sheet->setCellValue("E{$row}", $product['productCode']);
+                $sheet->setCellValue("F{$row}", $product['qty']);
+                $sheet->setCellValue("G{$row}", $product['price_per_UOM']);
+                $sheet->setCellValue("H{$row}", $product['nominal']);
+                
+                $totalNominal += $product['nominal'];
+                $row++;
+            }
+
+            // Merge No. column for multiple products
+            if (count($entry['products']) > 1) {
+                $sheet->mergeCells("A" . ($row - count($entry['products'])) . ":A" . ($row - 1));
+                $sheet->mergeCells("B" . ($row - count($entry['products'])) . ":B" . ($row - 1));
+                $sheet->mergeCells("C" . ($row - count($entry['products'])) . ":C" . ($row - 1));
+                $sheet->mergeCells("D" . ($row - count($entry['products'])) . ":D" . ($row - 1));
+            }
+
+            // Set total nominal
+            $sheet->setCellValue("I" . ($row - 1), $totalNominal);
+            $sheet->setCellValue("J" . ($row - 1), $tax);
+            $sheet->setCellValue("K" . ($row - 1), $totalNominal); // Since tax is 0 in the example, it's the same
+
+            // Payment information
+            $remaining = $totalNominal;
+            foreach ($entry['payments'] as $payment) {
+                $sheet->setCellValue("L{$row}", $payment['payment_date']);
+                $sheet->setCellValue("M{$row}", $payment['payment_amount']);
+                $remaining -= $payment['payment_amount'];
+                $row++;
+            }
+
+            // Merge Payment Date and Payment Amount for multiple payments
+            if (count($entry['payments']) > 1) {
+                $sheet->mergeCells("K" . ($row - count($entry['payments'])) . ":K" . ($row - 1));
+            }
+
+            $sheet->setCellValue("N" . ($row - 1), $remaining);
+            $no++;
+        }
+
+        // Apply number formatting
+        $sheet->getStyle("F7:N{$row}")->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+
+        // Save the file
+        $fileName = "Receivables_Report_{$month}_{$year}.xlsx";
         $writer = new Xlsx($spreadsheet);
+        $filePath = storage_path("app/public/{$fileName}");
+
         $writer->save($filePath);
 
-        ob_end_clean();
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Expires: 0');
-        readfile($filePath);
-        unlink($filePath);
+        return response()->download($filePath)->deleteFileAfterSend(true);
     }
 }
 
