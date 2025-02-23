@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Service\StorageReport;
+use Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -338,7 +339,7 @@ class ExcelService
 
     }
 
-    function excel_debt_receivable($storageCode, $month, $year, $mode){
+    function excel_debt_receivable($storageCode, $month, $year, $mode) {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         if($mode == "debt"){
@@ -373,7 +374,7 @@ class ExcelService
             $sheet->setCellValue("A1", "REPORT DEBT: " . $storageCode);
         }
         else{
-            $sheet->setCellValue("A1", "REPORT RECEIVABLES: " . $storageCode);
+            $sheet->setCellValue("A1", "REPORT RECEIVABLE: " . $storageCode);
         }
         $sheet->setCellValue("A2", "MONTH: " . $month);
         $sheet->setCellValue("A3", "YEAR: " . $year);
@@ -395,7 +396,7 @@ class ExcelService
         $sheet->setCellValue("J5", "Tax (%)");
         $sheet->setCellValue("K5", "Nominal After Tax");
         $sheet->setCellValue("L5", "Payment Date");
-        $sheet->setCellValue("M5", "Payment Amount");
+        $sheet->setCellValue("M5", "Amount Paid");
         $sheet->setCellValue("N5", "Remaining");
 
         $rowNumber = 6; // Starting row for data
@@ -501,30 +502,23 @@ class ExcelService
         $sheet->getStyle("N{$rowNumber}")->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
 
         if ($mode == "debt") {
-            $filePath = public_path("report_debt_{$month}-{$year}.xlsx");
+            $filePath = public_path("report_debt_{$storageCode}_{$month}_{$year}.xlsx");
         } else {
-            $filePath = public_path("report_receivable_{$month}-{$year}.xlsx");
+            $filePath = public_path("report_receivable_{$month}_{$year}.xlsx");
         }
-        
+
         $writer = new Xlsx($spreadsheet);
         $writer->save($filePath);
-        
-        // Clear output buffer
+
         ob_end_clean();
-        
-        // Set headers
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
         header('Content-Transfer-Encoding: binary');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Expires: 0');
-        
-        // Read file and send to client
         readfile($filePath);
-        
-        // Delete the file after sending it to the client
-        unlink($filePath);        
+        unlink($filePath);
     }
 }
 
