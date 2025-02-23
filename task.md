@@ -11,6 +11,6 @@ PO-f35791ce
 task:
 [X] delete slips, invoice, payment, moving, repack
 [X] make moving average
-customer interface
+[X] customer interface
 pdf excel
 cloud

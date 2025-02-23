@@ -2,10 +2,138 @@
 
 namespace App\Service;
 
+use App\Models\Order;
+use App\Models\Order_Product;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class StorageReport {
+
+    public function getDebtReport($storageCode, $month, $year)
+    {
+        $debtDetails = Order::query()
+            ->select([
+                'orders.nomor_surat_jalan',
+                'invoices.invoice_date',
+                'invoices.no_invoice',
+                'invoices.tax',
+                'vendors.vendorName',
+                DB::raw('COALESCE(payments.payment_date, "-") AS payment_date'),
+                DB::raw('COALESCE(payments.payment_amount, 0) AS payment_amount'),
+            ])
+            ->join('invoices', 'orders.nomor_surat_jalan', '=', 'invoices.nomor_surat_jalan')
+            ->join('vendors', 'orders.vendorCode', '=', 'vendors.vendorCode')
+            ->leftJoin('payments', 'orders.nomor_surat_jalan', '=', 'payments.nomor_surat_jalan')
+            ->whereMonth('invoices.invoice_date', $month)
+            ->whereYear('invoices.invoice_date', $year)
+            ->where('orders.storageCode', $storageCode)
+            ->where('orders.status_mode', 1)
+            ->get();
+
+        $groupData = [];
+        foreach ($debtDetails as $details) {
+            $hutangKey = $details["nomor_surat_jalan"];
+            if (!isset($groupData[$hutangKey])) {
+                $groupData[$hutangKey] = [
+                    "invoice_date" => $details["invoice_date"],
+                    "no_invoice" => $details["no_invoice"],
+                    "tax" => $details["tax"],
+                    "vendorName" => $details["vendorName"],
+                    "payments" => [],
+                    "products" => []
+                ];
+
+                $productsList = Order_Product::where('nomor_surat_jalan', $hutangKey)
+                    ->select([
+                        'productCode',
+                        'qty',
+                        'price_per_UOM',
+                        DB::raw('(qty * price_per_UOM) AS nominal')
+                    ])
+                    ->get();
+
+                foreach ($productsList as $product) {
+                    array_push($groupData[$hutangKey]["products"], [
+                        "productCode" => $product["productCode"],
+                        "qty" => $product["qty"],
+                        "price_per_UOM" => $product["price_per_UOM"],
+                        "nominal" => $product["nominal"]
+                    ]);
+                }
+            }
+
+            array_push($groupData[$hutangKey]["payments"], [
+                "payment_date" => $details["payment_date"],
+                "payment_amount" => $details["payment_amount"]
+            ]);
+        }
+
+        return array_values($groupData);
+    }
+
+    public function getreceivablesReport($month, $year)
+    {
+        $storageCode = "NON";
+
+        $receivablesDetails = Order::query()
+            ->select([
+                'orders.nomor_surat_jalan',
+                'invoices.invoice_date',
+                'invoices.no_invoice',
+                'invoices.tax',
+                'customers.customerName',
+                DB::raw('COALESCE(payments.payment_date, "-") AS payment_date'),
+                DB::raw('COALESCE(payments.payment_amount, 0) AS payment_amount'),
+            ])
+            ->join('invoices', 'orders.nomor_surat_jalan', '=', 'invoices.nomor_surat_jalan')
+            ->join('customers', 'orders.customerCode', '=', 'customers.customerCode')
+            ->leftJoin('payments', 'orders.nomor_surat_jalan', '=', 'payments.nomor_surat_jalan')
+            ->whereMonth('invoices.invoice_date', $month)
+            ->whereYear('invoices.invoice_date', $year)
+            ->where('orders.storageCode', $storageCode)
+            ->where('orders.status_mode', 2)
+            ->get();
+
+        $groupData = [];
+        foreach ($receivablesDetails as $details) {
+            $receivablesKey = $details["nomor_surat_jalan"];
+            if (!isset($groupData[$receivablesKey])) {
+                $groupData[$receivablesKey] = [
+                    "invoice_date" => $details["invoice_date"],
+                    "no_invoice" => $details["no_invoice"],
+                    "tax" => $details["tax"],
+                    "customerName" => $details["customerName"],
+                    "payments" => [],
+                    "products" => []
+                ];
+
+                $productsList = Order_Product::where('nomor_surat_jalan', $receivablesKey)
+                    ->select([
+                        'productCode',
+                        'qty',
+                        'price_per_UOM',
+                        DB::raw('(qty * price_per_UOM) AS nominal')
+                    ])
+                    ->get();
+
+                foreach ($productsList as $product) {
+                    array_push($groupData[$receivablesKey]["products"], [
+                        "productCode" => $product["productCode"],
+                        "qty" => $product["qty"],
+                        "price_per_UOM" => $product["price_per_UOM"],
+                        "nominal" => $product["nominal"]
+                    ]);
+                }
+            }
+
+            array_push($groupData[$receivablesKey]["payments"], [
+                "payment_date" => $details["payment_date"],
+                "payment_amount" => $details["payment_amount"]
+            ]);
+        }
+
+        return array_values($groupData);
+    }
 
     public function getAllProductsMovingSaldo($storageCode, $month, $year, $productCode = null)
     {

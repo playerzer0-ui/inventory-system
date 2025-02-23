@@ -55,6 +55,9 @@ Route::get("/receivables", [ReportController::class, "receivables"])->name("rece
 Route::get("/getReceivablesReport", [ReportController::class, "getReceivablesReport"])->name("getReceivablesReport");
 Route::get("/getReportStock", [ReportController::class, "getReportStock"])->name("getReportStock");
 Route::get("/getProductData", [ReportController::class, "getProductData"])->name("getProductData");
+Route::get("/excel_stock", [ReportController::class, "excel_stock"])->name("excel_stock");
+Route::get("/excel_debt", [ReportController::class, "excel_debt"])->name("excel_debt");
+Route::get("/excel_receivable", [ReportController::class, "excel_receivable"])->name("excel_receivable");
 
 //slips
 Route::get("/slip", [SlipController::class, "slip"])->name("slip");

@@ -187,7 +187,7 @@ function populateReportTable(data) {
 
   }
   // Optionally, you can add a row for totals if needed, based on userType
-  document.getElementById("excel").innerHTML = `<a href="../controller/index.php?action=excel_stock&storageCode=${storageCode}&month=${month}&year=${year}" target="_blank"><button class="btn btn-success">excel</button></a>`;
+  document.getElementById("excel").innerHTML = `<a href="/excel_stock?storageCode=${storageCode}&month=${month}&year=${year}" target="_blank"><button class="btn btn-success">excel</button></a>`;
 
 }
 
