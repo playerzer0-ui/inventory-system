@@ -16,14 +16,14 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route("dashboard") }}">INVENTORY</a>
-                @if (session("userType"))
+                @if (session("userType") !== null)
                     @if (session("userType") == 1)
                         <a class="disabled yellow-text" aria-disabled="true">ADMIN</a>
                     @elseif(session("userType") == 2)
                         <a class="disabled" aria-disabled="true">customer</a>
                     @else
                         <a class="disabled" aria-disabled="true">supplier</a>
-                    @endif                    
+                    @endif
                 @endif
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -125,7 +125,7 @@
                     </li>
             @endif
                     <li class="nav-item">
-                        @if (session("userType"))
+                        @if (session("email"))
                             <a class="nav-link" href="{{ route("logout") }}"><button class="btn btn-primary">LOGOUT</button></a>
                         @else
                             <a class="nav-link" href="{{ route("home") }}"><button class="btn btn-primary">LOGIN</button></a>                 

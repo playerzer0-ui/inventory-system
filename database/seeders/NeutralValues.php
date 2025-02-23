@@ -34,7 +34,7 @@ class NeutralValues extends Seeder
             [
                 'userID' => '3de53767-5ad0-11ef-b5d1-5cbaef99b658',
                 'email' => 'cydacnote@gmail.com',
-                'password' => '$2y$10$5Ymv4R2Qn3Fw/8FKRJxHmu5XAmO2G0mfXTK2naenRcsssZuvPBLVa',
+                'password' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'userType' => 0,
             ],
         ]);
