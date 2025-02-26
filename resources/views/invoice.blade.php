@@ -1,7 +1,7 @@
 <x-header :title="$title" />
 
 <main class="main-container">
-    <form id="myForm" action="{{route('test1')}}" method="post">
+    <form id="myForm" action="{{route('create_invoice')}}" method="post">
         @csrf
         <h1>INVOICE {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>
@@ -137,7 +137,7 @@
                 <td><input type="number" inputmode="numeric" name="amount_paid" id="amount_paid" placeholder="Automatic from the system" disabled></td>
             </tr>
         </table>
-        <button type="submit" class="btn btn-outline-success">Submit</button>
+        <button type="submit" class="btn btn-outline-success" onclick="handleFormSubmit(event)">Submit</button>
     </form>
 </main>
 

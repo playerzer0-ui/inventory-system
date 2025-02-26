@@ -6,6 +6,52 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+function handleFormSubmit(event) {
+    let pageState = document.getElementById("pageState").value;
+    let no_sj;
+    if (!pageState.includes("moving")) {
+        no_sj = document.getElementById("no_sj").value;
+    } else {
+        no_sj = document.getElementById("no_moving").value;
+    }
+    event.preventDefault();
+
+    let form = document.getElementById('myForm');
+
+    // Check if the form is valid
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    let formData = new FormData(form);
+
+    // ✅ Append CSRF token correctly
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+    // ✅ Open new tab for PDF
+    let pdfWindow = window.open('', '_blank');
+
+    fetch('/create_invoice', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        let url = URL.createObjectURL(blob);
+        pdfWindow.location.href = url; // Load the PDF in the new tab
+
+        // ✅ Redirect to the payment page after a short delay
+        setTimeout(() => {
+            window.location.href = `/payment?msg=NO_sj:${no_sj}&state=${pageState}`;
+        }, 2000);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        pdfWindow.close();
+    });
+}
+
 function updateCOGSAndNominals() {
     const rows = document.querySelectorAll("#productTable tbody tr");
     

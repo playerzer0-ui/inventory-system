@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\Moving;
+use App\Service\PDFService;
 use App\Models\Order_Product;
 use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
@@ -11,10 +12,12 @@ use Illuminate\Http\Request;
 class InvoiceController extends Controller
 {
     protected $orderProductService;
+    protected $pdf;
 
-    public function __construct(ServiceOrderProductService $orderProductService)
+    public function __construct(ServiceOrderProductService $orderProductService,PDFService $pdf)
     {
         $this->orderProductService = $orderProductService;
+        $this->pdf = $pdf;
     }
 
     public function invoice(Request $req)
@@ -22,6 +25,14 @@ class InvoiceController extends Controller
         $state = $req->state;
         $title = "INVOICE " . $state;
         return view("invoice", ["title" => $title, "state" => $state]);
+    }
+
+    public function getInvoiceDetails(Request $req)
+    {
+        $no_sj = $req->no_sj;
+        $no_moving = $req->no_moving;
+
+        return $this->orderProductService->getInvoiceDetails($no_sj, $no_moving);
     }
 
     public function create_invoice(Request $req)
@@ -59,7 +70,8 @@ class InvoiceController extends Controller
         
         session()->flash('msg', 'no_SJ: ' . ($no_sj ?? $no_moving));
 
-        return redirect()->route("payment", ["state" => $pageState]);
+        return $this->pdf->createPDF($req);
+        //return redirect()->route("payment", ["state" => $pageState]);
     }
 
     public function amend_invoice(Request $req)
