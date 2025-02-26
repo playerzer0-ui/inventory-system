@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Moving;
 use App\Models\Order_Product;
+use App\Service\PDFService;
 use App\Models\Payment;
 use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
@@ -12,10 +13,12 @@ use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
     protected $orderProductService;
+    protected $pdf;
 
-    public function __construct(ServiceOrderProductService $orderProductService)
+    public function __construct(ServiceOrderProductService $orderProductService, PDFService $pdf)
     {
         $this->orderProductService = $orderProductService;
+        $this->pdf = $pdf;
     }
 
     public function payment(Request $req)
@@ -41,7 +44,8 @@ class PaymentController extends Controller
 
         session()->flash('msg', 'payment created: ' . ($no_sj ?? $no_moving));
 
-        return redirect()->route("dashboard");
+        return $this->pdf->create_paymentPDF($req);
+        //return redirect()->route("dashboard");
     }
 
     function calculateDebt(Request $req) 

@@ -411,6 +411,51 @@ class PDFService
             return $this->create_invoice_moving_pdf($storageCodeSender, $storageCodeReceiver, $no_moving, $moving_date, $invoice_date, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax);
         }
     }
+
+    public function create_paymentPDF(Request $req)
+    {
+        $state = $req->pageState;
+        $storageCode = $req->storageCode;
+        $vendorCode = $req->vendorCode;
+        $customerCode = $req->customerCode;
+        
+        $customerAddress = $req->customerAddress;
+        $npwp = $req->npwp;
+        $no_sj = $req->no_sj;
+        $no_truk = $req->no_truk;
+        $purchase_order = $req->purchase_order;
+        $invoice_date = $req->invoice_date;
+        $no_LPB = $req->no_LPB;
+        $no_invoice = $req->no_invoice;
+
+        $storageCodeSender = $req->storageCodeSender;
+        $storageCodeReceiver = $req->storageCodeReceiver;
+        $no_moving = $req->no_moving;
+        $moving_date = $req->moving_date;
+
+        $productCodes = $req->input('kd');
+        $productNames = $req->input("material");
+        $qtys = $req->input("qty");
+        $uoms = $req->input("uom");
+        $price_per_uom = $req->input("price_per_uom");
+        $payment_amount = $req->payment_amount;
+        $payment_date = $req->payment_date;
+        $tax = $req->tax;
+
+        if($state == "in"){
+            $storageName = Storage::where("storageCode", $storageCode)->first()["storageName"];
+            $vendorName = Vendor::where("vendorCode", $vendorCode)->first()["vendorName"];
+            return $this->create_payment_in_pdf($storageName, $vendorName, $no_sj, $no_truk, $purchase_order, $invoice_date, $no_LPB, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $payment_amount, $payment_date, $tax);
+        }
+        elseif($state == "out" || $state == "out_tax"){
+            $storageName = Storage::where("storageCode", $storageCode)->first()["storageName"];
+            $customerName = Customer::where("customerCode", $customerCode)->first()["customerName"];
+            return $this->create_payment_out_pdf($storageName, $customerName, $no_sj, $customerAddress, $npwp, $invoice_date, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $payment_amount, $payment_date, $tax);
+        }
+        else{
+            return $this->create_payment_moving_pdf($storageCodeSender, $storageCodeReceiver, $no_moving, $moving_date, $invoice_date, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $payment_amount, $payment_date, $tax);
+        }
+    }
 }
 
 ?>
