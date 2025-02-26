@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Product;
 use App\Models\Storage;
+use App\Models\Vendor;
 use App\Service\StorageReport;
 use App\Service\ExcelService;
+use App\Service\PDFService;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,11 +21,13 @@ class ReportController extends Controller
 {
     protected $storageReport;
     protected $excel;
+    protected $pdf;
 
-    public function __construct(StorageReport $storageReport, ExcelService $excel)
+    public function __construct(StorageReport $storageReport, ExcelService $excel, PDFService $pdf)
     {
         $this->storageReport = $storageReport;
         $this->excel = $excel;
+        $this->pdf = $pdf;
     }
 
     public function forecast()
@@ -161,5 +166,51 @@ class ReportController extends Controller
         $year = $req->year;
 
         return $this->excel->excel_receivable($month, $year);
+    }
+
+    public function createPDF(Request $req)
+    {
+        $state = $req->pageState;
+        $storageCode = $req->storageCode;
+        $vendorCode = $req->vendorCode;
+        $customerCode = $req->customerCode;
+        
+        $customerAddress = $req->customerAddress;
+        $npwp = $req->npwp;
+        $no_sj = $req->no_sj;
+        $no_truk = $req->no_truk;
+        $purchase_order = $req->purchase_order;
+        $invoice_date = $req->invoice_date;
+        $no_LPB = $req->no_LPB;
+        $no_invoice = $req->no_invoice;
+
+        $storageCodeSender = $req->storageCodeSender;
+        $storageCodeReceiver = $req->storageCodeReceiver;
+        $no_moving = $req->no_moving;
+        $moving_date = $req->moving_date;
+
+        $productCodes = $req->input('kd');
+        $productNames = $req->input("material");
+        $qtys = $req->input("qty");
+        $uoms = $req->input("uom");
+        $price_per_uom = $req->input("price_per_uom");
+        $no_faktur = $req->no_faktur;
+        $tax = $req->tax;
+
+
+        if($state == "in"){
+            $storageName = Storage::where("storageCode", $storageCode)->first()["storageName"];
+            $vendorName = Vendor::where("vendorCode", $vendorCode)->first()["vendorName"];
+            return $this->pdf->create_invoice_in_pdf($storageName, $vendorName, $no_sj, $no_truk, $purchase_order, $invoice_date, $no_LPB, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax);
+        }
+        elseif($state == "out" || $state == "out_tax"){
+            $storageName = Storage::where("storageCode", $storageCode)->first()["storageName"];
+            $customerName = Customer::where("customerCode", $customerCode)->first()["customerName"];
+            //dd($state, $storageName, $customerName, $no_sj, $customerAddress, $npwp, $invoice_date, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax);
+            return $this->pdf->create_invoice_out_pdf($storageName, $customerName, $no_sj, $customerAddress, $npwp, $invoice_date, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax);
+        }
+        else{
+            return $this->pdf->create_invoice_moving_pdf($storageCodeSender, $storageCodeReceiver, $no_moving, $moving_date, $invoice_date, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax);
+        }
     }
 }

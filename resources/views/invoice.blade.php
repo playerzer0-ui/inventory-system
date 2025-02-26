@@ -1,7 +1,7 @@
 <x-header :title="$title" />
 
 <main class="main-container">
-    <form id="myForm" action="{{route('create_invoice')}}" method="post">
+    <form id="myForm" action="{{route('test1')}}" method="post">
         @csrf
         <h1>INVOICE {{$state}}</h1>
         <input type="hidden" id="pageState" name="pageState" value={{$state}}>

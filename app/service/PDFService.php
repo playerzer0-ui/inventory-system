@@ -177,7 +177,7 @@ class PDFService
         $pdf->Cell(40, 7, $this->formatToIndonesianNumber($pay_amount), 0, 1);
     }
     
-    function create_invoice_in_pdf($storageCode, $storageName, $vendorName, $no_sj, $no_truk, $purchase_order, $invoice_date,  $no_LPB, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax){
+    function create_invoice_in_pdf($storageName, $vendorName, $no_sj, $no_truk, $purchase_order, $invoice_date,  $no_LPB, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax){
         // Create instance of Fpdf
         $total_amount = 0;
         $pdf = new Fpdf('L', 'mm', 'A5');
@@ -201,11 +201,13 @@ class PDFService
         $this->footerInvoice($pdf, $no_faktur, $total_amount, $tax, $taxPPN, $pay_amount);
     
         // Output the PDF
-        header('Content-Type: application/pdf');
-        $pdf->Output('I', 'invoice.pdf');
+        return response($pdf->Output('S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="invoice.pdf"',
+        ]);
     }
     
-    function create_invoice_out_pdf($storageCode, $storageName, $customerName, $no_sj, $customerAddress, $npwp, $invoice_date,  $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax){
+    function create_invoice_out_pdf($storageName, $customerName, $no_sj, $customerAddress, $npwp, $invoice_date,  $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax){
         // Create instance of Fpdf
         $total_amount = 0;
         $pdf = new Fpdf('L', 'mm', 'A5');
@@ -229,8 +231,10 @@ class PDFService
         $this->footerInvoice($pdf, $no_faktur, $total_amount, $tax, $taxPPN, $pay_amount);
     
         // Output the PDF
-        header('Content-Type: application/pdf');
-        $pdf->Output('I', 'invoice.pdf');
+        return response($pdf->Output('S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="invoice.pdf"',
+        ]);
     }
     
     function create_invoice_moving_pdf($storageCodeSender, $storageCodeReceiver, $no_moving, $moving_date, $invoice_date,  $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $no_faktur, $tax){
@@ -258,11 +262,13 @@ class PDFService
         $this->footerInvoice($pdf, $no_faktur, $total_amount, $tax, $taxPPN, $pay_amount);
     
         // Output the PDF
-        header('Content-Type: application/pdf');
-        $pdf->Output('I', 'invoice.pdf');
+        return response($pdf->Output('S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="invoice.pdf"',
+        ]);
     }
     
-    function create_payment_in_pdf($storageCode, $storageName, $vendorName, $no_sj, $no_truk, $purchase_order, $invoice_date, $no_LPB, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $payment_amount, $payment_date, $tax) {
+    function create_payment_in_pdf($storageName, $vendorName, $no_sj, $no_truk, $purchase_order, $invoice_date, $no_LPB, $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $payment_amount, $payment_date, $tax) {
         // Create instance of Fpdf
         $total_amount = 0;
         $pdf = new Fpdf('L', 'mm', 'A5');
@@ -286,8 +292,10 @@ class PDFService
         $this->footerPayment($pdf, $payment_date, $total_amount, $payment_amount, $tax, $taxPPN, $pay_amount);
     
         // Output the PDF
-        header('Content-Type: application/pdf');
-        $pdf->Output('I', 'invoice.pdf');
+        return response($pdf->Output('S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="invoice.pdf"',
+        ]);
     }
     
     function create_payment_moving_pdf($storageCodeSender, $storageCodeReceiver, $no_moving, $moving_date, $invoice_date,  $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $payment_amount, $payment_date, $tax) {
@@ -314,11 +322,13 @@ class PDFService
         $this->footerPayment($pdf, $payment_date, $total_amount, $payment_amount, $tax, $taxPPN, $pay_amount);
     
         // Output the PDF
-        header('Content-Type: application/pdf');
-        $pdf->Output('I', 'invoice.pdf');
+        return response($pdf->Output('S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="invoice.pdf"',
+        ]);
     }
     
-    function create_payment_out_pdf($storageCode, $storageName, $customerName, $no_sj, $customerAddress, $npwp, $invoice_date,  $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $payment_amount, $payment_date, $tax) {
+    function create_payment_out_pdf($storageName, $customerName, $no_sj, $customerAddress, $npwp, $invoice_date,  $no_invoice, $productCodes, $productNames, $qtys, $uoms, $price_per_uom, $payment_amount, $payment_date, $tax) {
         // Create instance of Fpdf
         $total_amount = 0;
         $pdf = new Fpdf('L', 'mm', 'A5');
@@ -343,8 +353,10 @@ class PDFService
         $this->footerPayment($pdf, $payment_date, $total_amount, $payment_amount, $tax, $taxPPN, $pay_amount);
     
         // Output the PDF
-        header('Content-Type: application/pdf');
-        $pdf->Output('I', 'invoice.pdf');
+        return response($pdf->Output('S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="invoice.pdf"',
+        ]);
     }
     
     function formatToIndonesianNumber($number) {
