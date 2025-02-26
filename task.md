@@ -12,5 +12,5 @@ task:
 [X] delete slips, invoice, payment, moving, repack
 [X] make moving average
 [X] customer interface
-pdf excel
+[X] pdf excel
 cloud
