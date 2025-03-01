@@ -29,7 +29,17 @@ class InvoiceController extends Controller
             $orders = Moving::pluck('no_moving');
         }
         else{
-            $orders = Order::pluck('nomor_surat_jalan');
+            switch($state){
+                case "in":
+                    $orders = Order::where('status_mode', 1)->pluck('nomor_surat_jalan');
+                    break;
+                case "out":
+                    $orders = Order::where('status_mode', 2)->pluck('nomor_surat_jalan');
+                    break;
+                case "out_tax":
+                    $orders = Order::where('status_mode', 3)->pluck('nomor_surat_jalan');
+                    break;
+            }
         }
         return view("invoice", ["title" => $title, "state" => $state, "orders" => $orders]);
     }

@@ -32,7 +32,7 @@ class FakerData2025Seeder extends Seeder
         $orders = [];
         for ($i = 0; $i < 50; $i++) {
             $orders[] = [
-                'nomor_surat_jalan' => 'SJ' . $faker->unique()->numberBetween(1000, 9999),
+                'nomor_surat_jalan' => 'SJK' . $faker->unique()->numberBetween(1000, 9999),
                 'storageCode' => 'NON', // No need for conditional check
                 'no_LPB' => $faker->optional()->numerify('LPB#####'),
                 'no_truk' => $faker->numerify('TRUCK#####'),

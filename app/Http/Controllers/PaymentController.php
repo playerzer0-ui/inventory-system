@@ -29,7 +29,19 @@ class PaymentController extends Controller
             $orders = Invoice::pluck('no_moving');
         }
         else{
-            $orders = Invoice::pluck('nomor_surat_jalan');
+            switch($state){
+                case "in":
+                    $orders = Invoice::where('nomor_surat_jalan', 'NOT LIKE', '%SJK%')
+                    ->where('nomor_surat_jalan', 'NOT LIKE', '%SJT%')
+                    ->pluck('nomor_surat_jalan');
+                    break;
+                case "out":
+                    $orders = Invoice::where('nomor_surat_jalan', 'LIKE', '%SJK%')->pluck('nomor_surat_jalan');
+                    break;
+                case "out_tax":
+                    $orders = Invoice::where('nomor_surat_jalan', 'LIKE', '%SJT%')->pluck('nomor_surat_jalan');
+                    break;
+            }
         }
         return view("payment", ["title" => $title, "state" => $state, "orders" => $orders]);
     }
