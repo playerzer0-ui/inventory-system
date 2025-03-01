@@ -6,8 +6,9 @@
 
 .main-container {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
 }
 
 .msg {
@@ -32,9 +33,9 @@
 }
 
 .form-container {
-    width: 50%;
-    padding: 20px;
-    border-radius: 10px;
+    display: flex;
+    width: 100%;
+    height: 100vh; /* Adjust if needed */
 }
 
 .table-container {
@@ -104,4 +105,24 @@ td input, td select {
 
 table td {
     vertical-align: middle;
+}
+
+.order_list {
+    width: 15%;
+    background: #f8f9fa;
+    padding: 10px;
+    height: 90vh;
+    overflow-y: scroll; /* In case of too many buttons */
+    border-right: 1px solid #ddd;
+}
+
+.order_list button {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.form-content {
+    width: 85%;
+    padding: 20px;
 }

@@ -55,17 +55,27 @@ return new class extends Migration
             }
         );
 
+        Schema::create('trucks', function (Blueprint $table){
+            $table->string("no_truk", 50)->primary();
+            $table->string("truckEmail", 255);
+            $table->string("truckPassword", 255);
+            $table->string("size", 5);
+            $table->integer("mode");
+        });
+
         Schema::create('orders', function (Blueprint $table) {
             $table->string("nomor_surat_jalan", 100)->primary();
             $table->string("storageCode", 10);
             $table->string("no_LPB", 100)->nullable();
-            $table->string("no_truk", 100);
+            $table->string("no_truk_in", 100)->nullable();
+            $table->string("no_truk_out", 100)->nullable();
             $table->string("vendorCode", 10);
             $table->string("customerCode", 10);
             $table->date("orderDate")->nullable();
             $table->string("purchase_order", 30);
             $table->integer("status_mode");
             $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
+            $table->foreign('no_truk_out')->references('no_truk')->on('trucks')->onDelete('cascade');
             $table->foreign('vendorCode')->references('vendorCode')->on('vendors')->onDelete('cascade');
             $table->foreign('customerCode')->references('customerCode')->on('customers')->onDelete('cascade');
         });
