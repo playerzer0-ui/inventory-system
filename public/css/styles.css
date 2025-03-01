@@ -108,12 +108,13 @@ table td {
 }
 
 .order_list {
-    width: 15%;
+    width: 20%;
     background: #f8f9fa;
     padding: 10px;
-    height: 90vh;
-    overflow-y: scroll; /* In case of too many buttons */
+    height: 95vh;
+    overflow-y: scroll; /* Keeps scrolling if needed */
     border-right: 1px solid #ddd;
+    flex-shrink: 0; /* Prevents resizing when form changes */
 }
 
 .order_list button {
@@ -123,6 +124,7 @@ table td {
 }
 
 .form-content {
-    width: 85%;
+    flex-grow: 1; /* Expands only this section */
     padding: 20px;
+    overflow-y: auto; /* Prevents pushing content below */
 }

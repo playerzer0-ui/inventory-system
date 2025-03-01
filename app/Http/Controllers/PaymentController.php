@@ -25,7 +25,13 @@ class PaymentController extends Controller
     {
         $state = $req->state;
         $title = "PAYMENT " . $state;
-        return view("payment", ["title" => $title, "state" => $state]);
+        if($state == "moving"){
+            $orders = Invoice::pluck('no_moving');
+        }
+        else{
+            $orders = Invoice::pluck('nomor_surat_jalan');
+        }
+        return view("payment", ["title" => $title, "state" => $state, "orders" => $orders]);
     }
 
     public function create_payment(Request $req)

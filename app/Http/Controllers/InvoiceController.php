@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\Moving;
+use App\Models\Order;
 use App\Service\PDFService;
 use App\Models\Order_Product;
 use App\Service\OrderProductService as ServiceOrderProductService;
@@ -24,7 +25,13 @@ class InvoiceController extends Controller
     {
         $state = $req->state;
         $title = "INVOICE " . $state;
-        return view("invoice", ["title" => $title, "state" => $state]);
+        if($state == "moving"){
+            $orders = Moving::pluck('no_moving');
+        }
+        else{
+            $orders = Order::pluck('nomor_surat_jalan');
+        }
+        return view("invoice", ["title" => $title, "state" => $state, "orders" => $orders]);
     }
 
     public function getInvoiceDetails(Request $req)

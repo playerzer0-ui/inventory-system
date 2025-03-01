@@ -2,7 +2,7 @@
 
 <main class="main-container">
     <aside class="order_list">
-        <x-order_list />
+        <x-order_list :state="$state" :orders="$orders" />
     </aside>
     <section class="form-content">
         <form id="myForm" action="{{ route('create_payment') }}" method="post">
@@ -148,6 +148,7 @@
     </section>
 </main>
 
+<script src="{{asset('js/utility.js')}}" async defer></script>
 <script src="{{ asset('js/payment.js') }}" async defer></script>
 
 

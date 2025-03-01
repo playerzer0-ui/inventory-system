@@ -2,7 +2,7 @@
 
 <main class="main-container">
     <aside class="order_list">
-        <x-order_list />
+        <x-order_list :state="$state" :orders="$orders" />
     </aside>
     <section class="form-content">
         <form id="myForm" action="{{route('create_invoice')}}" method="post">
@@ -146,6 +146,7 @@
     </section>
 </main>
 
+<script src="{{asset('js/utility.js')}}" async defer></script>
 <script src="{{asset('js/invoice.js')}}" async defer></script>
 
 <x-footer />
