@@ -10,6 +10,12 @@
     height: 100vh; /* Ensure the container takes the full viewport height */
 }
 
+.edit-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .msg {
     display: flex;
     justify-content: center;

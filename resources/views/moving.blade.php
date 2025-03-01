@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main class="main-container">
+<main class="edit-container">
     <form id="myForm" action="{{ route('create_moving') }}" method="post">
         @csrf
         <h1 style="text-align:center;">MOVING</h1>

@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main class="main-container">
+<main class="edit-container">
     <form id="myForm" action="{{route('amend_slip_data')}}" method="post">
         @csrf
         <h1>AMEND SLIP {{$state}}</h1>
