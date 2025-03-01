@@ -170,7 +170,7 @@ function getDetailsFromSJ(){
             if(pageState == "in"){
                 storageCodeEl.value = data.storageCode;
                 no_LPBEl.value = data.no_LPB;
-                no_trukEl.value = data.no_truk;
+                no_trukEl.value = data.no_truk_in;
                 vendorCodeEl.value = data.vendorCode;
                 purchaseOrderEl.value = data.purchase_order;
             }

@@ -98,7 +98,11 @@
                 @endif
                 <td>Purchase Order</td>
                 <td>:</td>
+                @if ($state == "in")
+                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required></td>
+                @else
                 <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required onchange="getPurchaseOrderProducts(this.value)"></td>
+                @endif
             </tr>
             <tr>
                 @if ($state == "in")
@@ -131,7 +135,7 @@
                 <!-- Rows will be added here dynamically -->
             </tbody>
         </table>
-        <button type="button" class="btn btn-success" id="addRow" onclick="addRow()">Add Row</button>
+        <button type="button" class="btn btn-success" id="addRow">Add Row</button>
         <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
 </main>

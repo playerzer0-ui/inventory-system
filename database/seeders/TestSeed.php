@@ -48,6 +48,30 @@ class TestSeed extends Seeder
             ],
         ]);
 
+        DB::table('trucks')->insert([
+            [
+                'no_truk' => 'truck1L',
+                'truckEmail' => 'pythontest190@gmail.com',
+                'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
+                'size' => 'L',
+                'mode' => 1
+            ],
+            [
+                'no_truk' => 'truck2S',
+                'truckEmail' => 'pythontest191@gmail.com',
+                'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
+                'size' => 'S',
+                'mode' => 1
+            ],
+            [
+                'no_truk' => 'truck3M',
+                'truckEmail' => 'pythontest192@gmail.com',
+                'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
+                'size' => 'M',
+                'mode' => 1
+            ],
+        ]);
+
         DB::table('vendors')->insert([
             [
                 'vendorCode' => 'ASTRA',
@@ -172,7 +196,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => '1/SJK/NON/08/2024',
                 'storageCode' => 'NON',
                 'no_LPB' => null,
-                'no_truk' => 'L 333 YY',
+                'no_truk_in' => null,
+                'no_truk_out' => 'truck2S',
                 'vendorCode' => 'NON',
                 'customerCode' => 'DED',
                 'orderDate' => '2024-08-07',
@@ -183,7 +208,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => '1/SJT/APA/08/2024',
                 'storageCode' => 'APA',
                 'no_LPB' => null,
-                'no_truk' => 'L 333 YY',
+                'no_truk_in' => null,
+                'no_truk_out' => 'truck3M',
                 'vendorCode' => 'NON',
                 'customerCode' => 'DED',
                 'orderDate' => '2024-08-07',
@@ -194,7 +220,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => '2/SJK/NON/08/2024',
                 'storageCode' => 'NON',
                 'no_LPB' => null,
-                'no_truk' => 'L 666 AA',
+                'no_truk_in' => null,
+                'no_truk_out' => 'truck2S',
                 'vendorCode' => 'NON',
                 'customerCode' => 'TOM',
                 'orderDate' => '2024-08-08',
@@ -205,7 +232,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => '2/SJT/APA/08/2024',
                 'storageCode' => 'APA',
                 'no_LPB' => null,
-                'no_truk' => 'L 666 AA',
+                'no_truk_in' => null,
+                'no_truk_out' => 'truck3M',
                 'vendorCode' => 'NON',
                 'customerCode' => 'TOM',
                 'orderDate' => '2024-08-08',
@@ -216,7 +244,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => '3/SJK/NON/08/2024',
                 'storageCode' => 'NON',
                 'no_LPB' => null,
-                'no_truk' => 'L 823 CI',
+                'no_truk_in' => null,
+                'no_truk_out' => 'truck2S',
                 'vendorCode' => 'NON',
                 'customerCode' => 'ZEN',
                 'orderDate' => '2024-08-09',
@@ -227,7 +256,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => '3/SJT/APA/08/2024',
                 'storageCode' => 'APA',
                 'no_LPB' => null,
-                'no_truk' => 'L 823 CI',
+                'no_truk_in' => null,
+                'no_truk_out' => 'truck3M',
                 'vendorCode' => 'NON',
                 'customerCode' => 'DED',
                 'orderDate' => '2024-08-16',
@@ -238,7 +268,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => 'H810005211',
                 'storageCode' => 'APA',
                 'no_LPB' => '1/LPB/APA/08/2024',
-                'no_truk' => 'L 1237 QZ',
+                'no_truk_in' => 'truck1L',
+                'no_truk_out' => null,
                 'vendorCode' => 'WIM',
                 'customerCode' => 'NON',
                 'orderDate' => '2024-08-07',
@@ -249,7 +280,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => 'H810005212',
                 'storageCode' => 'APA',
                 'no_LPB' => '2/LPB/APA/08/2024',
-                'no_truk' => 'L 999 LC',
+                'no_truk_in' => 'truck1L',
+                'no_truk_out' => null,
                 'vendorCode' => 'WIM',
                 'customerCode' => 'NON',
                 'orderDate' => '2024-08-08',
@@ -260,7 +292,8 @@ class TestSeed extends Seeder
                 'nomor_surat_jalan' => 'H810005213',
                 'storageCode' => 'APA',
                 'no_LPB' => '3/LPB/APA/08/2024',
-                'no_truk' => 'L 789 AA',
+                'no_truk_in' => 'truck1L',
+                'no_truk_out' => null,
                 'vendorCode' => 'WIM',
                 'customerCode' => 'NON',
                 'orderDate' => '2024-08-09',
@@ -518,6 +551,21 @@ class TestSeed extends Seeder
             ],
         ]);
 
+        DB::table('purchase_orders')->insert([
+            [
+                'no_PO' => 'PO-6e24dbae',
+                'purchaseDate' => '2025-03-01',
+                'customerCode' => 'DED',
+                'status_mode' => 1
+            ],
+            [
+                'no_PO' => 'PO-c5a002c0',
+                'purchaseDate' => '2025-02-23',
+                'customerCode' => 'DED',
+                'status_mode' => 1
+            ],
+        ]);
+
         DB::table('order_products')->insert([
             [
                 'nomor_surat_jalan' => 'H810005211',
@@ -530,6 +578,54 @@ class TestSeed extends Seeder
                 'price_per_UOM' => 480000.00,
                 'note' => '',
                 'product_status' => 'in',
+            ],
+            [
+                'nomor_surat_jalan' => '-',
+                'moving_no_moving' => '-',
+                'repack_no_repack' => '-',
+                'PO_no_PO' => "PO-6e24dbae",
+                'productCode' => 'RR-100-A',
+                'qty' => 500,
+                'UOM' => 'tray',
+                'price_per_UOM' => 400,
+                'note' => '',
+                'product_status' => 'purchase_order',
+            ],
+            [
+                'nomor_surat_jalan' => '-',
+                'moving_no_moving' => '-',
+                'repack_no_repack' => '-',
+                'PO_no_PO' => "PO-6e24dbae",
+                'productCode' => 'RR-120-A',
+                'qty' => 5000,
+                'UOM' => 'tray',
+                'price_per_UOM' => 250,
+                'note' => '',
+                'product_status' => 'purchase_order',
+            ],
+            [
+                'nomor_surat_jalan' => '-',
+                'moving_no_moving' => '-',
+                'repack_no_repack' => '-',
+                'PO_no_PO' => "PO-c5a002c0",
+                'productCode' => 'RR-100-A',
+                'qty' => 500,
+                'UOM' => 'tray',
+                'price_per_UOM' => 400,
+                'note' => '',
+                'product_status' => 'purchase_order',
+            ],
+            [
+                'nomor_surat_jalan' => '-',
+                'moving_no_moving' => '-',
+                'repack_no_repack' => '-',
+                'PO_no_PO' => "PO-c5a002c0",
+                'productCode' => 'RR-120-A',
+                'qty' => 5000,
+                'UOM' => 'tray',
+                'price_per_UOM' => 250,
+                'note' => '',
+                'product_status' => 'purchase_order',
             ],
             [
                 'nomor_surat_jalan' => 'H810005211',

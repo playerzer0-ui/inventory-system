@@ -55,9 +55,10 @@ class AmendController extends Controller
             $order->update([
                 'storageCode' => $storageCode,
                 'no_LPB' => $no_LPB,
-                'no_truk' => $no_truk,
-                'vendorCode' => $vendorCode,
-                'customerCode' => $customerCode,
+                'no_truk_in' => ($pageState == 'in') ? $no_truk : null,
+                'no_truk_out' => ($pageState == 'out' || $pageState == 'out_tax') ? $no_truk : null,
+                'vendorCode' => $vendorCode ?? 'NON',
+                'customerCode' => $customerCode ?? 'NON',
                 'orderDate' => $orderDate,
                 'purchase_order' => $purchase_order,
                 'nomor_surat_jalan' => $no_sj,

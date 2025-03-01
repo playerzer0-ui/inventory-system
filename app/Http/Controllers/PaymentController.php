@@ -9,6 +9,7 @@ use App\Service\PDFService;
 use App\Models\Payment;
 use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -54,6 +55,7 @@ class PaymentController extends Controller
         $payment_amount = $req->payment_amount;
 
         Payment::create([
+            "payment_id" => substr(Str::uuid()->toString(), 0, 8),
             "nomor_surat_jalan" => $no_sj ?? "-",
             "no_moving" => $no_moving ?? "-",
             "payment_date" => $payment_date,

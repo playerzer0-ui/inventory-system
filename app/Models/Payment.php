@@ -44,6 +44,7 @@ class Payment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'payment_id',
         'nomor_surat_jalan',
         'no_moving',
         'payment_date',

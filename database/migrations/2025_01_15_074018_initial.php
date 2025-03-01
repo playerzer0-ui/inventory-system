@@ -56,11 +56,12 @@ return new class extends Migration
         );
 
         Schema::create('trucks', function (Blueprint $table){
-            $table->string("no_truk", 50)->primary();
+            $table->string("no_truk", 50);
             $table->string("truckEmail", 255);
             $table->string("truckPassword", 255);
             $table->string("size", 5);
-            $table->integer("mode");
+            $table->integer("mode"); //1=idle 2=working
+            $table->primary(['no_truk', 'truckEmail']);
         });
 
         Schema::create('orders', function (Blueprint $table) {
@@ -132,6 +133,9 @@ return new class extends Migration
             $table->string("no_PO", 100)->primary();
             $table->date("purchaseDate")->nullable();
             $table->string("customerCode", 10);
+            $table->integer("status_mode"); //1=pending 2=done
+
+            $table->foreign('customerCode')->references('customerCode')->on('customers')->onDelete('cascade');
         });
 
         Schema::create('order_products', function(Blueprint $table){

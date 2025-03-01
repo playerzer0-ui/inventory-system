@@ -97,7 +97,7 @@
                 @else
                 <td>Truck No</td>
                 <td>:</td>
-                <td colspan="2"><input name="no_truk" type="text" id="no_truk" value="{{$result['no_truk']}}" placeholder="fill in" required></td>
+                <td colspan="2"><input name="no_truk" type="text" id="no_truk" value="{{$result['no_truk_out']}}" placeholder="fill in" required></td>
                 @endif
                 <td>Purchase Order</td>
                 <td>:</td>
@@ -107,7 +107,7 @@
                 @if ($state == "in")
                 <td>Truck No</td>
                 <td>:</td>
-                <td colspan="2"><input name="no_truk" type="text" id="no_truk" value="{{$result['no_truk']}}" placeholder="fill in" required></td>
+                <td colspan="2"><input name="no_truk" type="text" id="no_truk" value="{{$result['no_truk_in']}}" placeholder="fill in" required></td>
                 <td colspan="3"></td>
                 @else
                 <td></td>

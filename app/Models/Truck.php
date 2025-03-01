@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Truck extends Model
 {
-    use HasFactory;
-
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'orders';
+    protected $table = 'trucks';
     public $timestamps = false;
 
     /**
@@ -22,7 +20,7 @@ class Order extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'nomor_surat_jalan';
+    protected $primaryKey = ['no_truk', 'truckEmail'];
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -44,15 +42,10 @@ class Order extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nomor_surat_jalan',
-        'storageCode',
-        'no_LPB',
-        'no_truk_in',
-        'no_truk_out',
-        'vendorCode',
-        'customerCode',
-        'orderDate',
-        'purchase_order',
-        'status_mode',
+        'no_truk',
+        'truckEmail',
+        'truckPassword',
+        'size',
+        'mode',
     ];
 }

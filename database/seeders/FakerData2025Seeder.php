@@ -30,12 +30,13 @@ class FakerData2025Seeder extends Seeder
 
         // Seed Orders Table (Only tracking "out" orders)
         $orders = [];
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $orders[] = [
                 'nomor_surat_jalan' => 'SJK' . $faker->unique()->numberBetween(1000, 9999),
                 'storageCode' => 'NON', // No need for conditional check
                 'no_LPB' => $faker->optional()->numerify('LPB#####'),
-                'no_truk' => $faker->numerify('TRUCK#####'),
+                'no_truk_in' => null, // status_mode is 2 or 3
+                'no_truk_out' => 'truck2S', // status_mode is 2
                 'vendorCode' => 'NON',
                 'customerCode' => 'TOM',
                 'orderDate' => $faker->dateTimeBetween('2025-01-01', '2025-12-31')->format('Y-m-d'),

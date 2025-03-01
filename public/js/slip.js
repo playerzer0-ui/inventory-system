@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+document.getElementById('addRow').addEventListener('click', addRow);
+
 if (!pageState.includes("amend")){
     document.addEventListener("DOMContentLoaded", function() {
         let invoice_dateEl = document.getElementById("order_date");
