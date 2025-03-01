@@ -1,6 +1,16 @@
 <x-header :title="$title" />
 
+@if ($state == "in")
 <main class="edit-container">
+@else
+<main class="main-container">
+@endif
+    @if ($state != "in")
+    <aside class="order_list">
+        <x-purchase_list :state="$state" :orders="$orders" />
+    </aside>
+    <section class="form-content">
+    @endif
     <form id="myForm" action="{{route("create_slip")}}" method="post">
         @csrf
         <h1>SLIP {{$state}}</h1>
@@ -101,7 +111,7 @@
                 @if ($state == "in")
                 <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required></td>
                 @else
-                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required onchange="getPurchaseOrderProducts(this.value)"></td>
+                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required oninput="getPurchaseOrderProducts(this.value)"></td>
                 @endif
             </tr>
             <tr>
@@ -138,8 +148,12 @@
         <button type="button" class="btn btn-success" id="addRow">Add Row</button>
         <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
+    @if ($state != "in")
+    </section>
+    @endif
 </main>
 
+<script src="{{asset('js/utility.js')}}" async defer></script>
 <script src="{{asset('js/slip.js')}}" async defer></script>
 
 <x-footer />

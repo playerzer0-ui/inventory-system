@@ -10,3 +10,9 @@ function setInputValue(value) {
         input.dispatchEvent(new Event('input', { bubbles: true }));
     }
 }
+
+function setPurchaseValue(value) {
+    let input = document.getElementById('purchase_order');
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+}
