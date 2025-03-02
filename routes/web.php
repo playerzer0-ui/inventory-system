@@ -114,6 +114,6 @@ Route::get("/master_delete", [MasterController::class, "delete"])->name("master_
 Route::post("/master_delete_data", [MasterController::class, "delete_data"])->name("master_delete_data");
 
 //testing
-Route::post("/test", [ReportController::class, "createPDF"])->name("test1");
+Route::get("/test", [ServiceController::class, "getTruck"])->name("getTruck");
 
 
