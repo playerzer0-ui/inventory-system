@@ -8,19 +8,22 @@ ORDER BY o.orderDate;
 
 PO-f35791ce
 
-CREATE TABLE trucks(
-    truckID,
-    truckSize,
-    truckMode
-);
+0 - 5000 (S)
+5001 - 15000 (M)
+15001+ (L)
 
 task:
 [X] delete slips, invoice, payment, moving, repack
 [X] make moving average
 [X] customer interface
 [X] pdf excel
-purchase order interface with UI simple
+[X] purchase order interface with UI simple
 truck algorithm automatically assign truck
 truck UI, delivery interface, tick boxes to trucks and orders assigned by them
+
+get all orders with the truck labeled out
+count the number of times each truck has done it
+check the quantity
+
 
 cloud

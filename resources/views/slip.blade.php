@@ -1,11 +1,11 @@
 <x-header :title="$title" />
 
-@if ($state == "in")
-<main class="edit-container">
-@else
+@if ($state == "out")
 <main class="main-container">
+@else
+<main class="edit-container">
 @endif
-    @if ($state != "in")
+    @if ($state == "out")
     <aside class="order_list">
         <x-purchase_list :state="$state" :orders="$orders" />
     </aside>
@@ -108,10 +108,10 @@
                 @endif
                 <td>Purchase Order</td>
                 <td>:</td>
-                @if ($state == "in")
-                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required></td>
-                @else
+                @if ($state == "out")
                 <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required oninput="getPurchaseOrderProducts(this.value)"></td>
+                @else
+                <td><input name="purchase_order" type="text" id="purchase_order" placeholder="Fill in" required></td>
                 @endif
             </tr>
             <tr>
@@ -148,7 +148,7 @@
         <button type="button" class="btn btn-success" id="addRow">Add Row</button>
         <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
-    @if ($state != "in")
+    @if ($state == "out")
     </section>
     @endif
 </main>
