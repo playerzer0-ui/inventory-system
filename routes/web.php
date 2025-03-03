@@ -94,6 +94,7 @@ Route::get("/getProductDetails", [ServiceController::class, "getProductDetails"]
 Route::get("/getOrderByNoSJ", [ServiceController::class, "getOrderByNoSJ"])->name("getOrderByNoSJ");
 Route::get("/getOrderProducts", [ServiceController::class, "getOrderProducts"])->name("getOrderProducts");
 Route::get("/getHPP", [ReportController::class, "getHPP"])->name("getHPP");
+Route::get("/getTruck", [ServiceController::class, "getTruck"])->name("getTruck");
 
 //amends data
 Route::post("/amend_slip_data", [AmendController::class, "amend_slip_data"])->name("amend_slip_data");
@@ -114,6 +115,6 @@ Route::get("/master_delete", [MasterController::class, "delete"])->name("master_
 Route::post("/master_delete_data", [MasterController::class, "delete_data"])->name("master_delete_data");
 
 //testing
-Route::get("/test", [ServiceController::class, "getTruck"])->name("getTruck");
+Route::get("/test", [ServiceController::class, "getTruck"])->name("test1");
 
 

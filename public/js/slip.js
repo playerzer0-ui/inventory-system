@@ -96,6 +96,7 @@ function getPurchaseOrderProducts(no_PO) {
 
             // Populate the table with products
             let rowCount = 1;
+            let totalQty = 0;
             response.products.forEach(item => {
                 const newRow = table.insertRow();
                 newRow.innerHTML = `
@@ -116,6 +117,7 @@ function getPurchaseOrderProducts(no_PO) {
                     </td>
                 `;
                 rowCount++;
+                totalQty += parseInt(item.qty);
             });
 
             document.getElementById('addRow').remove();
@@ -132,6 +134,7 @@ function getPurchaseOrderProducts(no_PO) {
 
             selectElement.replaceWith(inputElement);
             getSJ();
+            getTruck(totalQty);
         },
         error: function (xhr, status, error) {
             console.error("AJAX Error: " + status + error); // Log any AJAX errors
@@ -174,6 +177,23 @@ function deleteRow(button) {
         rowCount++;
         rows[i].cells[0].innerText = rowCount;
     }
+}
+
+function getTruck(totalQty){
+    let no_truk = document.getElementById("no_truk");
+    let no_truk_display = document.getElementById("no_truk_display");
+    $.ajax({
+        type: "GET",
+        url: "/getTruck",
+        data: {
+            qty: totalQty
+        },
+        dataType: "json",
+        success: function (response) {
+            no_truk_display.value = `${response.no_truk} (${response.size})`;
+            no_truk.value = response.no_truk;
+        }
+    });
 }
 
 function getLPB(){

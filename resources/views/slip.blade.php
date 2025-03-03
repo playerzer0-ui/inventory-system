@@ -104,7 +104,7 @@
                 @else
                 <td>Truck No</td>
                 <td>:</td>
-                <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="fill in" required></td>
+                <td colspan="2"><input name="no_truk_display" type="text" id="no_truk_display" placeholder="fill in" readonly><input name="no_truk" type="hidden" id="no_truk" placeholder="fill in"></td>
                 @endif
                 <td>Purchase Order</td>
                 <td>:</td>

@@ -6,6 +6,13 @@
         <div class="row align-items-start">
             <div class="col">
                 <b>{{$key['no_PO']}}</b>
+                @if ($key['status_mode'] == 1)
+                    <span>(created)</span>
+                @elseif($key['status_mode'] == 2)
+                    <span>(pending, delivering)</span>
+                @else
+                    <span>(delivered and complete)</span>
+                @endif
             </div>
             <div class="col">
                 <a href="{{route('amend_update', ['state' => "purchase", 'code' => $key["no_PO"]])}}"><button class="btn btn-info">edit</button></a>
