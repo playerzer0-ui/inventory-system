@@ -91,6 +91,11 @@ class SlipController extends Controller
             else{
                 for($i = 0; $i < count($productCodes); $i++){
                     if($purchase_status[$i] == "approve"){
+                        $price = Order_Product::where("PO_no_PO", $purchase_order)
+                        ->where("productCode", $productCodes[$i])
+                        ->pluck('price_per_UOM')
+                        ->first();
+
                         Order_Product::create([
                             "nomor_surat_jalan" => $no_sj, 
                             "repack_no_repack" => "-",
@@ -99,7 +104,7 @@ class SlipController extends Controller
                             "productCode" => $productCodes[$i], 
                             "qty" => $qtys[$i], 
                             "UOM" => $uoms[$i], 
-                            "price_per_UOM" => 0, 
+                            "price_per_UOM" => $price, 
                             "note" => $notes[$i],
                             "product_status" => $pageState
                         ]);

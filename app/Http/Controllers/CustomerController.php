@@ -68,7 +68,8 @@ class CustomerController extends Controller
         Purchase_Order::create([
             "no_PO" => $no_PO,
             "purchaseDate" => $purchaseDate,
-            "customerCode" => $customerCode
+            "customerCode" => $customerCode,
+            "status_mode" => 1
         ]);
         
         if($productCodes){

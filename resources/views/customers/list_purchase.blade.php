@@ -15,8 +15,12 @@
                 @endif
             </div>
             <div class="col">
+                @if ($key['status_mode'] > 1)
+                <a href="{{route('amend_update', ['state' => "purchase", 'code' => $key["no_PO"]])}}"><button class="btn btn-success">view</button></a>
+                @else
                 <a href="{{route('amend_update', ['state' => "purchase", 'code' => $key["no_PO"]])}}"><button class="btn btn-info">edit</button></a>
                 <a href="{{route('amend_delete', ['state' => "purchase", 'code' => $key["no_PO"]])}}"><button class="btn btn-danger">delete</button></a>
+                @endif
             </div>
         </div>
         @endforeach

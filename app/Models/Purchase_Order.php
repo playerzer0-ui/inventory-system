@@ -46,6 +46,7 @@ class Purchase_Order extends Model
     protected $fillable = [
         'no_PO',
         'purchaseDate',
-        'customerCode'
+        'customerCode',
+        'status_mode'
     ];
 }

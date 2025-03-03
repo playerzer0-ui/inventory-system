@@ -187,7 +187,7 @@ function getDetailsFromSJ(){
     getOrderProducts(no_sjEl, "in");
 }
 
-function getOrderProducts(no_id, status){
+function getOrderProducts(no_id, status) {
     $.ajax({
         type: "get",
         url: "/getOrderProducts",
@@ -210,12 +210,17 @@ function getOrderProducts(no_id, status){
                     <td><input style="width: 300px;" value="${item.productName}" type="text" name="material_display[]" readonly><input type="hidden" value="${item.productName}" name="material[]"></td>
                     <td><input type="number" value="${item.qty}" name="qty[]" readonly></td>
                     <td><input type="text" value="${item.uom}" name="uom[]" readonly></td>
-                    <td><input type="number" inputmode="numeric" name="price_per_uom[]" placeholder="Fill in" oninput="calculateNominal(this)" required></td>
+                    <td><input type="number" inputmode="numeric" name="price_per_uom[]" value="${item.price_per_UOM}" placeholder="Fill in" oninput="calculateNominal(this)" required></td>
                     <td><input type="text" name="nominal[]" placeholder="Automatic from system" readonly></td>
                 `;
+
+                const priceInput = newRow.querySelector('input[name="price_per_uom[]"]');
+                calculateNominal(priceInput);
+
+                rowCount++;
             });
 
-            if(pageState.includes("moving")){
+            if (pageState.includes("moving")) {
                 updateCOGSAndNominals();
             }
         }
