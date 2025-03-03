@@ -10,6 +10,7 @@ use App\Models\Storage;
 use App\Models\Vendor;
 use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SlipController extends Controller
 {
@@ -27,7 +28,14 @@ class SlipController extends Controller
         $storages = Storage::all();
         $vendors = Vendor::all();
         $customers = Customer::all();
-        $orders = Purchase_Order::pluck("no_PO");
+        $orders = Purchase_Order::whereIn('no_PO', function ($query) {
+            $query->select('PO_no_PO')
+                  ->from('order_products')
+                  ->whereNotNull('PO_no_PO') // Exclude NULL values
+                  ->where('PO_no_PO', '!=', '-') // Exclude dashes
+                  ->groupBy('PO_no_PO')
+                  ->havingRaw("SUM(CASE WHEN product_status != 'purchase_approved' THEN 1 ELSE 0 END) > 0");
+        })->pluck('no_PO');
         return view("slip", ["title" => $title, "state" => $state, "vendors" => $vendors, "storages" => $storages, "customers" => $customers, "orders" => $orders]);
     }
 
@@ -101,6 +109,14 @@ class SlipController extends Controller
                         ]);
                     }
                 }
+
+                DB::table('purchase_orders')
+                ->where('no_PO', $purchase_order)
+                ->update(['status_mode' => 2]);
+
+                DB::table('trucks')
+                ->where('no_truk', $no_truk)
+                ->update(['mode' => 2]);
             }
         }
 
