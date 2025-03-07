@@ -35,7 +35,7 @@ class CustomerController extends Controller
             $req->session()->put("customerCode", $user->customerCode);
             $req->session()->put("email", $user->customerEmail);
             $req->session()->put("userType", 2);
-            return redirect()->route("customer_dashboard", ["title" => "customer login"]);
+            return redirect()->route("customer_dashboard");
         }
         else{
             return redirect()->route("show_customer_login");

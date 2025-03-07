@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main class="main-container">
+<main class="edit-container">
     <div class="form-container bg-white">
     <form action="{{ route("login") }}" method="post">
         @csrf
@@ -16,6 +16,7 @@
         <button type="submit" class="btn btn-primary">login</button>
     </form>
     <a href="{{ route('show_customer_login') }}"><button type="submit" class="btn btn-secondary">I am a customer</button></a>
+    <a href="{{ route('show_truck_login') }}"><button type="submit" class="btn btn-secondary">I am a truck</button></a>
     </div>
 </main>
 

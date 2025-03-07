@@ -54,5 +54,6 @@ class Order extends Model
         'orderDate',
         'purchase_order',
         'status_mode',
+        'delivered'
     ];
 }

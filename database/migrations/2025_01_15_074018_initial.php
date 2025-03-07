@@ -75,6 +75,7 @@ return new class extends Migration
             $table->date("orderDate")->nullable();
             $table->string("purchase_order", 30);
             $table->integer("status_mode");
+            $table->integer("delivered")->nullable();
             $table->foreign('storageCode')->references('storageCode')->on('storages')->onDelete('cascade');
             $table->foreign('no_truk_out')->references('no_truk')->on('trucks')->onDelete('cascade');
             $table->foreign('vendorCode')->references('vendorCode')->on('vendors')->onDelete('cascade');

@@ -21,7 +21,9 @@
                     @if (session("userType") == 1)
                         <a class="disabled yellow-text" aria-disabled="true">ADMIN</a>
                     @elseif(session("userType") == 2)
-                        <a class="disabled" aria-disabled="true">customer</a>
+                        <a class="disabled" aria-disabled="true">{{session('customerCode')}}</a>
+                    @elseif(session("userType") == 3)
+                        <a class="disabled" aria-disabled="true">{{session('no_truk')}}</a>
                     @else
                         <a class="disabled" aria-disabled="true">supplier</a>
                     @endif
@@ -45,6 +47,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route("list_purchase") }}"><button class="btn btn-secondary">list purchases</button></a>
                     </li>
+            @elseif(session('userType') == 3)
             @else
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route("forecast") }}"><button class="btn btn-info">forecast</button></a>

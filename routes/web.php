@@ -11,6 +11,7 @@ use App\Http\Controllers\RepackController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SlipController;
+use App\Http\Controllers\TruckController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +59,12 @@ Route::get("/getProductData", [ReportController::class, "getProductData"])->name
 Route::get("/excel_stock", [ReportController::class, "excel_stock"])->name("excel_stock");
 Route::get("/excel_debt", [ReportController::class, "excel_debt"])->name("excel_debt");
 Route::get("/excel_receivable", [ReportController::class, "excel_receivable"])->name("excel_receivable");
+
+//trucks
+Route::get("/show_truck_login", [TruckController::class, "show_truck_login"])->name("show_truck_login");
+Route::get("/truck_dashboard", [TruckController::class, "truck_dashboard"])->name("truck_dashboard");
+Route::post("/truck_login", [TruckController::class, "truck_login"])->name("truck_login");
+Route::get("/deliver", [TruckController::class, "deliver"])->name("deliver");
 
 //slips
 Route::get("/slip", [SlipController::class, "slip"])->name("slip");

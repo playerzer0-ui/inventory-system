@@ -5,7 +5,7 @@
     <form action="{{route('create_purchase')}}" method="POST">
         @csrf
         <label>purchase date</label>
-        <input type="date" name="purchaseDate">
+        <input type="date" name="purchaseDate" required>
         <input type="hidden" name="customerCode" value="{{session('customerCode')}}">
         <br>
 

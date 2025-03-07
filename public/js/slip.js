@@ -120,7 +120,10 @@ function getPurchaseOrderProducts(no_PO) {
                 totalQty += parseInt(item.qty);
             });
 
-            document.getElementById('addRow').remove();
+            let addRowBtn = document.getElementById('addRow');
+            if (addRowBtn) {
+                addRowBtn.remove();
+            }
             const selectElement = document.getElementById('customerCode');
 
             const selectedValue = selectElement.value;

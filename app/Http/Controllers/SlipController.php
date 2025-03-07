@@ -69,6 +69,7 @@ class SlipController extends Controller
             'orderDate' => $orderDate,
             'purchase_order' => $purchase_order,
             'status_mode' => $status_mode,
+            'delivered' => 0
         ]);
 
         if($productCodes){
