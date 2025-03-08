@@ -79,9 +79,6 @@
                             <li><a class="dropdown-item" href="{{route("slip", ["state" => "out"])}}">slip out</a></li>
                             <li><a class="dropdown-item" href="{{route("invoice", ["state" => "out"])}}">invoice out</a></li>
                             <li><a class="dropdown-item" href="{{route("payment", ["state" => "out"])}}">payment out</a></li>
-                            <li><a class="dropdown-item" href="{{route("slip", ["state" => "out_tax"])}}">slip out tax</a></li>
-                            <li><a class="dropdown-item" href="{{route("invoice", ["state" => "out_tax"])}}">invoice out tax</a></li>
-                            <li><a class="dropdown-item" href="{{route("payment", ["state" => "out_tax"])}}">payment out tax</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown btn btn-outline-primary">

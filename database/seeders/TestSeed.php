@@ -205,7 +205,7 @@ class TestSeed extends Seeder
                 'status_mode' => 2,
             ],
             [
-                'nomor_surat_jalan' => '1/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '1/SJK/APA/08/2024',
                 'storageCode' => 'APA',
                 'no_LPB' => null,
                 'no_truk_in' => null,
@@ -229,7 +229,7 @@ class TestSeed extends Seeder
                 'status_mode' => 2,
             ],
             [
-                'nomor_surat_jalan' => '2/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '2/SJK/APA/08/2024',
                 'storageCode' => 'APA',
                 'no_LPB' => null,
                 'no_truk_in' => null,
@@ -253,7 +253,7 @@ class TestSeed extends Seeder
                 'status_mode' => 2,
             ],
             [
-                'nomor_surat_jalan' => '3/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '3/SJK/APA/08/2024',
                 'storageCode' => 'APA',
                 'no_LPB' => null,
                 'no_truk_in' => null,
@@ -368,7 +368,7 @@ class TestSeed extends Seeder
                 'tax' => 11,
             ],
             [
-                'nomor_surat_jalan' => '1/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '1/SJK/APA/08/2024',
                 'invoice_date' => '2024-08-08',
                 'no_invoice' => '3/INV/APA/08/2024',
                 'no_faktur' => '11.111.111.100-1221',
@@ -376,7 +376,7 @@ class TestSeed extends Seeder
                 'tax' => 11,
             ],
             [
-                'nomor_surat_jalan' => '2/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '2/SJK/APA/08/2024',
                 'invoice_date' => '2024-08-09',
                 'no_invoice' => '6/INV/APA/08/2024',
                 'no_faktur' => '11.111.111.100-1221',
@@ -384,7 +384,7 @@ class TestSeed extends Seeder
                 'tax' => 11,
             ],
             [
-                'nomor_surat_jalan' => '3/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '3/SJK/APA/08/2024',
                 'invoice_date' => '2024-08-10',
                 'no_invoice' => '5/INV/APA/08/2024',
                 'no_faktur' => '11.111.111.100-1221',
@@ -437,14 +437,14 @@ class TestSeed extends Seeder
                 'payment_id' => 'PAY-2ynoa1ed/2024-08-09'
             ],
             [
-                'nomor_surat_jalan' => '1/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '1/SJK/APA/08/2024',
                 'no_moving' => '-',
                 'payment_date' => '2024-08-08',
                 'payment_amount' => 3832275000.00,
                 'payment_id' => 'PAY-2paasf1ed/2024-08-08'
             ],
             [
-                'nomor_surat_jalan' => '2/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '2/SJK/APA/08/2024',
                 'no_moving' => '-',
                 'payment_date' => '2024-08-09',
                 'payment_amount' => 1696300000.00,
@@ -784,7 +784,7 @@ class TestSeed extends Seeder
                 'product_status' => 'moving',
             ],
             [
-                'nomor_surat_jalan' => '1/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '1/SJK/APA/08/2024',
                 'moving_no_moving' => '-',
                 'repack_no_repack' => '-',
                 'PO_no_PO' => "-",
@@ -793,10 +793,10 @@ class TestSeed extends Seeder
                 'UOM' => 'tray',
                 'price_per_UOM' => 485000.00,
                 'note' => '',
-                'product_status' => 'out_tax',
+                'product_status' => 'out',
             ],
             [
-                'nomor_surat_jalan' => '1/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '1/SJK/APA/08/2024',
                 'moving_no_moving' => '-',
                 'repack_no_repack' => '-',
                 'PO_no_PO' => "-",
@@ -805,10 +805,10 @@ class TestSeed extends Seeder
                 'UOM' => 'tray',
                 'price_per_UOM' => 585000.00,
                 'note' => '',
-                'product_status' => 'out_tax',
+                'product_status' => 'out',
             ],
             [
-                'nomor_surat_jalan' => '2/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '2/SJK/APA/08/2024',
                 'moving_no_moving' => '-',
                 'repack_no_repack' => '-',
                 'PO_no_PO' => "-",
@@ -817,10 +817,10 @@ class TestSeed extends Seeder
                 'UOM' => 'tray',
                 'price_per_UOM' => 505000.00,
                 'note' => '',
-                'product_status' => 'out_tax',
+                'product_status' => 'out',
             ],
             [
-                'nomor_surat_jalan' => '2/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '2/SJK/APA/08/2024',
                 'moving_no_moving' => '-',
                 'repack_no_repack' => '-',
                 'PO_no_PO' => "-",
@@ -829,10 +829,10 @@ class TestSeed extends Seeder
                 'UOM' => 'tray',
                 'price_per_UOM' => 605000.00,
                 'note' => '',
-                'product_status' => 'out_tax',
+                'product_status' => 'out',
             ],
             [
-                'nomor_surat_jalan' => '3/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '3/SJK/APA/08/2024',
                 'moving_no_moving' => '-',
                 'repack_no_repack' => '-',
                 'PO_no_PO' => "-",
@@ -841,10 +841,10 @@ class TestSeed extends Seeder
                 'UOM' => 'tray',
                 'price_per_UOM' => 490000.00,
                 'note' => '',
-                'product_status' => 'out_tax',
+                'product_status' => 'out',
             ],
             [
-                'nomor_surat_jalan' => '3/SJT/APA/08/2024',
+                'nomor_surat_jalan' => '3/SJK/APA/08/2024',
                 'moving_no_moving' => '-',
                 'repack_no_repack' => '-',
                 'PO_no_PO' => "-",
@@ -853,7 +853,7 @@ class TestSeed extends Seeder
                 'UOM' => 'tray',
                 'price_per_UOM' => 590000.00,
                 'note' => '',
-                'product_status' => 'out_tax',
+                'product_status' => 'out',
             ],
             [
                 'nomor_surat_jalan' => '-',
