@@ -1,98 +1,79 @@
-let rowCount = document.querySelectorAll('#productTable tbody tr').length;
+// Retrieve cart data from localStorage
+const cart = JSON.parse(localStorage.getItem('cart')) || {};
+const purchaseOrderDiv = document.getElementById('purchaseOrder');
+let grandTotal = 0;
 
-function applyAutocomplete(element) {
-    $(element).autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: '/getProductSuggestions',
-                type: 'GET',
-                dataType: 'json',
-                data: {
-                    code: request.term
-                },
-                success: function(data) {
-                    console.log(data);
-                    response(data);
-                }
-            });
-        },
-        select: function(event, ui) {
-            $(element).val(ui.item.value);
-            getProductDetails(element);
-            return false;
-        }
-        //source: availableTags
+document.getElementById('orderForm').addEventListener('submit', function () {
+    localStorage.removeItem('cart');
+});
+
+if (Object.keys(cart).length === 0) {
+    purchaseOrderDiv.innerHTML = '<p>Your cart is empty.</p>';
+} else {
+    Object.keys(cart).forEach((productCode, index) => {
+        const item = cart[productCode];
+        const totalPrice = item.productPrice * item.quantity;
+        grandTotal += totalPrice; // Dynamically calculate grand total
+
+        const rowDiv = document.createElement('div');
+        rowDiv.classList.add('row', 'align-items-center', 'mb-3');
+        rowDiv.innerHTML = `
+            <input type="hidden" name="kd[]" value="${productCode}">
+            <input type="hidden" name="price_per_uom[]" value="${item.productPrice}">
+            <div class="col-4">
+                <strong>${item.productName}</strong>
+            </div>
+            <div class="col-2">
+                ${item.productPrice}
+            </div>
+            <div class="col-4 d-flex align-items-center">
+                <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity('${productCode}')">-</button>
+                <input type="number" name="qty[]" id="quantity-${productCode}" class="form-control mx-2 text-center" value="${item.quantity}" min="1" style="width: 60px;">
+                <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity('${productCode}')">+</button>
+            </div>
+            <div class="col-2 text-end">
+                <button type="button" class="btn btn-danger" onclick="removeItem('${productCode}')">Delete</button>
+            </div>
+        `;
+        purchaseOrderDiv.appendChild(rowDiv);
     });
+
+    // Dynamically update the Grand Total
+    const totalDiv = document.createElement('div');
+    totalDiv.classList.add('mt-4', 'text-end', 'fw-bold');
+    totalDiv.innerHTML = `Grand Total: ${grandTotal}`;
+    purchaseOrderDiv.appendChild(totalDiv);
+
+    document.getElementById("theButton").innerHTML = '<button type="submit" class="btn btn-success">Place Order</button>';
 }
 
-function addRow() {
-    rowCount++;
-    const table = document.getElementById('productTable').getElementsByTagName('tbody')[0];
-    const newRow = table.insertRow();
-
-    newRow.innerHTML = `
-        <td>${rowCount}</td>
-        <td><input type="text" name="kd[]" class="productCode" placeholder="Fill in" oninput="applyAutocomplete(this)" required></td>
-        <td><input style="width: 300px;" type="text" name="material_display[]" placeholder="Automatic from system" readonly><input type="hidden" name="material[]"></td>
-        <td><input type="number" name="qty[]" oninput="calculateNominal(this)" placeholder="Fill in" required></td>
-        <td><input type="text" name="uom[]" placeholder="Fill in" required></td>
-        <td><input type="number" inputmode="numeric" name="price_per_uom[]" placeholder="Automatic from system" readonly></td>
-        <td><input type="text" name="nominal[]" oninput="calculateNominal(this)" placeholder="Automatic from system" readonly></td>
-        <td><input type="text" name="note[]" placeholder=""></td>
-        <td><button class="btn btn-danger" onclick="deleteRow(this)">Delete</button></td>
-    `;
-}
-
-function getProductDetails(input) {
-    const productCode = input.value;
-    const row = input.parentElement.parentElement;
-
-    $.ajax({
-        url: '/getProductDetails',
-        type: 'GET',
-        dataType: 'json',
-        data: {
-            code: productCode
-        },
-        success: function(data) {
-            console.log(data);
-            if (data) {
-                row.querySelector('input[name="material_display[]"]').value = data.productName;
-                row.querySelector('input[name="material[]"]').value = data.productName;
-                row.querySelector('input[name="price_per_uom[]"]').value = data.productPrice;
-            } else {
-                // Clear fields if no product is found
-                row.querySelector('input[name="material_display[]"]').value = "Automatically Filled";
-                row.querySelector('input[name="material[]"]').value = "";
-                row.querySelector('input[name="price_per_uom[]"]').value = "Automatically Filled";
-            }
-        }
-    });
-}
-
-function deleteRow(button) {
-    const row = button.parentNode.parentNode;
-    row.parentNode.removeChild(row);
-
-    // Update row numbers
-    const rows = document.getElementById('productTable').getElementsByTagName('tbody')[0].rows;
-    rowCount = 0;
-    for (let i = 0; i < rows.length; i++) {
-        rowCount++;
-        rows[i].cells[0].innerText = rowCount;
+// Decrease Quantity
+function decreaseQuantity(productCode) {
+    const input = document.getElementById(`quantity-${productCode}`);
+    let value = parseInt(input.value);
+    if (value > 1) {
+        input.value = value - 1;
+        cart[productCode].quantity = value;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        location.reload(); // Refresh to update totals
     }
 }
 
-function calculateNominal(priceInput) {
-    const row = priceInput.closest('tr'); // Get the closest row to the input
-    const qty = parseFloat(row.querySelector('input[name="qty[]"]').value); // Get the quantity value
-    const price = parseFloat(row.querySelector('input[name="price_per_uom[]"]').value); // Get the price value
+// Increase Quantity
+function increaseQuantity(productCode) {
+    const input = document.getElementById(`quantity-${productCode}`);
+    input.value = parseInt(input.value) + 1;
+    cart[productCode].quantity = input.value;
+    localStorage.setItem('cart', JSON.stringify(cart));
+    location.reload(); // Refresh to update totals
+}
 
-    console.log(price);
-    if (!isNaN(qty) && !isNaN(price)) {
-        const nominal = qty * price; // Calculate the nominal value
-        row.querySelector('input[name="nominal[]"]').value = nominal.toFixed(2); // Update the nominal field
-    } else {
-        row.querySelector('input[name="nominal[]"]').value = ''; // Clear the nominal field if invalid input
+// Remove Item
+function removeItem(productCode) {
+    delete cart[productCode];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    if (Object.keys(cart).length === 0) {
+        localStorage.removeItem('cart');
     }
+    location.reload();
 }

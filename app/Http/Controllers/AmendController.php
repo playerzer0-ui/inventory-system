@@ -364,77 +364,37 @@ class AmendController extends Controller
 
     public function amend_purchase_data(Request $req)
     {
-        $no_PO = $req->no_PO; // The purchase order number to update
-        $purchaseDate = $req->purchaseDate;
-        $customerCode = $req->customerCode;
-
+        $no_PO = $req->no_PO;
         $productCodes = $req->input('kd');
         $qtys = $req->input('qty');
-        $uoms = $req->input('uom');
-        $price_per_uom = $req->input('price_per_uom');
-        $notes = $req->input('note');
 
         try {
             DB::beginTransaction();
 
-            // Update the purchase order
-            $purchaseOrder = Purchase_Order::where('no_PO', $no_PO)->firstOrFail();
-            $purchaseOrder->update([
-                'purchaseDate' => $purchaseDate,
-                'customerCode' => $customerCode,
-            ]);
+            // Get all existing product codes for this purchase order
+            $existingProducts = Order_Product::where('PO_no_PO', $no_PO)
+                ->pluck('productCode')
+                ->toArray();
 
-            // Process products
+            // Update existing product quantities
             if ($productCodes) {
-                // Get existing product codes for this purchase order
-                $existingProducts = Order_Product::where('PO_no_PO', $no_PO)
-                    ->pluck('productCode')
-                    ->toArray();
-
-                // Update existing products
                 foreach ($productCodes as $i => $productCode) {
                     $qty = $qtys[$i];
-                    $uom = $uoms[$i];
-                    $price = $price_per_uom[$i];
-                    $note = $notes[$i] ?? null;
 
                     Order_Product::where('PO_no_PO', $no_PO)
                         ->where('productCode', $productCode)
-                        ->update([
-                            'qty' => $qty,
-                            'UOM' => $uom,
-                            'price_per_UOM' => $price,
-                            'note' => $note,
-                        ]);
+                        ->update(['qty' => $qty]);
                 }
+            }
 
-                // Insert new products that don’t exist
-                $newProducts = array_diff($productCodes, $existingProducts);
-                foreach ($newProducts as $i => $productCode) {
-                    Order_Product::create([
-                        'nomor_surat_jalan' => '-',
-                        'repack_no_repack' => '-',
-                        'moving_no_moving' => '-',
-                        'PO_no_PO' => $no_PO,
-                        'productCode' => $productCode,
-                        'qty' => $qtys[$i],
-                        'UOM' => $uoms[$i],
-                        'price_per_UOM' => $price_per_uom[$i],
-                        'note' => $notes[$i] ?? null,
-                        'product_status' => 'purchase_order',
-                    ]);
-                }
+            // Determine which products need to be deleted
+            $productsToDelete = array_diff($existingProducts, $productCodes ?? []);
 
-                // Delete products that are no longer in the request
-                $productsToDelete = array_diff($existingProducts, $productCodes);
-                if (!empty($productsToDelete)) {
-                    Order_Product::where('PO_no_PO', $no_PO)
-                        ->whereIn('productCode', $productsToDelete)
-                        ->delete();
-                }
-            } else {
-                // If no products are provided, delete all products for this purchase order
-                Order_Product::where('PO_no_PO', $no_PO)->delete();
+            // Delete products that are no longer in the request
+            if (!empty($productsToDelete)) {
+                Order_Product::where('PO_no_PO', $no_PO)
+                    ->whereIn('productCode', $productsToDelete)
+                    ->delete();
             }
 
             DB::commit();
@@ -446,6 +406,7 @@ class AmendController extends Controller
             return redirect()->route("customer_dashboard");
         }
     }
+
 
     public function amend_delete_data(Request $req)
     {

@@ -18,8 +18,10 @@ task:
 [X] customer interface
 [X] pdf excel
 [X] purchase order interface with UI simple
-truck algorithm automatically assign truck
-truck UI, delivery interface, tick boxes to trucks and orders assigned by them
+[X] truck algorithm automatically assign truck
+[X] truck UI, delivery interface, tick boxes to trucks and orders assigned by them
+[X] purchase order beautify
+[] cloud
 
 get all orders with the truck labeled out
 count the number of times each truck has done it

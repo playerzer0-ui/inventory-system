@@ -55,15 +55,13 @@ class CustomerController extends Controller
 
     public function create_purchase(Request $req)
     {
-        $customerCode = $req->customerCode;
-        $purchaseDate = $req->purchaseDate;
+        $customerCode = session('customerCode');
+        $purchaseDate = date("Y/m/d");
         $no_PO = "PO-" . substr(Str::uuid()->toString(), 0, 8);
 
         $productCodes = $req->input('kd');
         $qtys = $req->input('qty');
-        $uoms = $req->input('uom');
         $price_per_uom = $req->input("price_per_uom");
-        $notes = $req->input('note');
 
         Purchase_Order::create([
             "no_PO" => $no_PO,
@@ -81,9 +79,9 @@ class CustomerController extends Controller
                     "PO_no_PO" => $no_PO,
                     "productCode" => $productCodes[$i], 
                     "qty" => $qtys[$i], 
-                    "UOM" => $uoms[$i], 
+                    "UOM" => "tray", 
                     "price_per_UOM" => $price_per_uom[$i], 
-                    "note" => $notes[$i],
+                    "note" => "",
                     "product_status" => "purchase_order"
                 ]);
             }

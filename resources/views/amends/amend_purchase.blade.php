@@ -1,52 +1,56 @@
 <x-header :title="$title" />
 
 <main>
-    <h1>purchase order</h1>
-    <form action="{{route('amend_purchase_data')}}" method="POST">
+    <h1>Amend Purchase Order: {{ $result['no_PO'] }}</h1>
+    <form action="{{route('amend_purchase_data')}}" method="POST" id="amendForm">
         @csrf
-        <label>purchase date</label>
-        <input type="hidden" name="no_PO" value="{{$result['no_PO']}}">
-        <input type="date" name="purchaseDate" value="{{$result['purchaseDate']}}" required>
-        <input type="hidden" name="customerCode" value="{{$result['customerCode']}}">
-        <br>
+        <input type="hidden" name="no_PO" value="{{ $result['no_PO'] }}">
+        <input type="hidden" name="customerCode" value="{{ $result['customerCode'] }}">
+        <input type="hidden" name="purchaseDate" value="{{ $result['purchaseDate'] }}">
+        <div class="mb-4">
+            <p><strong>Customer Code:</strong> {{ $result['customerCode'] }}</p>
+            <p><strong>Purchase Date:</strong> {{ $result['purchaseDate'] }}</p>
+        </div>
 
-        <table id="productTable">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Code</th>
-                    <th>Material</th>
-                    <th>QTY</th>
-                    <th>UOM</th>
-                    <th>price/UOM</th>
-                    <th>nominal</th>
-                    <th>note</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $count = 1; @endphp
-                @foreach($products as $key)
-                    <tr>
-                        <td>{{ $count++ }}</td>
-                        <td><input type="text" name="kd[]" class="productCode" placeholder="Fill in" oninput="applyAutocomplete(this)" value="{{ $key->productCode }}" required></td>
-                        <td><input style="width: 300px;" type="text" name="material_display[]" placeholder="Automatic from system" value="{{ $key->productName }}" readonly>
-                            <input type="hidden" name="material[]" value="{{ $key->productName }}">
-                        </td>
-                        <td><input type="number" name="qty[]" oninput="calculateNominal(this)" placeholder="Fill in" value="{{ $key->qty }}" required></td>
-                        <td><input type="text" name="uom[]" placeholder="Fill in" value="{{ $key->uom }}" required></td>
-                        <td><input type="number" inputmode="numeric" name="price_per_uom[]" value="{{ $key->price_per_UOM }}" placeholder="Automatic from system" readonly></td>
-                        <td><input type="text" name="nominal[]" oninput="calculateNominal(this)" placeholder="Automatic from system" value="{{ (int)$key->qty * (double)$key->price_per_UOM }}" readonly></td>
-                        <td><input type="text" name="note[]" value="{{ $key->note }}" placeholder=""></td>
-                        <td><button class="btn btn-danger" onclick="deleteRow(this)">Delete</button></td>
-                    </tr>
+        <div id="amendPurchaseOrder">
+            @if($products->isEmpty())
+                <p>Your purchase order is empty.</p>
+            @else
+                @foreach($products as $key => $product)
+                <div class="row align-items-center mb-3">
+                    <input type="hidden" name="kd[]" value="{{ $product->productCode }}">
+                    <input type="hidden" name="material[]" value="{{ $product->productName }}">
+                    <input type="hidden" name="price_per_uom[]" value="{{ $product->price_per_UOM }}">
+                    <div class="col-4">
+                        <strong>{{ $product->productName }}</strong>
+                    </div>
+                    <div class="col-2">
+                        {{ $product->price_per_UOM }}
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                        <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity('{{ $product->productCode }}')">-</button>
+                        <input type="number" name="qty[]" id="quantity-{{ $product->productCode }}" class="form-control mx-2 text-center" value="{{ $product->qty }}" min="1" style="width: 60px;">
+                        <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity('{{ $product->productCode }}')">+</button>
+                    </div>
+                    <div class="col-2 text-end">
+                        <button type="button" class="btn btn-danger" onclick="removeItem('{{ $product->productCode }}')">Delete</button>
+                    </div>
+                </div>
                 @endforeach
-            </tbody>            
-        </table>
-        <button type="button" class="btn btn-success" onclick="addRow()">Add Row</button>
-        <button type="submit" class="btn btn-outline-success">Submit</button>
+
+                <div class="mt-4 text-end fw-bold" id="grandTotal">
+                    Grand Total: {{ $products->sum(fn($p) => $p->price_per_UOM * $p->qty) }}
+                </div>
+            @endif
+        </div>
+
+        <div class="text-end mt-4">
+            @if (!isset($mode))
+                <button type="submit" class="btn btn-success">Save Changes</button>
+            @endif
+        </div>
     </form>
 </main>
 
-<script src="{{asset('js/purchase_order.js')}}" async defer></script>
+<script src="{{asset('js/amend_purchase.js')}}" async defer></script>
 <x-footer />
