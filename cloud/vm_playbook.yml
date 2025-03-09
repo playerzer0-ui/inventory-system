@@ -1,0 +1,169 @@
+- name: VM host setup playbook
+  hosts: local
+  become: yes
+  tasks:
+
+    - name: system update
+      apt:
+        upgrade: yes
+        update_cache: yes 
+
+    - name: check if a reboot is required after update
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+        get_checksum: no
+      register: reboot_required_file
+      
+    - name: reboot the server (if required, re-run playbook to finish)
+      shell: "sleep 5 && reboot"
+      when: reboot_required_file.stat.exists == true
+
+    - name: Ensure required packages are installed
+      apt:
+        name: 
+          - curl
+          - elinks
+          - neofetch
+          - git
+          - nginx
+          - php
+          - php-fpm
+          - php-mysql
+          - php-xml
+          - php-mbstring
+          - php-zip
+          - php-curl
+          - php-cli
+          - php-bcmath
+          - php-tokenizer
+          - php-json
+          - mysql-server
+          - python3-pymysql
+        state: present
+
+    - name: Install Composer
+      shell: |
+        curl -sS https://getcomposer.org/installer | php
+        mv composer.phar /usr/local/bin/composer
+      args:
+        creates: /usr/local/bin/composer
+
+    - name: Create Laravel NGINX configuration
+      copy:
+        dest: /etc/nginx/sites-available/laravel
+        content: |
+          server {
+            listen 80;
+            server_name 0.0.0.0;  # Or your domain name
+            root /var/www/inventory-system/public;
+
+            index index.php index.html index.htm index.nginx-debian.html;
+
+            location / {
+                try_files $uri $uri/ /index.php?$query_string;
+            }
+
+            location ~ \.php$ {
+                include snippets/fastcgi-php.conf;
+                fastcgi_pass unix:/var/run/php/php-fpm.sock;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+            }
+
+            location ~ /\.ht {
+                deny all;
+            }
+
+            error_log /var/log/nginx/laravel_error.log;
+            access_log /var/log/nginx/laravel_access.log;
+          }
+
+    - name: Kill all Apache services if running
+      shell: |
+        if pgrep apache2 > /dev/null; then
+          sudo killall apache2
+        fi
+
+    - name: change IP address
+      shell: |
+        PUBLIC_IP=$(curl -s http://checkip.amazonaws.com || printf "0.0.0.0")
+        if [ "$PUBLIC_IP" != "0.0.0.0" ]; then
+          sed -i "s/0.0.0.0/$PUBLIC_IP/" /etc/nginx/sites-available/laravel
+        fi
+
+    - name: enable git cloning
+      shell: git config --global --add safe.directory /var/www/inventory-system
+
+    - name: Clone Laravel repository
+      shell: git clone https://playerzer0-ui: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@github.com/playerzer0-ui/inventory-system.git /var/www/inventory-system
+      args:
+        creates: /var/www/inventory-system
+      notify: set permissions
+
+    - name: Pull latest changes from repository
+      shell: git pull origin main
+      args:
+        chdir: /var/www/inventory_system
+
+    - name: Set Laravel directory permissions
+      file:
+        path: /var/www/inventory-system
+        owner: www-data
+        group: www-data
+        mode: '0755'
+        recurse: yes
+
+    - name: Copy .env file
+      copy:
+        src: /var/www/inventory-system/.env.example
+        dest: /var/www/inventory-system/.env
+        remote_src: yes
+
+    - name: Enable Laravel NGINX configuration
+      file:
+        src: /etc/nginx/sites-available/laravel
+        dest: /etc/nginx/sites-enabled/laravel
+        state: link
+      notify: restart nginx
+
+    - name: Remove default NGINX configuration
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify: restart nginx
+
+    - name: Restart NGINX
+      systemd:
+        name: nginx
+        state: restarted
+
+    - name: Setup MySQL database and user
+      shell: |
+        mysql -u root -p'password123$' -e "
+          CREATE DATABASE IF NOT EXISTS inventoryDB;
+          CREATE USER IF NOT EXISTS 'laravel_user'@'localhost' IDENTIFIED BY 'your_password';
+          GRANT ALL PRIVILEGES ON inventoryDB.* TO 'laravel_user'@'localhost';
+          FLUSH PRIVILEGES;"
+
+    - name: Run Laravel setup script
+      shell: bash /var/www/inventory-system/setup.sh
+      args:
+        chdir: /var/www/inventory-system
+      notify: set permissions
+
+  handlers:
+    - name: restart nginx
+      systemd:
+        name: nginx
+        state: restarted
+
+    - name: set permissions
+      file:
+        path: "{{ item }}"
+        owner: www-data
+        group: www-data
+        mode: '0775'
+        recurse: yes
+      with_items:
+        - /var/www/inventory-system/storage
+        - /var/www/inventory-system/bootstrap/cache
