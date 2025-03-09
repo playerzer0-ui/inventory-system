@@ -1,47 +1,57 @@
-#variables
+# Variables
 $resourcegroup = "ca1_rg"
 $vmname = "web-vm"
+$location = "westeurope"
+$sshKeyPath = "$env:USERPROFILE\.ssh\id_rsa.pub"  # Path to your public key
 
-#make resource group
+# Check if resource group exists
 $exists = az group exists --name $resourcegroup
 if ($exists -eq $true) {
-    Write-Host "already exists"
-}
-else{
-    Write-Host "not exists"
-    az group create -n $resourcegroup -l westeurope
+    Write-Host "Resource group already exists"
+} else {
+    Write-Host "Creating resource group..."
+    az group create -n $resourcegroup -l $location
 }
 
-#make IP
-Write-Host "make IP" -ForegroundColor DarkYellow
-$publicIpResource = az network public-ip create `
+# Create Public IP
+Write-Host "Creating Public IP..." -ForegroundColor DarkYellow
+$publicIp = az network public-ip create `
     --name web-vm-ip `
-    --resource-group ca1_rg `
+    --resource-group $resourcegroup `
     --allocation-method Static `
-    --query publicIp.ipAddress
+    --query publicIp.ipAddress `
+    --output tsv
 
-#make vm
-Write-Host "make VM" -ForegroundColor DarkYellow
-
+# Create VM with SSH Key
+Write-Host "Creating VM..." -ForegroundColor DarkYellow
 az vm create `
-    -n web-vm `
-    --resource-group ca1_rg `
+    -n $vmname `
+    --resource-group $resourcegroup `
     --size Standard_B2s `
     --image 'Canonical:ubuntu-24_04-lts:server:latest' `
-    --admin-user developer `
-    --admin-password password123$ `
-    --custom-data vm_init.yml `
+    --admin-username developer `
+    --ssh-key-values $sshKeyPath `
     --public-ip-address web-vm-ip
 
-#open port
-Write-Host "make port open" -ForegroundColor DarkYellow
+# Open port 80
+Write-Host "Opening port 80..." -ForegroundColor DarkYellow
 az vm open-port -g $resourcegroup -n $vmname --port 80
 
-#put the files in the vm
-Write-Host "put the files in the vm" -ForegroundColor DarkYellow
-scp .\vm_playbook.yml developer@${publicIpResource}:/home/developer/
-scp .\inventory.ini developer@${publicIpResource}:/home/developer/
+# Wait for VM setup
+Start-Sleep -Seconds 30  
 
-Write-Host "IP-address: " $publicIpResource -ForegroundColor DarkYellow
+# Get the assigned public IP
+$publicIp = az vm show -d -g $resourcegroup -n $vmname --query publicIps -o tsv
+Write-Host "VM Public IP: $publicIp" -ForegroundColor Green
+
+# Copy files to VM
+Write-Host "Copying files to VM..." -ForegroundColor DarkYellow
+scp -i "$env:USERPROFILE\.ssh\id_rsa" .\vm_playbook.yml developer@${publicIp}:/home/developer/
+scp -i "$env:USERPROFILE\.ssh\id_rsa" .\inventory.ini developer@${publicIp}:/home/developer/
+
+# SSH into the VM
+# Write-Host "Connecting to VM via SSH..." -ForegroundColor Cyan
+# ssh -i "$env:USERPROFILE\.ssh\id_rsa" developer@$publicIp
+
 
 #ansible-playbook -i inventory.ini vm_playbook.yml

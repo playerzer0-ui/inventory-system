@@ -95,10 +95,12 @@
       shell: git config --global --add safe.directory /var/www/inventory-system
 
     - name: Clone Laravel repository
-      shell: git clone https://playerzer0-ui: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@github.com/playerzer0-ui/inventory-system.git /var/www/inventory-system
-      args:
-        creates: /var/www/inventory-system
+      git:
+        repo: "git@github.com:playerzer0-ui/inventory-system.git"
+        dest: "/var/www/inventory-system"
+        version: main
       notify: set permissions
+
 
     - name: Pull latest changes from repository
       shell: git pull origin main
