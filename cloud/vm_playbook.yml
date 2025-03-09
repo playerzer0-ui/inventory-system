@@ -148,6 +148,11 @@
           GRANT ALL PRIVILEGES ON inventoryDB.* TO 'laravel_user'@'localhost';
           FLUSH PRIVILEGES;"
 
+    - name: Ensure the setup script has execute permissions
+      file:
+        path: /var/www/inventory-system/setup.sh
+        mode: '0755'
+
     - name: Run Laravel setup script
       shell: bash /var/www/inventory-system/setup.sh
       args:
