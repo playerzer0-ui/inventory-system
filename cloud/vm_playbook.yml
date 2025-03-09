@@ -158,6 +158,11 @@
       args:
         chdir: /var/www/inventory-system
       notify: set permissions
+  
+    - name: Rename service directory to Service
+      shell: sudo mv /var/www/inventory-system/app/service /var/www/inventory-system/app/Service
+      args:
+        creates: /var/www/inventory-system/app/Service
 
   handlers:
     - name: restart nginx
