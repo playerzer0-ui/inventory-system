@@ -30,6 +30,7 @@ az vm create `
     --size Standard_B2s `
     --image 'Canonical:ubuntu-24_04-lts:server:latest' `
     --admin-username developer `
+    --custom-data vm_init.yml `
     --ssh-key-values $sshKeyPath `
     --public-ip-address web-vm-ip
 

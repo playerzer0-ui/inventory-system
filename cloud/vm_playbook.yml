@@ -39,6 +39,7 @@
           - php-json
           - mysql-server
           - python3-pymysql
+          - php8.3-gd
         state: present
 
     - name: Install Composer
@@ -96,16 +97,16 @@
 
     - name: Clone Laravel repository
       git:
-        repo: "git@github.com:playerzer0-ui/inventory-system.git"
+        repo: "https://github.com/playerzer0-ui/inventory-system.git"
         dest: "/var/www/inventory-system"
         version: main
-      notify: set permissions
-
+        accept_hostkey: yes
+        force: yes
 
     - name: Pull latest changes from repository
       shell: git pull origin main
       args:
-        chdir: /var/www/inventory_system
+        chdir: /var/www/inventory-system
 
     - name: Set Laravel directory permissions
       file:
