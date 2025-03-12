@@ -43,6 +43,14 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
         ],
+        'azure' => [
+            'transport' => 'azure',
+            'resource_name' => env('AZURE_MAIL_RESOURCE_NAME'),
+            'endpoint' => env('AZURE_MAIL_ENDPOINT', 'https://my-acs-resource-name.communication.azure.com'),
+            'access_key' => env('AZURE_MAIL_KEY'),
+            'api_version' => env('AZURE_MAIL_API_VERSION', '2023-03-31'),
+            'disable_user_tracking' => env('AZURE_MAIL_DISABLE_TRACKING', false),
+        ],
 
         'ses' => [
             'transport' => 'ses',
