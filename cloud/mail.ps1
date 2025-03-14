@@ -1,38 +1,19 @@
-$resourcegroup = "ca1_rg"
+$resourceGroupName = "mail_rg"  # Replace with your resource group name
+$templateFile = "template.json"       # Path to the template.json file
+$parametersFile = "parameters.json"   # Path to the parameters.json file
 $location = "westeurope"
 
-# Check if resource group exists
-$exists = az group exists --name $resourcegroup
+$exists = az group exists --name $resourceGroupName
 if ($exists -eq $true) {
     Write-Host "Resource group already exists"
 } else {
     Write-Host "Creating resource group..."
-    az group create -n $resourcegroup -l $location
+    az group create -n $resourceGroupName -l $location
 }
 
-# create communication service
-Write-Host "create communication service" -ForegroundColor DarkYellow
-az communication create --data-location "Europe" --name "com-system" --resource-group "ca1_rg" --location "Global"
+Write-Host "deploy the mails! " -ForegroundColor Yellow
+az deployment group create --resource-group $resourceGroupName --template-file $templateFile --parameters $parametersFile
 
-# create email communication service
-Write-Host "create email communication service" -ForegroundColor DarkYellow
-az communication email create --data-location "Europe" --email-service-name "mail-system" --resource-group "ca1_rg"
+az communication list-key -n "com-system" --resource-group $resourceGroupName
 
-# create subdomain
-Write-Host "create subdomain" -ForegroundColor DarkYellow
-az communication email domain create --domain-name AzureManagedDomain --email-service-name "mail-system" --location "Global" --resource-group "ca1_rg" --domain-management AzureManaged
-
-# connect to com-service
-Write-Host "connect to com-service" -ForegroundColor DarkYellow
-$connectionString = az communication list-key --name "com-system" --resource-group "ca1_rg" --query "primaryConnectionString" -o tsv
-az communication email update --resource-group "ca1_rg" --email-service-name "mail-system" --connection-string $connectionString
-az communication email show --resource-group "ca1_rg" --email-service-name "mail-system"
-
-# get mail
-Write-Host "get mail, endpoint and key" -ForegroundColor DarkYellow
-az communication email send list --resource-group "ca1_rg" --email-service-name "mail-system"
-az communication list --resource-group "ca1_rg" --query "[?name=='com-system'].dataLocation" -o tsv
-az communication list-keys --name "com-system" --resource-group "ca1_rg" --query "primaryKey" -o tsv
-
-
-                    
+az communication email domain list --email-service-name "mail-system" --resource-group "mail_rg"
