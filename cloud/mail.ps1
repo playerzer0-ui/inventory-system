@@ -14,6 +14,16 @@ if ($exists -eq $true) {
 Write-Host "deploy the mails! " -ForegroundColor Yellow
 az deployment group create --resource-group $resourceGroupName --template-file $templateFile --parameters $parametersFile
 
-az communication list-key -n "com-system" --resource-group $resourceGroupName
+$domain = az communication email domain list --email-service-name "mail-system" --resource-group "mail_rg" | ConvertFrom-Json
 
-az communication email domain list --email-service-name "mail-system" --resource-group "mail_rg"
+$json = az communication list-key -n "com-system" --resource-group $resourceGroupName | ConvertFrom-Json
+$conn = $json.primaryConnectionString -split ";"
+
+$endpoint = $conn[0] -replace "endpoint=", ""
+$accessKey = $conn[0] -replace "accesskey=", ""
+
+$email = "DoNotReply@$($domain[0].fromSenderDomain)"
+
+Write-Host "endpoint: $endpoint" -ForegroundColor Green 
+Write-Host "accessKey: $accessKey" -ForegroundColor Green 
+Write-Host "email: $email" -ForegroundColor Green 
