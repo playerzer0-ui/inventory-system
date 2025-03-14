@@ -12,6 +12,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SlipController;
 use App\Http\Controllers\TruckController;
+use App\Service\AzureEmailService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,5 +124,15 @@ Route::post("/master_delete_data", [MasterController::class, "delete_data"])->na
 
 //testing
 Route::get("/test", [ServiceController::class, "getTruck"])->name("test1");
+
+Route::get('/email', function () {
+    $azureService = new AzureEmailService();
+    $recipient = 'd00234340@student.dkit.ie'; // Replace with the recipient's email
+    $subject = 'Test Email from AzureEmailService';
+    $content = 'This is a test email sent using Azure Communication Services.';
+    $attachments = ['files/Debt_Report_APA_08_2024.xlsx'];
+
+    $azureService->sendEmail($recipient, $subject, $content, $attachments);
+});
 
 

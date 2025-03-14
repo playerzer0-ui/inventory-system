@@ -1,73 +1,108 @@
-<?php 
+<?php
+
+namespace App\Service;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
-class AzureEmailService
-{
-    private $endpoint;
-    private $accessKey;
+class AzureEmailService {
+    private $email;
+    private $resourceEndpoint;
+    private $secretKey;
+    private $apiVersion;
 
     public function __construct()
     {
-        $this->endpoint = config("mail.mailers.azure.endpoint");
-        $this->accessKey = config("mail.mailers.azure.access_key");
+        $this->email = config("mail.mailers.azure.sender");
+        $this->resourceEndpoint = config("mail.mailers.azure.endpoint");
+        $this->secretKey = config("mail.mailers.azure.access_key");
+        $this->apiVersion = config("mail.mailers.azure.api_version");
     }
 
-    /**
-     * sends an email with the help of azure
-     */
-    public function sendEmail($sender, $recipient, $subject, $content, $attachments = [])
+    function computeContentHash($content)
     {
-        $timestamp = gmdate('D, d M Y H:i:s T');
-        $client = new Client();
+        
+        return base64_encode(hash('sha256', $content, true));
+    }
+    
+    function computeSignature($stringToSign, $secret)
+    {
+        
+        $decodedSecret = base64_decode($secret);
+        
+        return base64_encode(hash_hmac('sha256', $stringToSign, $decodedSecret, true));
+    }
+    
+    function sendEmail($receipient, $subject, $content, $attachments = [])
+    {
+        $requestUri = "$this->resourceEndpoint/emails:send?api-version=$this->apiVersion";
 
-        $contentHash = base64_encode(hash('sha256', $content, true));
-
-        // Create the string to sign and generate HMAC signature
-        $stringToSign = "POST\n" . "/emails\n" . $timestamp . ";" . parse_url($this->endpoint, PHP_URL_HOST) . ";" . $contentHash;
-        $signature = base64_encode(hash_hmac('sha256', $stringToSign, base64_decode($this->accessKey), true));
-
-        // Prepare the attachment payload
-        $encodedAttachments = [];
+        $attachmentsArray = [];
         foreach ($attachments as $attachment) {
-            $encodedAttachments[] = [
-                'name' => $attachment['name'], // e.g., "file.pdf"
-                'contentType' => $attachment['type'], // e.g., "application/pdf"
-                'contentBytesBase64' => base64_encode(file_get_contents($attachment['path'])),
-            ];
+            $filePath = public_path($attachment); // Assuming the file is in the public folder
+            if (file_exists($filePath)) {
+                $fileContent = file_get_contents($filePath);
+                $base64Content = base64_encode($fileContent);
+                $attachmentsArray[] = [
+                    'name' => basename($attachment),
+                    'contentType' => mime_content_type($filePath),
+                    'contentInBase64' => $base64Content
+                ];
+            }
         }
 
-        // Build the email payload
-        $payload = [
-            'senderAddress' => $sender,
+        $body = [
+            'headers' => [
+                'ClientCorrelationId' => '123',
+                'ClientCustomHeaderName' => 'ClientCustomHeaderValue'
+            ],
+            'senderAddress' => $this->email,
             'content' => [
                 'subject' => $subject,
                 'plainText' => $content,
             ],
             'recipients' => [
                 'to' => [
-                    ['address' => $recipient],
+                    [
+                        'address' => $receipient
+                    ]
                 ],
+                'cc' => [],
+                'bcc' => []
             ],
+            'attachments' => $attachmentsArray,
+            'userEngagementTrackingDisabled' => true
         ];
-
-        if (!empty($encodedAttachments)) {
-            $payload['attachments'] = $encodedAttachments;
+    
+        $serializedBody = json_encode($body);
+    
+        $date = gmdate('D, d M Y H:i:s T');
+        $contentHash = $this->computeContentHash($serializedBody);
+    
+        $host = parse_url($this->resourceEndpoint, PHP_URL_HOST);
+        $stringToSign = "POST\n/emails:send?api-version=$this->apiVersion\n$date;$host;$contentHash";
+    
+        $signature = $this->computeSignature($stringToSign, $this->secretKey);
+    
+        $authorizationHeader = "HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-sha256&Signature=$signature";
+    
+        try {
+            $client = new Client([
+                'verify' => false  
+            ]);
+            $response = $client->post($requestUri, [
+                'headers' => [
+                    'x-ms-date' => $date,
+                    'x-ms-content-sha256' => $contentHash,
+                    'Authorization' => $authorizationHeader,
+                    'Content-Type' => 'application/json'
+                ],
+                'body' => $serializedBody
+            ]);
+    
+            echo "Response: " . $response->getBody() . "\n";
+        } catch (RequestException $e) {
+            echo "Request failed: " . $e->getMessage() . "\n";
         }
-
-        // Send the email
-        $response = $client->post($this->endpoint . '/emails', [
-            'headers' => [
-                'x-ms-date' => $timestamp,
-                'x-ms-content-sha256' => $contentHash,
-                'Authorization' => "HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-sha256&Signature=$signature",
-                'Content-Type' => 'application/json',
-            ],
-            'json' => $payload,
-        ]);
-
-        return $response->getBody()->getContents();
     }
 }
-
-?>

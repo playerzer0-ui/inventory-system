@@ -45,6 +45,7 @@ return [
         ],
         'azure' => [
             'transport' => 'azure',
+            'sender' => env('AZURE_MAIL'),
             'resource_name' => env('AZURE_MAIL_RESOURCE_NAME'),
             'endpoint' => env('AZURE_MAIL_ENDPOINT', 'https://my-acs-resource-name.communication.azure.com'),
             'access_key' => env('AZURE_MAIL_KEY'),
