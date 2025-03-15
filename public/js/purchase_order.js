@@ -44,6 +44,14 @@ if (Object.keys(cart).length === 0) {
     totalDiv.innerHTML = `Grand Total: ${grandTotal}`;
     purchaseOrderDiv.appendChild(totalDiv);
 
+    // Add a hidden input field to store the Grand Total
+    const totalInput = document.createElement('input');
+    totalInput.type = 'hidden';
+    totalInput.name = 'grand_total';  // This is how you access it in PHP ($req->grand_total)
+    totalInput.value = grandTotal;
+    purchaseOrderDiv.appendChild(totalInput);
+
+    // Add the Place Order button
     document.getElementById("theButton").innerHTML = '<button type="submit" class="btn btn-success">Place Order</button>';
 }
 

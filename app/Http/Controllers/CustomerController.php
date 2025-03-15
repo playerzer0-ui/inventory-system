@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Service\OrderProductService as ServiceOrderProductService;
+use Illuminate\Support\Facades\Log;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 class CustomerController extends Controller
 {
@@ -57,35 +60,45 @@ class CustomerController extends Controller
     {
         $customerCode = session('customerCode');
         $purchaseDate = date("Y/m/d");
-        $no_PO = "PO-" . substr(Str::uuid()->toString(), 0, 8);
 
-        $productCodes = $req->input('kd');
-        $qtys = $req->input('qty');
-        $price_per_uom = $req->input("price_per_uom");
+        // Retrieve data from session
+        $purchaseData = session('purchase_data');
 
+        if (!$purchaseData) {
+            return redirect()->route("customer_dashboard")->with('error', 'Session expired. Please try again.');
+        }
+
+        $no_PO = $purchaseData['no_PO'];
+        $productCodes = $purchaseData['productCodes'];
+        $qtys = $purchaseData['qtys'];
+        $price_per_uom = $purchaseData['price_per_uom'];
+
+        // Save the purchase order
         Purchase_Order::create([
             "no_PO" => $no_PO,
             "purchaseDate" => $purchaseDate,
             "customerCode" => $customerCode,
             "status_mode" => 1
         ]);
-        
-        if($productCodes){
-            for($i = 0; $i < count($productCodes); $i++){
-                Order_Product::create([
-                    "nomor_surat_jalan" => "-", 
-                    "repack_no_repack" => "-",
-                    "moving_no_moving" => "-",
-                    "PO_no_PO" => $no_PO,
-                    "productCode" => $productCodes[$i], 
-                    "qty" => $qtys[$i], 
-                    "UOM" => "tray", 
-                    "price_per_UOM" => $price_per_uom[$i], 
-                    "note" => "",
-                    "product_status" => "purchase_order"
-                ]);
-            }
+
+        // Save order products
+        foreach ($productCodes as $i => $code) {
+            Order_Product::create([
+                "nomor_surat_jalan" => "-", 
+                "repack_no_repack" => "-",
+                "moving_no_moving" => "-",
+                "PO_no_PO" => $no_PO,
+                "productCode" => $code, 
+                "qty" => $qtys[$i], 
+                "UOM" => "tray", 
+                "price_per_UOM" => $price_per_uom[$i], 
+                "note" => "",
+                "product_status" => "purchase_order"
+            ]);
         }
+
+        // Clear session after use
+        session()->forget('purchase_data');
 
         session()->flash('msg', 'no_PO: ' . $no_PO);
 
@@ -124,5 +137,48 @@ class CustomerController extends Controller
             'purchaseOrder' => $purchaseOrder,
             'products' => $products,
         ]);
+    }
+
+    public function checkOutPurchase(Request $req)
+    {
+        $no_PO = "PO-" . substr(Str::uuid()->toString(), 0, 8);
+
+        $productCodes = $req->input('kd');
+        $qtys = $req->input('qty');
+        $price_per_uom = $req->input("price_per_uom");
+        
+        $total = $req->grand_total;
+
+        // Convert to cents (Stripe requires the amount in cents)
+        $unit_amount = (int) round($total * 100);
+
+        // Store purchase data in session
+        session([
+            'purchase_data' => [
+                'no_PO' => $no_PO,
+                'productCodes' => $productCodes,
+                'qtys' => $qtys,
+                'price_per_uom' => $price_per_uom
+            ]
+        ]);
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => ['name' => $no_PO],
+                    'unit_amount' => $unit_amount, // Convert to cents
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('create_purchase'), // No need to pass parameters
+            'cancel_url' => url('purchase_order'),
+        ]);
+
+        return redirect()->away($session->url);
     }
 }

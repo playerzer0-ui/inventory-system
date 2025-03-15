@@ -13,7 +13,10 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SlipController;
 use App\Http\Controllers\TruckController;
 use App\Service\AzureEmailService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +46,8 @@ Route::get("/show_customer_login", [CustomerController::class, "show_customer_lo
 Route::post("/customer_login", [CustomerController::class, "customer_login"])->name("customer_login");
 Route::get("/customer_dashboard", [CustomerController::class, "customer_dashboard"])->name("customer_dashboard");
 Route::get("/purchase_order", [CustomerController::class, "purchase_order"])->name("purchase_order");
-Route::post("/create_purchase", [CustomerController::class, "create_purchase"])->name("create_purchase");
+Route::post('/checkOutPurchase', [CustomerController::class, "checkOutPurchase"])->name("checkOutPurchase");
+Route::get("/create_purchase", [CustomerController::class, "create_purchase"])->name("create_purchase");
 Route::get("/list_purchase", [CustomerController::class, "list_purchase"])->name("list_purchase");
 Route::get("/amend_purchase", [CustomerController::class, "amend_purchase"])->name("amend_purchase");
 Route::get('/getPurchaseOrderProducts', [CustomerController::class, 'getPurchaseOrderProducts']);
@@ -134,5 +138,3 @@ Route::get('/email', function () {
 
     $azureService->sendEmail($recipient, $subject, $content, $attachments);
 });
-
-

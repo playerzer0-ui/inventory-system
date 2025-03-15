@@ -2,7 +2,7 @@
 
 <main>
     <h1>Purchase Order</h1>
-    <form action="{{route('create_purchase')}}" method="POST" id="orderForm">
+    <form action="{{route('checkOutPurchase')}}" method="POST" id="orderForm">
         @csrf
         <div id="purchaseOrder"></div>
         <div class="text-start mt-4" id="theButton">

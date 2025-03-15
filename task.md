@@ -22,6 +22,7 @@ task:
 [X] truck UI, delivery interface, tick boxes to trucks and orders assigned by them
 [X] purchase order beautify
 [] cloud
+[] pay stripe
 
 get all orders with the truck labeled out
 count the number of times each truck has done it
