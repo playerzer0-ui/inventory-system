@@ -135,6 +135,7 @@ return new class extends Migration
             $table->date("purchaseDate")->nullable();
             $table->string("customerCode", 10);
             $table->integer("status_mode"); //1=pending 2=done
+            $table->string("payIntent", 200)->nullable();
 
             $table->foreign('customerCode')->references('customerCode')->on('customers')->onDelete('cascade');
         });

@@ -71,6 +71,7 @@ class HomeController extends Controller
     {
         $state = $req->state;
         $no_sj = $req->code;
+        $mode = $req->mode;
         $payment_id = $req->payment_id;
 
         switch($state){
@@ -90,7 +91,7 @@ class HomeController extends Controller
                 return redirect()->route("amend_moving", ["no_moving" => $no_sj]);
                 break;
             case "purchase":
-                return redirect()->route("amend_purchase", ["no_PO" => $no_sj]);
+                return redirect()->route("amend_purchase", ["no_PO" => $no_sj, "mode" => $mode]);
                 break;
         }
     }

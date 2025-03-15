@@ -1,6 +1,7 @@
 <x-header :title="$title" />
 
 <main>
+    <input type="hidden" id="success" value="{{session('msg')}}">
     <div class="container">
         <div class="row">
             @foreach($products as $key)

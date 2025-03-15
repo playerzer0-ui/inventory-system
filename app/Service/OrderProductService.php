@@ -54,6 +54,21 @@ class OrderProductService
                     'op.product_status'
                 )
                 ->get();
+        } else if($status == "purchase_otw") {
+            return DB::table('order_products as op')
+                ->join('products as p', 'op.productCode', '=', 'p.productCode')
+                ->where('op.PO_no_PO', $no_sj)
+                ->select(
+                    'op.PO_no_PO',
+                    'op.productCode',
+                    'p.productName',
+                    'op.qty',
+                    'op.uom',
+                    'op.price_per_UOM',
+                    'op.note',
+                    'op.product_status'
+                )
+                ->get();
         } else {
             return DB::table('order_products as op')
                 ->join('products as p', 'op.productCode', '=', 'p.productCode')

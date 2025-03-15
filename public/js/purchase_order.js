@@ -3,9 +3,6 @@ const cart = JSON.parse(localStorage.getItem('cart')) || {};
 const purchaseOrderDiv = document.getElementById('purchaseOrder');
 let grandTotal = 0;
 
-document.getElementById('orderForm').addEventListener('submit', function () {
-    localStorage.removeItem('cart');
-});
 
 if (Object.keys(cart).length === 0) {
     purchaseOrderDiv.innerHTML = '<p>Your cart is empty.</p>';

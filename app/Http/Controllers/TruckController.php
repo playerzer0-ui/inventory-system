@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\Order_Product;
 use App\Models\Purchase_Order;
 use App\Models\Truck;
 use Illuminate\Http\Request;
@@ -49,6 +50,17 @@ class TruckController extends Controller
         Order::where("nomor_surat_jalan", $no_sj)->update(["delivered" => 1]);
         Truck::where("no_truk", session('no_truk'))->update(["mode" => 1]);
         
+        $purchaseOrder = Order::where("nomor_surat_jalan", $no_sj)->pluck("purchase_order")->first();
+
+        // Query to get the total and accepted products
+        $result = Order_Product::where('PO_no_PO', $purchaseOrder)
+        ->selectRaw('COUNT(*) as total_products, SUM(CASE WHEN product_status = "purchase_approved" THEN 1 ELSE 0 END) as accepted_products')
+        ->first();
+
+        if ($result->total_products == $result->accepted_products) {
+            Purchase_Order::where("no_PO", $purchaseOrder)->update(["status_mode" => 3]);
+        }
+
 
         session()->flash('msg', 'delivery: COMPLETE: ' . $no_sj);
         return redirect()->route("truck_dashboard");

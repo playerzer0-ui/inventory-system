@@ -102,7 +102,7 @@ class CustomerController extends Controller
 
         session()->flash('msg', 'no_PO: ' . $no_PO);
 
-        return redirect()->route("customer_dashboard");
+        return redirect()->route("customer_dashboard", ['success' => 1]);
     }
 
     public function list_purchase()
@@ -114,9 +114,15 @@ class CustomerController extends Controller
     public function amend_purchase(Request $req)
     {
         $no_PO = $req->no_PO;
+        $mode = $req->mode;
         $result = Purchase_Order::where("no_PO", $no_PO)->first();
-        $products = $this->orderProductService->getOrderProducts($no_PO, "purchase");
-        return view("amends.amend_purchase", ["title" => "amend purchase", "result" => $result, "products" => $products]);
+        if($mode == null){
+            $products = $this->orderProductService->getOrderProducts($no_PO, "purchase");
+        }
+        else {
+            $products = $this->orderProductService->getOrderProducts($no_PO, "purchase_otw");
+        }
+        return view("amends.amend_purchase", ["title" => "amend purchase", "result" => $result, "products" => $products, "mode" => $mode]);
     }
 
     public function getPurchaseOrderProducts(Request $request)

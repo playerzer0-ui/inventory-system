@@ -1,3 +1,11 @@
+document.addEventListener('DOMContentLoaded', function () {
+    let success = document.getElementById("success").value;
+    if(success !== null){
+        localStorage.removeItem("cart");
+        localStorage.clear();
+    }
+});
+
 function decreaseQuantity(productCode) {
     const input = document.getElementById(`quantity-${productCode}`);
     let value = parseInt(input.value);

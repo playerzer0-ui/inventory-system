@@ -28,6 +28,12 @@ get all orders with the truck labeled out
 count the number of times each truck has done it
 check the quantity
 
+PO-77645c6b
+$result = Order_Product::where('PO_no_PO', 'PO-77645c6b')
+    ->selectRaw('COUNT(*) as total_products, SUM(CASE WHEN product_status = "purchase_accepted" THEN 1 ELSE 0 END) as accepted_products')
+    ->first();
+
+
 (
     SELECT 
         p.productCode,

@@ -365,6 +365,7 @@ class AmendController extends Controller
     public function amend_purchase_data(Request $req)
     {
         $no_PO = $req->no_PO;
+        $oldTotal = $req->oldTotal;
         $productCodes = $req->input('kd');
         $qtys = $req->input('qty');
 
@@ -405,6 +406,34 @@ class AmendController extends Controller
             session()->flash('msg', 'ERROR: ' . $e->getMessage());
             return redirect()->route("customer_dashboard");
         }
+    }
+
+    public function amendCheckoutPurchase(Request $req)
+    {
+        $no_PO = $req->no_PO;
+        $grand_total = $req->grand_total;
+        $oldTotal = $req->oldTotal;
+        $productCodes = $req->input('kd');
+        $qtys = $req->input('qty');
+
+        // Store purchase data in session
+        session([
+            'purchase_data' => [
+                'no_PO' => $no_PO,
+                'productCodes' => $productCodes,
+                'qtys' => $qtys
+            ]
+        ]);
+
+        //differentiate
+        if($grand_total > $oldTotal){
+            $diff = $grand_total - $oldTotal;
+        }
+        else{
+            $diff = $oldTotal - $grand_total;
+        }
+
+        
     }
 
 
@@ -449,7 +478,9 @@ class AmendController extends Controller
                     DB::delete("DELETE FROM order_products WHERE PO_no_PO = ?", [$code]);
                     DB::delete("DELETE FROM purchase_orders WHERE no_PO = ?", [$code]);
                     session()->flash('msg', 'Record deleted successfully');
+                    DB::commit();
                     return redirect()->route("customer_dashboard");
+                    break;
             }
 
             DB::commit();

@@ -47,4 +47,5 @@ function updateGrandTotal() {
     });
 
     document.getElementById("grandTotal").innerText = `Grand Total: ${total.toFixed(2)}`;
+    document.getElementById("grand_total").innerText = `Grand Total: ${total.toFixed(2)}`;
 }
