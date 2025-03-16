@@ -8,6 +8,7 @@ use App\Models\Order_Product;
 use App\Models\Product;
 use App\Models\Storage;
 use App\Models\Vendor;
+use App\Service\AzureEmailService;
 use App\Service\StorageReport;
 use App\Service\ExcelService;
 use App\Service\PDFService;
@@ -22,12 +23,14 @@ class ReportController extends Controller
     protected $storageReport;
     protected $excel;
     protected $pdf;
+    protected $azure;
 
-    public function __construct(StorageReport $storageReport, ExcelService $excel, PDFService $pdf)
+    public function __construct(StorageReport $storageReport, ExcelService $excel, PDFService $pdf, AzureEmailService $azure)
     {
         $this->storageReport = $storageReport;
         $this->excel = $excel;
         $this->pdf = $pdf;
+        $this->azure = $azure;
     }
 
     public function forecast()
@@ -166,6 +169,11 @@ class ReportController extends Controller
         $year = $req->year;
 
         return $this->excel->excel_receivable($month, $year);
+    }
+
+    public function debug()
+    {
+        $this->azure->mailReports();
     }
 
     // public function createPDF(Request $req)

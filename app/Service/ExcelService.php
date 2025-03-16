@@ -186,25 +186,21 @@ class ExcelService
 
         $sheet->getStyle("D8:AJ" . ($cell - 1))->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
 
-        //$filePath = "../files/report_stock_" . $storageCode . "_" . $month . "_" . $year . ".xlsx";
-        $filePath = public_path("files/report_stock_{$storageCode}-{$month}-{$year}.xlsx");
-        $writer = new Xlsx($spreadsheet);
+        // Define the file path
+        $fileName = "Report_stock_{$storageCode}_{$month}_{$year}.xlsx";
+        $filePath = public_path("files/{$fileName}");
+    
+        // Ensure the directory exists
+        if (!file_exists(public_path('files'))) {
+            mkdir(public_path('files'), 0777, true);
+        }
+    
+        // Save the file to the public/files folder
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($filePath);
-
-        // Clear output buffer
-        ob_end_clean();
-
-        // Set headers
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Cache-Control: must-revalidate, post-check, pre-check');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filePath));
-        header('Expires: 0');
-
-        // Read file and send to client
-        readfile($filePath);
+    
+        // Stream the file for download
+        return response()->download($filePath);
     }
 
     function report_stock_excel_normal($storageCode, $month, $year) {
@@ -314,25 +310,21 @@ class ExcelService
         $sheet->getStyle("D8:N" . ($cell - 1))->getNumberFormat()->setFormatCode($this->indonesianNumberFormat);
 
 
-        //$filePath = "../files/report_stock_" . $storageCode . "_" . $month . "_" . $year . ".xlsx";
-        $filePath = public_path("files/report_stock_{$storageCode}-{$month}-{$year}.xlsx");
-        $writer = new Xlsx($spreadsheet);
+        // Define the file path
+        $fileName = "Report_stock_supply_{$storageCode}_{$month}_{$year}.xlsx";
+        $filePath = public_path("files/{$fileName}");
+    
+        // Ensure the directory exists
+        if (!file_exists(public_path('files'))) {
+            mkdir(public_path('files'), 0777, true);
+        }
+    
+        // Save the file to the public/files folder
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($filePath);
-
-        // Clear output buffer
-        ob_end_clean();
-
-        // Set headers
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Cache-Control: must-revalidate, post-check, pre-check');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filePath));
-        header('Expires: 0');
-
-        // Read file and send to client
-        readfile($filePath);
+    
+        // Stream the file for download
+        return response()->download($filePath);
     }
 
     function excel_debt($storageCode, $month, $year) {

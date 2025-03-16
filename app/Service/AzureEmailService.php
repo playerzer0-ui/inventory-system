@@ -2,21 +2,26 @@
 
 namespace App\Service;
 
+use App\Models\Storage;
+use App\Models\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use App\Service\ExcelService;
 
 class AzureEmailService {
     private $email;
     private $resourceEndpoint;
     private $secretKey;
     private $apiVersion;
+    protected $excel;
 
-    public function __construct()
+    public function __construct(ExcelService $excel)
     {
         $this->email = config("mail.mailers.azure.sender");
         $this->resourceEndpoint = config("mail.mailers.azure.endpoint");
         $this->secretKey = config("mail.mailers.azure.access_key");
         $this->apiVersion = config("mail.mailers.azure.api_version");
+        $this->excel = $excel;
     }
 
     function computeContentHash($content)
@@ -103,6 +108,52 @@ class AzureEmailService {
             echo "Response: " . $response->getBody() . "\n";
         } catch (RequestException $e) {
             echo "Request failed: " . $e->getMessage() . "\n";
+        }
+    }
+
+    public function alertSuppliers()
+    {
+        $suppliers = User::where("userType", 0)->pluck("email");
+        for($i = 0; $i < count($suppliers); $i++){
+            $this->sendEmail($suppliers[$i], "purchase order created", "a customer has made a purchase order");
+        }
+    }
+
+    public function alertAdmins($state)
+    {
+        $admins = User::where("userType", 1)->pluck("email");
+        for($i = 0; $i < count($admins); $i++){
+            $this->sendEmail($admins[$i], "order $state is made", "a supplier has made an order");
+        }
+    }
+
+    public function mailReports()
+    {
+        $storages = Storage::all()->pluck("storageCode");
+        $admins = User::where("userType", 1)->pluck("email");
+        $suppliers = User::where("userType", 0)->pluck("email");
+        $month = date("m");
+        $year = date("Y");
+        $adminArr = [];
+        $supplierArr = [];
+
+        for($i = 0; $i < count($storages); $i++){
+            $this->excel->report_stock_excel($storages[$i], $month, $year);
+            $this->excel->report_stock_excel_normal($storages[$i], $month, $year);
+            $this->excel->excel_debt($storages[$i], $month, $year);
+            array_push($adminArr, "files/report_stock_{$storages[$i]}-{$month}-{$year}.xlsx");
+            array_push($supplierArr, "files/report_stock_supply_{$storages[$i]}-{$month}-{$year}.xlsx");
+            array_push($adminArr, "files/Debt_Report_{$storages[$i]}_{$month}_{$year}.xlsx");
+        }
+        
+        $this->excel->excel_receivable($month, $year);
+        array_push($adminArr, "files/Receivables_Report_{$month}_{$year}.xlsx");
+
+        for($i = 0; $i < count($admins); $i++){
+            $this->sendEmail($admins[$i], "reports", "you have reports of every storage, debts and receivables this month", $adminArr);
+        }
+        for($i = 0; $i < count($suppliers); $i++){
+            $this->sendEmail($suppliers[$i], "reports", "you have reports of every storage", $supplierArr);
         }
     }
 }

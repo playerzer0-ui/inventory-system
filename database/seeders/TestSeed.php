@@ -58,14 +58,14 @@ class TestSeed extends Seeder
             ],
             [
                 'no_truk' => 'truck2S',
-                'truckEmail' => 'pythontest191@gmail.com',
+                'truckEmail' => 'playerzero745@gmail.com',
                 'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'size' => 'S',
                 'mode' => 1
             ],
             [
                 'no_truk' => 'truck3M',
-                'truckEmail' => 'pythontest192@gmail.com',
+                'truckEmail' => 'cydacnote@gmail.com',
                 'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'size' => 'M',
                 'mode' => 1
@@ -117,7 +117,7 @@ class TestSeed extends Seeder
             [
                 'customerCode' => 'TOM',
                 'customerName' => 'tomi',
-                'customerEmail' => 'fatherland@gmail.com',
+                'customerEmail' => 'cydacnote@gmail.com',
                 'customerPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'customerAddress' => 'jln seen',
                 'customerNPWP' => '123.112.111.111-111',
