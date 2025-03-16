@@ -68,6 +68,21 @@ class CustomerController extends Controller
             return redirect()->route("customer_dashboard")->with('error', 'Session expired. Please try again.');
         }
 
+        // Get the session_id from the URL
+        $sessionId = session('session_id');
+
+        if (!$sessionId) {
+            return redirect()->route('purchase_order')->with('error', 'Session ID missing.');
+        }
+
+        // Retrieve the Stripe session
+        Stripe::setApiKey(config('services.stripe.secret'));
+        $session = Session::retrieve($sessionId);
+
+        // Get the payment intent ID
+        $paymentIntentId = $session->payment_intent;
+        session()->forget("session_id");
+
         $no_PO = $purchaseData['no_PO'];
         $productCodes = $purchaseData['productCodes'];
         $qtys = $purchaseData['qtys'];
@@ -78,7 +93,8 @@ class CustomerController extends Controller
             "no_PO" => $no_PO,
             "purchaseDate" => $purchaseDate,
             "customerCode" => $customerCode,
-            "status_mode" => 1
+            "status_mode" => 1,
+            "payIntent" => $paymentIntentId
         ]);
 
         // Save order products
@@ -176,15 +192,16 @@ class CustomerController extends Controller
                 'price_data' => [
                     'currency' => 'eur',
                     'product_data' => ['name' => $no_PO],
-                    'unit_amount' => $unit_amount, // Convert to cents
+                    'unit_amount' => $unit_amount,
                 ],
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('create_purchase'), // No need to pass parameters
+            'success_url' => route('create_purchase'),
             'cancel_url' => url('purchase_order'),
         ]);
 
+        session()->put("session_id", $session->id);
         return redirect()->away($session->url);
     }
 }

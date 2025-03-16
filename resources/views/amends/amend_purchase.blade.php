@@ -2,7 +2,7 @@
 
 <main>
     <h1>Amend Purchase Order: {{ $result['no_PO'] }}</h1>
-    <form action="{{route('amend_purchase_data')}}" method="POST" id="amendForm">
+    <form action="{{route('amendCheckoutPurchase')}}" method="POST" id="amendForm">
         @csrf
         <input type="hidden" name="no_PO" value="{{ $result['no_PO'] }}">
         <input type="hidden" name="customerCode" value="{{ $result['customerCode'] }}">
@@ -36,9 +36,6 @@
                         @else
                         <input type="number" name="qty[]" id="quantity-{{ $product->productCode }}" class="form-control mx-2 text-center" value="{{ $product->qty }}" min="1" style="width: 60px;" readonly>
                         @endif
-                        @if (!isset($mode))
-                        <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity('{{ $product->productCode }}')">+</button>
-                        @endif
                     </div>
                     @if (!isset($mode))
                     <div class="col-2 text-end">
@@ -47,12 +44,15 @@
                     @endif
                 </div>
                 @endforeach
+                @php
+                    $total = $products->sum(fn($p) => $p->price_per_UOM * $p->qty);
+                @endphp
 
                 <div class="mt-4 text-end fw-bold" id="grandTotal">
-                    Grand Total: {{ $products->sum(fn($p) => $p->price_per_UOM * $p->qty) }}
+                    Grand Total: {{$total}}
                 </div>
                 <input type="hidden" name="grand_total" id="grand_total" value="{{ $products->sum(fn($p) => $p->price_per_UOM * $p->qty) }}">
-                <input type="hidden" name="oldTotal" value="{{ $products->sum(fn($p) => $p->price_per_UOM * $p->qty) }}" id="oldTotal">
+                <input type="hidden" name="oldTotal" value="{{ $total }}" id="oldTotal">
             @endif
         </div>
 

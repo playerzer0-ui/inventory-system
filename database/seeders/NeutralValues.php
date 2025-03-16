@@ -18,7 +18,7 @@ class NeutralValues extends Seeder
         DB::insert('insert into storages values (?, ?, ?, ?)', ["NON", "none", "none", "001.111.111.111-111"]);
         DB::insert('insert into vendors values (?, ?, ?, ?)', ["NON", "none", "none", "001.111.111.111-111"]);
         DB::insert('insert into customers values (?, ?, ?, ?, ?, ?)', ["NON", "none", "none", "none", "none", "001.111.111.111-111"]);
-        DB::insert('insert into purchase_orders values (?, ?, ?, ?)', ["-", null, "NON", 0]);
+        DB::insert('insert into purchase_orders values (?, ?, ?, ?, ?)', ["-", null, "NON", 0, null]);
 
         DB::insert('insert into orders values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ["-", "NON", "-", null, null, "NON", "NON", null, "-", "0", null]);
         DB::insert('insert into repacks values (?, ?, ?)', ["-", null, "NON"]);

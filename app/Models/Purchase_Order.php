@@ -47,6 +47,7 @@ class Purchase_Order extends Model
         'no_PO',
         'purchaseDate',
         'customerCode',
-        'status_mode'
+        'status_mode',
+        'payIntent'
     ];
 }

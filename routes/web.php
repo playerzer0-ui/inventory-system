@@ -115,7 +115,8 @@ Route::post("/amend_payment_data", [AmendController::class, "amend_payment_data"
 Route::post("/amend_repack_data", [AmendController::class, "amend_repack_data"])->name("amend_repack_data");
 Route::post("/amend_moving_data", [AmendController::class, "amend_moving_data"])->name("amend_moving_data");
 Route::post("/amend_delete_data", [AmendController::class, "amend_delete_data"])->name("amend_delete_data");
-Route::post("/amend_purchase_data", [AmendController::class, "amend_purchase_data"])->name("amend_purchase_data");
+Route::get("/amend_purchase_data", [AmendController::class, "amend_purchase_data"])->name("amend_purchase_data");
+Route::post("/amendCheckoutPurchase", [AmendController::class, "amendCheckoutPurchase"])->name("amendCheckoutPurchase");
 
 //master
 Route::get("/master_create", [MasterController::class, "create"])->name("master_create");

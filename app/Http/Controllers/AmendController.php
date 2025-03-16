@@ -14,6 +14,9 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Stripe\PaymentIntent;
+use Stripe\Refund;
+use Stripe\Stripe;
 
 class AmendController extends Controller
 {
@@ -362,12 +365,12 @@ class AmendController extends Controller
         }
     }
 
-    public function amend_purchase_data(Request $req)
+    public function amend_purchase_data()
     {
-        $no_PO = $req->no_PO;
-        $oldTotal = $req->oldTotal;
-        $productCodes = $req->input('kd');
-        $qtys = $req->input('qty');
+        $purchaseData = session("purchase_data");
+        $no_PO = $purchaseData["no_PO"];
+        $productCodes = $purchaseData['productCodes'];
+        $qtys = $purchaseData['qtys'];
 
         try {
             DB::beginTransaction();
@@ -425,15 +428,51 @@ class AmendController extends Controller
             ]
         ]);
 
-        //differentiate
-        if($grand_total > $oldTotal){
-            $diff = $grand_total - $oldTotal;
-        }
-        else{
-            $diff = $oldTotal - $grand_total;
+        // Retrieve the payment intent ID from the purchase_order table
+        $purchaseOrder = Purchase_Order::where('no_PO', $no_PO)->first();
+
+        if (!$purchaseOrder) {
+            return redirect()->back()->with('msg', 'Purchase order not found.');
         }
 
-        
+        $paymentIntentId = $purchaseOrder->payIntent;
+
+        if (!$paymentIntentId) {
+            return redirect()->back()->with('msg', 'Payment Intent ID not found.');
+        }
+
+        // Calculate the difference
+        $diff = $grand_total - $oldTotal;
+
+        // Set Stripe API key
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        if ($diff < 0) {
+            // If the new total is less, refund the difference
+            try {
+                // Create a refund for the difference
+                $refund = Refund::create([
+                    'payment_intent' => $paymentIntentId,
+                    'amount' => abs($diff) * 100, // Convert to cents
+                    'reason' => 'requested_by_customer', // or 'duplicate' or 'fraudulent'
+                ]);
+
+                // Log the refund for debugging
+                Log::info('Refund Created:', ['refund' => $refund]);
+
+                // Update the purchase order with the new total
+                $purchaseOrder->update([
+                    'grand_total' => $grand_total,
+                ]);
+
+                return redirect()->route('amend_purchase_data')->with('msg', 'Refund processed successfully.');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('msg', 'Failed to issue refund: ' . $e->getMessage());
+            }
+        }
+
+        // If there's no difference, just update the purchase order data
+        return redirect()->route('amend_purchase_data')->with('msg', 'No changes to the total amount.');
     }
 
 
