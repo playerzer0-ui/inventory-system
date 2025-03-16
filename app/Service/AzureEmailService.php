@@ -141,8 +141,8 @@ class AzureEmailService {
             $this->excel->report_stock_excel($storages[$i], $month, $year);
             $this->excel->report_stock_excel_normal($storages[$i], $month, $year);
             $this->excel->excel_debt($storages[$i], $month, $year);
-            array_push($adminArr, "files/report_stock_{$storages[$i]}-{$month}-{$year}.xlsx");
-            array_push($supplierArr, "files/report_stock_supply_{$storages[$i]}-{$month}-{$year}.xlsx");
+            array_push($adminArr, "files/Report_stock_{$storages[$i]}_{$month}_{$year}.xlsx");
+            array_push($supplierArr, "files/Report_stock_supply_{$storages[$i]}_{$month}_{$year}.xlsx");
             array_push($adminArr, "files/Debt_Report_{$storages[$i]}_{$month}_{$year}.xlsx");
         }
         
@@ -153,7 +153,7 @@ class AzureEmailService {
             $this->sendEmail($admins[$i], "reports", "you have reports of every storage, debts and receivables this month", $adminArr);
         }
         for($i = 0; $i < count($suppliers); $i++){
-            $this->sendEmail($suppliers[$i], "reports", "you have reports of every storage", $supplierArr);
+            $this->sendEmail($suppliers[$i], "reports for supplier", "you have reports of every storage", $supplierArr);
         }
     }
 }

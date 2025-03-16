@@ -171,11 +171,6 @@ class ReportController extends Controller
         return $this->excel->excel_receivable($month, $year);
     }
 
-    public function debug()
-    {
-        $this->azure->mailReports();
-    }
-
     // public function createPDF(Request $req)
     // {
     //     $state = $req->pageState;
