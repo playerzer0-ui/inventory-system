@@ -514,6 +514,25 @@ class AmendController extends Controller
                     DB::delete("DELETE FROM movings WHERE no_moving = ?", [$code]);
                     break;
                 case "purchase":
+                    $purchaseOrder = Purchase_Order::where('no_PO', $code)->first();
+                    $total = Order_Product::where('PO_no_PO', $code)
+                    ->selectRaw('SUM(qty * price_per_UOM) as total')
+                    ->value('total');
+                    $paymentIntentId = $purchaseOrder->payIntent;
+                    Stripe::setApiKey(config('services.stripe.secret'));
+                    //dd($total);
+                    if($paymentIntentId != null){
+                        try {
+                            Refund::create([
+                                'payment_intent' => $paymentIntentId,
+                                'amount' => abs($total) * 100, 
+                                'reason' => 'requested_by_customer',
+                            ]);
+                        } catch (\Exception $e) {
+                            return redirect()->back()->with('msg', 'Failed to issue refund: ' . $e->getMessage());
+                        }
+                    }
+
                     DB::delete("DELETE FROM order_products WHERE PO_no_PO = ?", [$code]);
                     DB::delete("DELETE FROM purchase_orders WHERE no_PO = ?", [$code]);
                     session()->flash('msg', 'Record deleted successfully');
