@@ -7,7 +7,9 @@ use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Purchase_Order;
 use App\Models\Storage;
+use App\Models\Truck;
 use App\Models\Vendor;
+use App\Service\AzureEmailService;
 use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,10 +17,12 @@ use Illuminate\Support\Facades\DB;
 class SlipController extends Controller
 {
     protected $orderProductService;
+    protected $azure;
 
-    public function __construct(ServiceOrderProductService $orderProductService)
+    public function __construct(ServiceOrderProductService $orderProductService, AzureEmailService $azure)
     {
         $this->orderProductService = $orderProductService;
+        $this->azure = $azure;
     }
 
     public function slip(Request $req)
@@ -88,6 +92,7 @@ class SlipController extends Controller
                         "product_status" => $pageState
                     ]);
                 }
+                $this->azure->alertAdmins($pageState);
             }
             else{
                 for($i = 0; $i < count($productCodes); $i++){
@@ -123,6 +128,10 @@ class SlipController extends Controller
                 DB::table('trucks')
                 ->where('no_truk', $no_truk)
                 ->update(['mode' => 2]);
+
+                $truckEmail = Truck::where("no_truk", $no_truk)->pluck("truckEmail");
+                $this->azure->alertAdmins($pageState);
+                $this->azure->sendEmail($truckEmail, "order needs delivery!", "an order requires sending! it has been assigned to you");
             }
         }
 

@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Order_Product;
 use App\Models\Product;
 use App\Models\Purchase_Order;
+use App\Service\AzureEmailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -17,10 +18,12 @@ use Stripe\Checkout\Session;
 class CustomerController extends Controller
 {
     protected $orderProductService;
+    protected $azure;
 
-    public function __construct(ServiceOrderProductService $orderProductService)
+    public function __construct(ServiceOrderProductService $orderProductService, AzureEmailService $azure)
     {
         $this->orderProductService = $orderProductService;
+        $this->azure = $azure;
     }
 
     public function show_customer_login()
@@ -118,6 +121,7 @@ class CustomerController extends Controller
 
         session()->flash('msg', 'no_PO: ' . $no_PO);
 
+        $this->azure->alertSuppliers();
         return redirect()->route("customer_dashboard", ['success' => 1]);
     }
 
