@@ -55,20 +55,24 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route("dashboard") }}"><button class="btn btn-info">storage</button></a>
                     </li>
+                    @if (session('userType') == 1)
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route("debt") }}"><button class="btn btn-info">debt report</button></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route("receivables") }}"><button class="btn btn-info">receiveables report</button></a>
                     </li>
+                    @endif
                     <li class="nav-item dropdown btn btn-outline-primary">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             in
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{route("slip", ["state" => "in"])}}">slip in</a></li>
-                                <li><a class="dropdown-item" href="{{route("invoice", ["state" => "in"])}}">invoice in</a></li>
-                                <li><a class="dropdown-item" href="{{route("payment", ["state" => "in"])}}">payment in</a></li>
+                            @if (session('userType') == 1)
+                            <li><a class="dropdown-item" href="{{route("invoice", ["state" => "in"])}}">invoice in</a></li>
+                            <li><a class="dropdown-item" href="{{route("payment", ["state" => "in"])}}">payment in</a></li>
+                            @endif
                         </ul>
                     </li>
                     <li class="nav-item dropdown btn btn-outline-primary">
@@ -77,8 +81,10 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{route("slip", ["state" => "out"])}}">slip out</a></li>
+                            @if (session('userType') == 1)
                             <li><a class="dropdown-item" href="{{route("invoice", ["state" => "out"])}}">invoice out</a></li>
                             <li><a class="dropdown-item" href="{{route("payment", ["state" => "out"])}}">payment out</a></li>
+                            @endif
                         </ul>
                     </li>
                     <li class="nav-item dropdown btn btn-outline-primary">
@@ -88,10 +94,10 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{route('repack')}}">repack</a></li>
                             <li><a class="dropdown-item" href="{{route('moving')}}">moving</a></li>
-
+                            @if (session('userType') == 1)
                             <li><a class="dropdown-item" href="{{route("invoice", ["state" => "moving"])}}">invoice moving</a></li>
                             <li><a class="dropdown-item" href="{{route("payment", ["state" => "moving"])}}">payment moving</a></li>
-
+                            @endif
                         </ul>
                     </li>
                     <li class="nav-item dropdown btn btn-outline-primary">
@@ -100,26 +106,29 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{route("amends", ["state" => "slip"])}}">edit slips</a></li>
+                            @if (session('userType') == 1)
                             <li><a class="dropdown-item" href="{{route("amends", ["state" => "invoice"])}}">edit invoices</a></li>
                             <li><a class="dropdown-item" href="{{route("amends", ["state" => "payment"])}}">edit payments</a></li>
+                            @endif
                             <li><a class="dropdown-item" href="{{route("amends", ["state" => "repack"])}}">edit repacks</a></li>
                             <li><a class="dropdown-item" href="{{route("amends", ["state" => "moving"])}}">edit movings</a></li>
                         </ul>
                     </li>
 
-                        <li class="nav-item dropdown btn btn-outline-warning">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                master
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'vendor'])}}">vendors</a></li>
-                                <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'customer'])}}">customers</a></li>
-                                <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'product'])}}">products</a></li>
-                                <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'storage'])}}">storages</a></li>
-                                <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'user'])}}">users</a></li>
-                            </ul>
-                        </li>
-
+                    @if (session('userType') == 1)
+                    <li class="nav-item dropdown btn btn-outline-warning">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            master
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'vendor'])}}">vendors</a></li>
+                            <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'customer'])}}">customers</a></li>
+                            <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'product'])}}">products</a></li>
+                            <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'storage'])}}">storages</a></li>
+                            <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'user'])}}">users</a></li>
+                        </ul>
+                    </li>
+                    @endif
 
                     <li class="nav-item">
                         <a class="nav-link" href="../controller/index.php?action=getLogs"><button class="btn btn-info">LOGS</button></a>

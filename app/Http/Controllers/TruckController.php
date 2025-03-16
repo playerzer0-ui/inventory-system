@@ -54,34 +54,37 @@ class TruckController extends Controller
     public function deliver(Request $req)
     {
         $no_sj = $req->no_sj;
-        $customerEmail = Customer::where('customerCode', function ($query, $req) {
-            $no_sj = $req->no_sj;
+
+        // Fetch customer email using the correct query
+        $customerEmail = Customer::where('customerCode', function ($query) use ($no_sj) {
             $query->select('customerCode')
-                  ->from('orders')
-                  ->where('nomor_surat_jalan', $no_sj)
-                  ->limit(1);
+                ->from('orders')
+                ->where('nomor_surat_jalan', $no_sj)
+                ->limit(1);
         })->value('customerEmail');
 
+        // Update the order and truck status
         Order::where("nomor_surat_jalan", $no_sj)->update(["delivered" => 1]);
         Truck::where("no_truk", session('no_truk'))->update(["mode" => 1]);
-        
+
+        // Get the purchase order number
         $purchaseOrder = Order::where("nomor_surat_jalan", $no_sj)->pluck("purchase_order")->first();
 
         // Query to get the total and accepted products
         $result = Order_Product::where('PO_no_PO', $purchaseOrder)
-        ->selectRaw('COUNT(*) as total_products, SUM(CASE WHEN product_status = "purchase_approved" THEN 1 ELSE 0 END) as accepted_products')
-        ->first();
+            ->selectRaw('COUNT(*) as total_products, SUM(CASE WHEN product_status = "purchase_approved" THEN 1 ELSE 0 END) as accepted_products')
+            ->first();
 
+        // Send email based on the result
         if ($result->total_products == $result->accepted_products) {
             Purchase_Order::where("no_PO", $purchaseOrder)->update(["status_mode" => 3]);
-            $this->azure->sendEmail($customerEmail, "$purchaseOrder: order delivered", "your order has been delivered, all items FULLY sent");
+            $this->azure->sendEmail($customerEmail, "$purchaseOrder: order delivered", "Your order has been delivered, all items FULLY sent.");
+        } else {
+            $this->azure->sendEmail($customerEmail, "$purchaseOrder: order delivered", "Your order has been delivered, not all items were sent yet but they will get there.");
         }
-        else {
-            $this->azure->sendEmail($customerEmail, "$purchaseOrder: order delivered", "your order has been delivered, not all items were sent yet but it will get there");
-        }
-        
 
-        session()->flash('msg', 'delivery: COMPLETE: ' . $no_sj);
+        // Flash a success message and redirect
+        session()->flash('msg', 'Delivery: COMPLETE: ' . $no_sj);
         return redirect()->route("truck_dashboard");
     }
 }

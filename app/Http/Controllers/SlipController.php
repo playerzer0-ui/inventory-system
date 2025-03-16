@@ -129,7 +129,7 @@ class SlipController extends Controller
                 ->where('no_truk', $no_truk)
                 ->update(['mode' => 2]);
 
-                $truckEmail = Truck::where("no_truk", $no_truk)->pluck("truckEmail");
+                $truckEmail = Truck::where("no_truk", $no_truk)->pluck("truckEmail")->first();
                 $this->azure->alertAdmins($pageState);
                 $this->azure->sendEmail($truckEmail, "order needs delivery!", "an order requires sending! it has been assigned to you");
             }
