@@ -20,7 +20,7 @@ $json = az communication list-key -n "com-system" --resource-group $resourceGrou
 $conn = $json.primaryConnectionString -split ";"
 
 $endpoint = $conn[0] -replace "endpoint=", ""
-$accessKey = $conn[0] -replace "accesskey=", ""
+$accessKey = $conn[1] -replace "accesskey=", ""
 
 $email = "DoNotReply@$($domain[0].fromSenderDomain)"
 
