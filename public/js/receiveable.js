@@ -35,19 +35,19 @@ function populateTable(data) {
         <thead>
             <tr>
                 <th>No.</th>
-                <th>Tgl Inv</th>
-                <th>Nama Customer</th>
-                <th>Nomer Inv</th>
-                <th>Nama Material</th>
+                <th>Invoice Date</th>
+                <th>Customer Name</th>
+                <th>No Invoice</th>
+                <th>Material name</th>
                 <th>QTY</th>
                 <th>price/UOM</th>
                 <th>nominal</th>
                 <th>total nominal</th>
                 <th>tax (%)</th>
                 <th>nominal after tax</th>
-                <th>Tgl Pembayaran</th>
-                <th>Nilai Bayar</th>
-                <th>Sisa Piutang</th>
+                <th>Payment Date</th>
+                <th>Amount Paid</th>
+                <th>Remaining</th>
             </tr>
         </thead>
         <tbody></tbody>
