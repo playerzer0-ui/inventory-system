@@ -44,11 +44,6 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
-        'user.access' => [
-            'auth.user', // Ensure the user is logged in
-            'check.user.type', // Check the user type (parameters will be passed when applied)
-        ],
     ];
 
     /**

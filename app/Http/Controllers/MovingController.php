@@ -6,14 +6,17 @@ use App\Models\Moving;
 use App\Models\Order_Product;
 use Illuminate\Http\Request;
 use App\Models\Storage;
+use App\Service\AzureEmailService;
 use App\Service\OrderProductService;
 
 class MovingController extends Controller
 {
     protected $orderProductService;
+    protected $azure;
 
-    public function __construct(OrderProductService $orderProductService){
+    public function __construct(OrderProductService $orderProductService, AzureEmailService $azure){
         $this->orderProductService = $orderProductService;
+        $this->azure = $azure;
     }
 
     public function moving(Request $req)
@@ -60,8 +63,13 @@ class MovingController extends Controller
         }
 
         session()->flash('msg', 'moving created: ' . $no_moving);
-
-        return redirect()->route("invoice", ["state" => "moving"]);
+        $this->azure->alertAdmins("moving");
+        if(session("userType") == 1){
+            return redirect()->route("invoice", ["state" => "moving"]);
+        }
+        else{
+            return redirect()->route("dashboard");
+        }
     }
 
     public function getMovingDetails(Request $req)

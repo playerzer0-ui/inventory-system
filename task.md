@@ -1,31 +1,48 @@
 # Customer
-[] purchase order
-[] amend order
-[] pay
-[] refund
-[] get email
-[] notify supplier
+purchase order
+edit order
+delete order
+send email to supplier
 # Driver
-[] take email
-[] see order
-[] complete order
-[] notify customer
+see deliveries
+complete it
+send email to customer about it
 # Admin
-[] do all the supplier can
-[] do invoice
-[] pdf invoice and payment
-[] payment
-[] see storage
-[] master manipulation
-[] see debt and receivables
-[] excel all 3
+slip in
+invoice in
+payment in
+slip out
+invoice out
+payment out
+repack
+moving
+invoice moving
+payment moving
+amend slip
+amend invoice
+amend payment
+amend repack
+amend moving
+see storage
+see debt
+see receivables
+excel storage
+excel debt
+excel receivables
+forecast
+receive monthly reports
 # Supplier
-[] order in and out
-[] excel storage (qty only)
-[] see storage qty only
-[] notify admin
-[] once order is made, notify driver to send it
-
+slip in
+slip out
+repack
+moving
+amend slip
+amend repack
+amend moving
+see storage
+excel storage
+forecast
+receive monthly reports
 ## emails
 alert supplier
 must see the PO, customer, products in it
@@ -35,3 +52,4 @@ must see no_sj, state
 
 mailreports
 all reports
+

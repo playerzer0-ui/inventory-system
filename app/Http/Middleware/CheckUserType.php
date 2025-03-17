@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CheckUserType
 {
@@ -14,14 +15,14 @@ class CheckUserType
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $userType)
+    public function handle($request, Closure $next, ...$userTypes)
     {
-        // Check if the session variable 'userType' matches the required $userType
-        if ($request->session()->get('userType') == $userType) {
-            return $next($request); // Allow access to the route
+        $loggedInUserType = $request->session()->get("userType");
+
+        if (in_array($loggedInUserType, $userTypes)) {
+            return $next($request);
         }
 
-        // Redirect or deny access if the userType doesn't match
-        return back()->with('msg', 'You do not have permission to access this page.');
+        return redirect()->route('home')->with('msg', 'Unauthorized access.');
     }
 }

@@ -137,7 +137,12 @@ class SlipController extends Controller
 
         session()->flash('msg', 'no_SJ: ' . $no_sj);
 
-        return redirect()->route("invoice", ["state" => $pageState]);
+        if(session("userType") == 1){
+            return redirect()->route("invoice", ["state" => $pageState]);
+        }
+        else{
+            return redirect()->route("dashboard");
+        }
     }
     
     public function amend_slip(Request $req)
