@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Product;
 use App\Models\Storage;
+use App\Models\Truck;
 use App\Models\Vendor;
 use App\Service\AzureEmailService;
 use App\Service\StorageReport;
@@ -169,6 +170,13 @@ class ReportController extends Controller
         $year = $req->year;
 
         return $this->excel->excel_receivable($month, $year);
+    }
+
+    public function debug()
+    {
+        $truckEmail = Truck::where("no_truk", "truck2S")->pluck("truckEmail")->first();
+        //dd($truckEmail);
+        $this->azure->sendEmail($truckEmail, "Delivery outstanding", "an order requires sending and it has been assigned to you");
     }
 
     // public function createPDF(Request $req)

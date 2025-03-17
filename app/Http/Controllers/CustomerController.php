@@ -121,7 +121,7 @@ class CustomerController extends Controller
 
         session()->flash('msg', 'no_PO: ' . $no_PO);
 
-        $this->azure->alertSuppliers();
+        $this->azure->alertSuppliers($no_PO);
         return redirect()->route("customer_dashboard", ['success' => 1]);
     }
 

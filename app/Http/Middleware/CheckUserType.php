@@ -23,6 +23,6 @@ class CheckUserType
             return $next($request);
         }
 
-        return redirect()->route('home')->with('msg', 'Unauthorized access.');
+        return back()->with('msg', 'Unauthorized access.');
     }
 }

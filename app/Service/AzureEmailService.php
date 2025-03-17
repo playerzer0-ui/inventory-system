@@ -111,11 +111,11 @@ class AzureEmailService {
         }
     }
 
-    public function alertSuppliers()
+    public function alertSuppliers($no_PO = null)
     {
         $suppliers = User::where("userType", 0)->pluck("email");
         for($i = 0; $i < count($suppliers); $i++){
-            $this->sendEmail($suppliers[$i], "purchase order created", "a customer has made a purchase order");
+            $this->sendEmail($suppliers[$i], "purchase order created: $no_PO", "a customer has made a purchase order");
         }
     }
 
