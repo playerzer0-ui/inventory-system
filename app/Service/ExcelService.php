@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Models\Log;
 use App\Service\StorageReport;
+use Illuminate\Support\Facades\Date;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Xml\Style\Fill;
@@ -534,6 +536,51 @@ class ExcelService
     
         // Define the file path
         $fileName = "Receivables_Report_{$month}_{$year}.xlsx";
+        $filePath = public_path("files/{$fileName}");
+    
+        // Ensure the directory exists
+        if (!file_exists(public_path('files'))) {
+            mkdir(public_path('files'), 0777, true);
+        }
+    
+        // Save the file to the public/files folder
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($filePath);
+    
+        // Stream the file for download
+        return response()->download($filePath);
+    }
+
+    public function excel_logs() {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = Log::all();
+
+        $sheet->setCellValue("A1", "logID");
+        $sheet->setCellValue("B1", "user");
+        $sheet->setCellValue("C1", "table");
+        $sheet->setCellValue("D1", "type");
+        $sheet->setCellValue("E1", "logTime");
+
+        // Apply styles to header
+        $headerStyle = [
+            'font' => ['bold' => true],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
+            'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]],
+            'fill' => ['fillType' => StyleFill::FILL_SOLID, 'startColor' => ['rgb' => 'DDDDDD']]
+        ];
+        $sheet->getStyle('A1:E1')->applyFromArray($headerStyle);
+
+        for($i = 0; $i < count($data); $i++){
+            $sheet->setCellValue("A" . ($i + 2), $data[$i]["logID"]);
+            $sheet->setCellValue("B" . ($i + 2), $data[$i]["user"]);
+            $sheet->setCellValue("C" . ($i + 2), $data[$i]["table"]);
+            $sheet->setCellValue("D" . ($i + 2), $data[$i]["type"]);
+            $sheet->setCellValue("E" . ($i + 2), $data[$i]["logTime"]);
+        }
+
+        // Define the file path
+        $fileName = "Logs.xlsx";
         $filePath = public_path("files/{$fileName}");
     
         // Ensure the directory exists

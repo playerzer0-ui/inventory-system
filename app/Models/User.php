@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -54,12 +55,36 @@ class User extends Authenticatable
         'userType',
     ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array<int, string>
-     */
-    // protected $hidden = [
-    //     'password',
-    // ];
+    protected static function booted()
+    {
+        static::created(function ($model) {
+            Log::create([
+                'logID' => (string) Str::uuid(),
+                'user' => session('email'),
+                'table' => $model->getTable(),
+                'type' => 'INSERT',
+                'logTime' => now(),
+            ]);
+        });
+
+        static::updated(function ($model) {
+            Log::create([
+                'logID' => (string) Str::uuid(),
+                'user' => session('email'),
+                'table' => $model->getTable(),
+                'type' => 'UPDATE',
+                'logTime' => now(),
+            ]);
+        });
+
+        static::deleted(function ($model) {
+            Log::create([
+                'logID' => (string) Str::uuid(),
+                'user' => session('email'),
+                'table' => $model->getTable(),
+                'type' => 'DELETE',
+                'logTime' => now(),
+            ]);
+        });
+    }
 }

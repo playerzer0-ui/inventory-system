@@ -131,7 +131,7 @@
                     @endif
 
                     <li class="nav-item">
-                        <a class="nav-link" href="../controller/index.php?action=getLogs"><button class="btn btn-info">LOGS</button></a>
+                        <a class="nav-link" href="{{route('excel_logs')}}"><button class="btn btn-info">LOGS</button></a>
                     </li>
             @endif
                     <li class="nav-item">

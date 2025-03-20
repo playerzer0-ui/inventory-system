@@ -119,6 +119,7 @@ Route::group(['middleware' => ['check.user.type:1']], function () {
     Route::get("/getReceivablesReport", [ReportController::class, "getReceivablesReport"])->name("getReceivablesReport");
     Route::get("/excel_debt", [ReportController::class, "excel_debt"])->name("excel_debt");
     Route::get("/excel_receivable", [ReportController::class, "excel_receivable"])->name("excel_receivable");
+    Route::get("/excel_logs", [ReportController::class, "excel_logs"])->name("excel_logs");
 
     // Invoices
     Route::get("/invoice", [InvoiceController::class, "invoice"])->name("invoice");

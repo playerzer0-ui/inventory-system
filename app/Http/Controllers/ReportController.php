@@ -172,6 +172,11 @@ class ReportController extends Controller
         return $this->excel->excel_receivable($month, $year);
     }
 
+    public function excel_logs()
+    {
+        return $this->excel->excel_logs();
+    }
+
     public function debug()
     {
         $truckEmail = Truck::where("no_truk", "truck2S")->pluck("truckEmail")->first();

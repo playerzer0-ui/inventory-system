@@ -87,7 +87,7 @@
                 @if ($state == "in")
                     <td>Truck No</td>
                     <td>:</td>
-                    <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="Automatic from the system" value="{{$result['no_truk']}}" readonly></td>
+                    <td colspan="2"><input name="no_truk" type="text" id="no_truk" placeholder="Automatic from the system" value="{{$result['no_truk_in']}}" readonly></td>
                     <td>No Invoice</td>
                     <td>:</td>
                     <td colspan="2"><input name="no_invoice" type="text" id="no_invoice" placeholder="fill in" value="{{$invoice['no_invoice']}}" required></td>
