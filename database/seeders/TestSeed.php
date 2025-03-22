@@ -333,7 +333,7 @@ class TestSeed extends Seeder
                 'no_invoice' => '1/INV/NON/08/2024',
                 'no_faktur' => '1123',
                 'no_moving' => '-',
-                'tax' => 0,
+                'tax' => 11,
             ],
             [
                 'nomor_surat_jalan' => '2/SJK/NON/08/2024',
@@ -341,7 +341,7 @@ class TestSeed extends Seeder
                 'no_invoice' => '2/INV/NON/08/2024',
                 'no_faktur' => '6666',
                 'no_moving' => '-',
-                'tax' => 0,
+                'tax' => 11,
             ],
             [
                 'nomor_surat_jalan' => '3/SJK/NON/08/2024',
@@ -349,7 +349,7 @@ class TestSeed extends Seeder
                 'no_invoice' => '3/INV/NON/08/2024',
                 'no_faktur' => '7890',
                 'no_moving' => '-',
-                'tax' => 0,
+                'tax' => 11,
             ],
             [
                 'nomor_surat_jalan' => '-',

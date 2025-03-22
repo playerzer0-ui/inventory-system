@@ -109,7 +109,7 @@ return new class extends Migration
             $table->double("payment_amount");
             $table->string("payment_id")->primary();
             $table->foreign('nomor_surat_jalan')->references('nomor_surat_jalan')->on('invoices')->onDelete('cascade');
-            $table->foreign('no_moving')->references('no_moving')->on('movings')->onDelete('cascade');
+            $table->foreign('no_moving')->references('no_moving')->on('invoices')->onDelete('cascade');
         });
         
         Schema::create('repacks', function(Blueprint $table){

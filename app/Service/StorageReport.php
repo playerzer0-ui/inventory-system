@@ -201,91 +201,91 @@ class StorageReport {
     }
 
     public function getAllProductsForSaldo($storageCode, $month, $year, $productCode = null)
-{
-    $storageCondition = $storageCode !== "NON";
+    {
+        $storageCondition = $storageCode !== "NON";
 
-    // Query for invoices (in & out)
-    $invoicesQuery = DB::table('products as p')
-        ->join('order_products as op', 'p.productCode', '=', 'op.productCode')
-        ->join('orders as o', 'op.nomor_surat_jalan', '=', 'o.nomor_surat_jalan')
-        ->join('invoices as i', 'o.nomor_surat_jalan', '=', 'i.nomor_surat_jalan')
-        ->select(
-            'p.productCode',
-            'p.productName',
-            'o.storageCode',
-            DB::raw('MONTH(i.invoice_date) as saldoMonth'),
-            DB::raw('YEAR(i.invoice_date) as saldoYear'),
-            DB::raw('SUM(op.qty) as totalQty'),
-            DB::raw('ROUND(SUM(op.price_per_UOM * op.qty) / SUM(op.qty)) as avgPrice'),
-            'op.product_status'
-        )
-        ->whereMonth('i.invoice_date', $month)
-        ->whereYear('i.invoice_date', $year)
-        ->when($storageCondition, function ($query) use ($storageCode) {
-            $query->where('o.storageCode', $storageCode);
-        })
-        ->when($productCode, function ($query) use ($productCode) {
-            $query->where('p.productCode', $productCode);
-        })
-        ->whereIn('op.product_status', ['in', 'out', 'moving']) // Only fetch in, out, and moving
-        ->groupBy(
-            'p.productCode',
-            'p.productName',
-            'o.storageCode',
-            'saldoMonth',
-            'saldoYear',
-            'op.product_status'
-        );
+        // Query for invoices (in & out)
+        $invoicesQuery = DB::table('products as p')
+            ->join('order_products as op', 'p.productCode', '=', 'op.productCode')
+            ->join('orders as o', 'op.nomor_surat_jalan', '=', 'o.nomor_surat_jalan')
+            ->join('invoices as i', 'o.nomor_surat_jalan', '=', 'i.nomor_surat_jalan')
+            ->select(
+                'p.productCode',
+                'p.productName',
+                'o.storageCode',
+                DB::raw('MONTH(i.invoice_date) as saldoMonth'),
+                DB::raw('YEAR(i.invoice_date) as saldoYear'),
+                DB::raw('SUM(op.qty) as totalQty'),
+                DB::raw('ROUND(SUM(op.price_per_UOM * op.qty) / SUM(op.qty)) as avgPrice'),
+                'op.product_status'
+            )
+            ->whereMonth('i.invoice_date', $month)
+            ->whereYear('i.invoice_date', $year)
+            ->when($storageCondition, function ($query) use ($storageCode) {
+                $query->where('o.storageCode', $storageCode);
+            })
+            ->when($productCode, function ($query) use ($productCode) {
+                $query->where('p.productCode', $productCode);
+            })
+            ->whereIn('op.product_status', ['in', 'out', 'moving']) // Only fetch in, out, and moving
+            ->groupBy(
+                'p.productCode',
+                'p.productName',
+                'o.storageCode',
+                'saldoMonth',
+                'saldoYear',
+                'op.product_status'
+            );
 
-    // Query for repacks
-    $repackQuery = DB::table('products as p')
-        ->join('order_products as op', 'p.productCode', '=', 'op.productCode')
-        ->join('repacks as r', 'op.repack_no_repack', '=', 'r.no_repack')
-        ->select(
-            'p.productCode',
-            'p.productName',
-            'r.storageCode',
-            DB::raw('MONTH(r.repack_date) as saldoMonth'),
-            DB::raw('YEAR(r.repack_date) as saldoYear'),
-            DB::raw('SUM(op.qty) as totalQty'),
-            DB::raw('ROUND(SUM(op.price_per_UOM * op.qty) / SUM(op.qty)) as avgPrice'),
-            'op.product_status'
-        )
-        ->whereMonth('r.repack_date', $month)
-        ->whereYear('r.repack_date', $year)
-        ->when($storageCondition, function ($query) use ($storageCode) {
-            $query->where('r.storageCode', $storageCode);
-        })
-        ->when($productCode, function ($query) use ($productCode) {
-            $query->where('p.productCode', $productCode);
-        })
-        ->whereIn('op.product_status', ['repack_start', 'repack_end']) // Only fetch repack data
-        ->groupBy(
-            'p.productCode',
-            'p.productName',
-            'r.storageCode',
-            'saldoMonth',
-            'saldoYear',
-            'op.product_status'
-        );
+        // Query for repacks
+        $repackQuery = DB::table('products as p')
+            ->join('order_products as op', 'p.productCode', '=', 'op.productCode')
+            ->join('repacks as r', 'op.repack_no_repack', '=', 'r.no_repack')
+            ->select(
+                'p.productCode',
+                'p.productName',
+                'r.storageCode',
+                DB::raw('MONTH(r.repack_date) as saldoMonth'),
+                DB::raw('YEAR(r.repack_date) as saldoYear'),
+                DB::raw('SUM(op.qty) as totalQty'),
+                DB::raw('ROUND(SUM(op.price_per_UOM * op.qty) / SUM(op.qty)) as avgPrice'),
+                'op.product_status'
+            )
+            ->whereMonth('r.repack_date', $month)
+            ->whereYear('r.repack_date', $year)
+            ->when($storageCondition, function ($query) use ($storageCode) {
+                $query->where('r.storageCode', $storageCode);
+            })
+            ->when($productCode, function ($query) use ($productCode) {
+                $query->where('p.productCode', $productCode);
+            })
+            ->whereIn('op.product_status', ['repack_start', 'repack_end']) // Only fetch repack data
+            ->groupBy(
+                'p.productCode',
+                'p.productName',
+                'r.storageCode',
+                'saldoMonth',
+                'saldoYear',
+                'op.product_status'
+            );
 
-    // Combine with UNION ALL
-    $results = $invoicesQuery->unionAll($repackQuery)
-        ->orderByRaw("CASE 
-            WHEN product_status = 'in' THEN 1
-            WHEN product_status = 'moving' THEN 2
-            WHEN product_status = 'repack_start' THEN 3
-            WHEN product_status = 'repack_end' THEN 4
-            WHEN product_status = 'out' THEN 5
-            ELSE 6
-        END")
-        ->get();
+        // Combine with UNION ALL
+        $results = $invoicesQuery->unionAll($repackQuery)
+            ->orderByRaw("CASE 
+                WHEN product_status = 'in' THEN 1
+                WHEN product_status = 'moving' THEN 2
+                WHEN product_status = 'repack_start' THEN 3
+                WHEN product_status = 'repack_end' THEN 4
+                WHEN product_status = 'out' THEN 5
+                ELSE 6
+            END")
+            ->get();
 
-    // Include moving data
-    $movings = $this->getAllProductsMovingSaldo($storageCode, $month, $year, $productCode);
+        // Include moving data
+        $movings = $this->getAllProductsMovingSaldo($storageCode, $month, $year, $productCode);
 
-    return [$results, $movings];
-}
+        return [$results, $movings];
+    }
 
 
     function getSaldoAwal($storageCode, $month, $year)

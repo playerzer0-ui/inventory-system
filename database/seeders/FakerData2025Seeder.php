@@ -20,13 +20,21 @@ class FakerData2025Seeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Insert a single product
-        $productCode = 'P' . $faker->unique()->numberBetween(1000, 9999);
-        Product::insert([
-            'productCode' => $productCode,
-            'productName' => $faker->word,
-            'productPrice' => 200.12
-        ]);
+        // Insert multiple products with specific names
+        $productNames = ['TestA', 'TestB', 'TestC'];
+        $products = [];
+
+        foreach ($productNames as $name) {
+            $products[] = [
+                'productCode' => 'P' . $faker->unique()->numberBetween(1000, 9999),
+                'productName' => $name,
+                'productPrice' => $faker->randomFloat(2, 100, 1000), // Random price between 100 and 1000
+            ];
+        }
+        Product::insert($products);
+
+        // Fetch inserted product codes
+        $productCodes = Product::pluck('productCode')->toArray();
 
         // Seed Orders Table (Only tracking "out" orders)
         $orders = [];
@@ -49,21 +57,23 @@ class FakerData2025Seeder extends Seeder
         // Fetch inserted order numbers
         $orderNumbers = Order::pluck('nomor_surat_jalan')->toArray();
 
-        // Seed OrderProducts Table (One product, multiple orders, always "out")
+        // Seed OrderProducts Table (Multiple products, multiple orders, always "out")
         $orderProducts = [];
         foreach ($orderNumbers as $orderNumber) {
-            $orderProducts[] = [
-                'nomor_surat_jalan' => $orderNumber,
-                'repack_no_repack' => "-",
-                'moving_no_moving' => "-",
-                'PO_no_PO' => "-",
-                'productCode' => $productCode,
-                'qty' => $faker->numberBetween(1, 100),
-                'UOM' => $faker->randomElement(['kg', 'pcs', 'box']),
-                'price_per_UOM' => $faker->randomFloat(2, 1, 100),
-                'note' => $faker->optional()->sentence,
-                'product_status' => 'out', // Always "out"
-            ];
+            foreach ($productCodes as $productCode) {
+                $orderProducts[] = [
+                    'nomor_surat_jalan' => $orderNumber,
+                    'repack_no_repack' => "-",
+                    'moving_no_moving' => "-",
+                    'PO_no_PO' => "-",
+                    'productCode' => $productCode,
+                    'qty' => $faker->numberBetween(1, 100),
+                    'UOM' => $faker->randomElement(['kg', 'pcs', 'box']),
+                    'price_per_UOM' => $faker->randomFloat(2, 1, 100),
+                    'note' => $faker->optional()->sentence,
+                    'product_status' => 'out', // Always "out"
+                ];
+            }
         }
         Order_Product::insert($orderProducts);
     }
