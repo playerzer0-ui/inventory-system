@@ -402,7 +402,7 @@ class AmendController extends Controller
             }
 
             DB::commit();
-            session()->flash('msg', 'Purchase order updated successfully');
+            session()->flash('msg', 'Purchase order updated successfully, refund is in process, check your account');
             return redirect()->route("customer_dashboard");
         } catch (Exception $e) {
             DB::rollBack();

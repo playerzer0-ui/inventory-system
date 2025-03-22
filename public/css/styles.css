@@ -70,6 +70,11 @@
     border: 1px solid #ddd; /* Example border styling */
 }
 
+#reporttable td:hover {
+    background-color: yellow;
+    transition: 1s;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -127,6 +132,8 @@ td input, td select {
 table td {
     vertical-align: middle;
 }
+
+
 
 /* Fixed aside (order_list) */
 .order_list {
