@@ -83,6 +83,7 @@ Route::group(['middleware' => ['check.user.type:3']], function () {
 Route::group(['middleware' => ['check.user.type:0,1']], function () {
     // Reports
     Route::get("/forecast", [ReportController::class, "forecast"])->name("forecast");
+    Route::get("/getAllProductCodes", [ReportController::class, "getAllProductCodes"])->name("getAllProductCodes");
     Route::get("/dashboard", [ReportController::class, "dashboard"])->name("dashboard");
     Route::get("/getReportStock", [ReportController::class, "getReportStock"])->name("getReportStock");
     Route::get("/getProductData", [ReportController::class, "getProductData"])->name("getProductData");

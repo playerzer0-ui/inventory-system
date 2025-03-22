@@ -114,6 +114,16 @@ class ReportController extends Controller
         }
     }
 
+    public function getAllProductCodes()
+    {
+        return Product::all()->map(function ($product) {
+            return [
+                'productCode' => $product->productCode,
+                'productName' => $product->productName,
+            ];
+        });
+    }
+
     public function getProductData(Request $req)
     {
         $productCode = $req->productCode;
