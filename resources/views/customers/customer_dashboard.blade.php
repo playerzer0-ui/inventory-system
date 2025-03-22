@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main>
+<main class="container">
     <input type="hidden" id="success" value="{{session('msg')}}">
     <div class="container">
         <div class="row">

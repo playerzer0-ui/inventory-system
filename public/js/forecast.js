@@ -56,7 +56,7 @@ function getProductData(productCode, productName) {
     col.classList.add('col');
 
     const card = document.createElement('div');
-    card.classList.add('card');
+    card.classList.add('card', 'card-forecast');
     card.style.width = '18rem';
 
     const cardBody = document.createElement('div');

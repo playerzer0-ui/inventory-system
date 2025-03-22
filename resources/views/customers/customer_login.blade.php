@@ -1,7 +1,7 @@
 <x-header :title="$title" />
 
-<main class="edit-container">
-    <div class="form-container bg-white">
+<main class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="form-container bg-white p-4 rounded shadow" style="max-width: 400px; max-height: 400px;">
     <form action="{{ route("customer_login") }}" method="post">
         @csrf
         <h1>CUSTOMER LOGIN</h1>
@@ -14,9 +14,9 @@
             <input type="password" name="password" class="form-control" id="exampleInputPassword1">
         </div>
         <button type="submit" class="btn btn-primary">login</button>
+        <a href="{{ route('home') }}" class="btn btn-secondary">I am a supplier</a>
+        <a href="{{ route('show_truck_login') }}" class="btn btn-secondary">I am a truck</a>
     </form>
-    <a href="{{ route('home') }}"><button type="submit" class="btn btn-secondary">I am a supplier</button></a>
-    <a href="{{ route('show_truck_login') }}"><button type="submit" class="btn btn-secondary">I am a truck</button></a>
     </div>
 </main>
 
