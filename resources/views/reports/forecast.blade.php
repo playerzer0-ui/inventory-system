@@ -2,7 +2,7 @@
 
 <main>
 <div class="main-forecast">
-    <ion-icon name="close-circle-outline" onclick="closeOverlay()"></ion-icon>
+    <ion-icon name="close-circle-outline" class="close-icon" onclick="closeOverlay()"></ion-icon>
     <div class="slider-container">
         <input type="range" id="vertical-slider" min="3" max="15" value="3">
         <p id="slider-value">3</p>

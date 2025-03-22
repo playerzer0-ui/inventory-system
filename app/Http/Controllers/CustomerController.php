@@ -54,12 +54,24 @@ class CustomerController extends Controller
         return view("customers.customer_dashboard", ["title" => "customer dashboard", "products" => $products]);
     }
 
+    public function customer_receipt(Request $req)
+    {
+        $data = $this->getPurchaseOrderProducts($req)->getData(); // Extract data from JsonResponse
+        $purchaseOrder = $data->purchaseOrder; // Access as object
+        $noPO = $purchaseOrder->no_PO; // "PO-33f0ce44"
+        $purchaseDate = $purchaseOrder->purchaseDate; // "2025-03-22"
+
+        // Extract products array
+        $products = $data->products;
+        return view("customers.customer_receipt", ["title" => "receipt", "no_PO" => $noPO, "purchase_date" => $purchaseDate, "products" => $products]);
+    }
+
     public function purchase_order()
     {
         return view("customers.purchase_order", ["title" => "purchase order"]);
     }
 
-    public function create_purchase(Request $req)
+    public function create_purchase()
     {
         $customerCode = session('customerCode');
         $purchaseDate = date("Y/m/d");
@@ -119,10 +131,8 @@ class CustomerController extends Controller
         // Clear session after use
         session()->forget('purchase_data');
 
-        session()->flash('msg', 'no_PO: ' . $no_PO);
-
         $this->azure->alertSuppliers($no_PO);
-        return redirect()->route("customer_dashboard", ['success' => 1]);
+        return redirect()->route("customer_receipt", ['no_PO' => $no_PO]);
     }
 
     public function list_purchase()

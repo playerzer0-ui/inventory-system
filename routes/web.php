@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth.user']], function () {
 //customer
 Route::group(['middleware' => ['check.user.type:2']], function () {
     Route::get("/customer_dashboard", [CustomerController::class, "customer_dashboard"])->name("customer_dashboard");
+    Route::get("/customer_receipt", [CustomerController::class, "customer_receipt"])->name("customer_receipt");
     Route::get("/purchase_order", [CustomerController::class, "purchase_order"])->name("purchase_order");
     Route::post('/checkOutPurchase', [CustomerController::class, "checkOutPurchase"])->name("checkOutPurchase");
     Route::get("/create_purchase", [CustomerController::class, "create_purchase"])->name("create_purchase");
