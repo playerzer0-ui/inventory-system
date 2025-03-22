@@ -129,19 +129,6 @@ function createChart(data) {
             }
         }
 
-        // Set canvas size to 70% of its container
-        const container = ctx.parentElement;
-        const containerWidth = container.clientWidth;
-        const containerHeight = container.clientHeight;
-
-        ctx.width = containerWidth * 0.7;
-        ctx.height = containerHeight * 0.7;
-
-        // Destroy existing chart instance if it exists
-        if (chartInstance) {
-            chartInstance.destroy();
-        }
-
         // Create new chart instance
         chartInstance = new Chart(ctx, {
             type: 'line',
