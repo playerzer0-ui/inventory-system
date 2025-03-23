@@ -189,9 +189,9 @@ class ReportController extends Controller
 
     public function debug()
     {
-        $truckEmail = Truck::where("no_truk", "truck2S")->pluck("truckEmail")->first();
-        //dd($truckEmail);
-        $this->azure->sendEmail($truckEmail, "Delivery outstanding", "an order requires sending and it has been assigned to you");
+        $this->azure->alertAdmins("in");
+        $this->azure->alertSuppliers("PO-21390231213");
+        $this->azure->supplyLowCheck("APA", "2025-03-03", ["RR-100-A", "RR-120-A"]);
     }
 
     // public function createPDF(Request $req)

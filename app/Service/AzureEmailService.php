@@ -2,11 +2,13 @@
 
 namespace App\Service;
 
+use App\Models\Saldo;
 use App\Models\Storage;
 use App\Models\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use App\Service\ExcelService;
+use App\Service\StorageReport;
 
 class AzureEmailService {
     private $email;
@@ -14,14 +16,16 @@ class AzureEmailService {
     private $secretKey;
     private $apiVersion;
     protected $excel;
+    protected $report;
 
-    public function __construct(ExcelService $excel)
+    public function __construct(ExcelService $excel, StorageReport $report)
     {
         $this->email = config("mail.mailers.azure.sender");
         $this->resourceEndpoint = config("mail.mailers.azure.endpoint");
         $this->secretKey = config("mail.mailers.azure.access_key");
         $this->apiVersion = config("mail.mailers.azure.api_version");
         $this->excel = $excel;
+        $this->report = $report;
     }
 
     function computeContentHash($content)
@@ -124,6 +128,51 @@ class AzureEmailService {
         $admins = User::where("userType", 1)->pluck("email");
         for($i = 0; $i < count($admins); $i++){
             $this->sendEmail($admins[$i], "order $state is made", "a supplier has made an order");
+        }
+    }
+
+    public function supplyLowCheck($storageCode, $date, $productCodes)
+    {
+        $year = substr($date, 0, 4);
+        $month = substr($date, 5, 2);
+        $products = [];
+        $data = $this->report->generateSaldo($storageCode, $month, $year);
+
+        foreach ($productCodes as $productCode) {
+            if (isset($data[$productCode])) {
+                $finalBalance = $data[$productCode]['final_balance']['totalQty'];
+
+                if ($finalBalance < 300) {
+                    $products[] = [
+                        'productCode' => $productCode,
+                        'productName' => $data[$productCode]['productName'], // Include product name
+                        'finalBalance' => $finalBalance
+                    ];
+                }
+            }
+        }
+
+        if (!empty($products)) {
+            // Create email content
+            $emailContent = "Inventory Supply LOW Alert\n\n";
+            $emailContent .= "The following products have a supply level below 300 units:\n";
+            $emailContent .= str_repeat("=", 40) . "\n";
+
+            foreach ($products as $product) {
+                $emailContent .= "Product Code: {$product['productCode']}\n";
+                $emailContent .= "Product Name: {$product['productName']}\n";
+                $emailContent .= "Final Balance: {$product['finalBalance']} units\n";
+                $emailContent .= str_repeat("-", 40) . "\n";
+            }
+
+            $emailContent .= "\nPlease take the necessary actions to restock the inventory.\n";
+            $emailContent .= "Thank you.";
+
+            // Send email to all suppliers
+            $suppliers = User::where("userType", 0)->pluck("email");
+            foreach ($suppliers as $email) {
+                $this->sendEmail($email, "Supply low: INV-product", $emailContent);
+            }
         }
     }
 

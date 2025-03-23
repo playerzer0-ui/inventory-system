@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendAlertAdmins;
+use App\Jobs\SendEmail;
+use App\Jobs\SendSupplyLowCheck;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Order_Product;
@@ -92,6 +95,7 @@ class SlipController extends Controller
                         "product_status" => $pageState
                     ]);
                 }
+
                 $this->azure->alertAdmins($pageState);
             }
             else{
@@ -132,6 +136,7 @@ class SlipController extends Controller
                 $truckEmail = Truck::where("no_truk", $no_truk)->pluck("truckEmail")->first();
                 $this->azure->alertAdmins($pageState);
                 $this->azure->sendEmail($truckEmail, "Delivery outstanding: $purchase_order", "an order requires sending and it has been assigned to you");
+                $this->azure->supplyLowCheck($storageCode, $orderDate, $productCodes);
             }
         }
 

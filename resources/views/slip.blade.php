@@ -21,22 +21,15 @@
                 <td>Storage</td>
                 <td>:</td>
                 <td colspan="2">
-                    @if ($state == "out")
-                    <input type="text" name="storageCode" id="storageCode" value="NON" readonly>
+                    @if ($state == "out" || $state == "in")
+                    <select name="storageCode" id="storageCode" 
+                            onchange="{{ $state == 'in' ? 'getLPB()' : 'getSJ()' }}" readonly>
+                            @foreach ($storages as $key)
+                                <option value="{{ $key['storageCode'] }}">{{ $key['storageName'] }}</option>
+                            @endforeach
+                        </select>
                     @else
-                        @if ($state == "in")
-                        <select name="storageCode" id="storageCode" onchange="getLPB()" readonly>
-                        @else
-                        <select name="storageCode" id="storageCode" onchange="getSJT()" readonly> 
-                        @endif
-                    @foreach ($storages as $key)
-                        @if ($key["storageCode"] == "NON")
-                        <option value="{{ $key["storageCode"] }}" selected>{{ $key["storageName"] }}</option>
-                        @else
-                        <option value="{{ $key["storageCode"] }}">{{ $key["storageName"] }}</option>
-                        @endif
-                    @endforeach
-                    </select>
+                        <input type="text" name="storageCode" id="storageCode" value="NON" readonly>
                     @endif
                 </td>
                 @if ($state == "in")

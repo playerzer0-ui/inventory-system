@@ -13,23 +13,29 @@
                 <td>:</td>
                 <td colspan="2">
                     @if ($state == "out")
-                    <select name="storageCode" id="storageCode" readonly>
-                        <option value="NON" selected>none</option>
-                    </select>
+                        <select name="storageCode" id="storageCode" readonly>
+                            @foreach ($storages as $key)
+                                @if ($key["storageCode"] == $result["storageCode"])
+                                    <option value="{{ $key['storageCode'] }}" selected>{{ $key['storageName'] }}</option>
+                                @else
+                                    <option value="{{ $key['storageCode'] }}">{{ $key['storageName'] }}</option>
+                                @endif
+                            @endforeach
+                        </select>
                     @else
                         @if ($state == "in")
-                        <select name="storageCode" id="storageCode" onchange="getLPB()" readonly>
+                            <select name="storageCode" id="storageCode" onchange="getLPB()" readonly>
                         @else
-                        <select name="storageCode" id="storageCode" onchange="getSJT()" readonly> 
+                            <select name="storageCode" id="storageCode" onchange="getSJ()" readonly>
                         @endif
-                    @foreach ($storages as $key)
-                        @if ($key["storageCode"] == $result["storageCode"])
-                        <option value="{{ $key["storageCode"] }}" selected>{{ $key["storageName"] }}</option>
-                        @else
-                        <option value="{{ $key["storageCode"] }}">{{ $key["storageName"] }}</option>
-                        @endif
-                    @endforeach
-                    </select>
+                        @foreach ($storages as $key)
+                            @if ($key["storageCode"] == $result["storageCode"])
+                                <option value="{{ $key['storageCode'] }}" selected>{{ $key['storageName'] }}</option>
+                            @else
+                                <option value="{{ $key['storageCode'] }}">{{ $key['storageName'] }}</option>
+                            @endif
+                        @endforeach
+                        </select>
                     @endif
                 </td>
                 @if ($state == "in")

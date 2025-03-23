@@ -25,7 +25,6 @@ function generateReport() {
       },
       success: function (data) {
           //console.log(data);
-          // let data = JSON.parse(response);
           populateReportTable(data);
       }
   });

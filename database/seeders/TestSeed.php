@@ -51,16 +51,9 @@ class TestSeed extends Seeder
         DB::table('trucks')->insert([
             [
                 'no_truk' => 'truck1L',
-                'truckEmail' => 'pythontest190@gmail.com',
+                'truckEmail' => 'jerikuland@gmail.com',
                 'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'size' => 'L',
-                'mode' => 1
-            ],
-            [
-                'no_truk' => 'truck2S',
-                'truckEmail' => 'playerzero745@gmail.com',
-                'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
-                'size' => 'S',
                 'mode' => 1
             ],
             [
@@ -68,6 +61,13 @@ class TestSeed extends Seeder
                 'truckEmail' => 'cydacnote@gmail.com',
                 'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'size' => 'M',
+                'mode' => 1
+            ],
+            [
+                'no_truk' => 'truck2S',
+                'truckEmail' => 'playerzero745@gmail.com',
+                'truckPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
+                'size' => 'S',
                 'mode' => 1
             ],
         ]);
@@ -125,7 +125,7 @@ class TestSeed extends Seeder
             [
                 'customerCode' => 'ZEN',
                 'customerName' => 'zeno',
-                'customerEmail' => 'pythontest190@gmail.com',
+                'customerEmail' => 'playerzero745@gmail.com',
                 'customerPassword' => '$2y$10$I6HDp20xfQ.eyexX6Xu0XOmiCwmPmVGf7WuNTF6LApGFg0kxVcbIG',
                 'customerAddress' => 'jln asdf',
                 'customerNPWP' => '123.001.111.111-111',
@@ -214,7 +214,7 @@ class TestSeed extends Seeder
                 'customerCode' => 'DED',
                 'orderDate' => '2024-08-07',
                 'purchase_order' => 'potax1',
-                'status_mode' => 3,
+                'status_mode' => 2,
             ],
             [
                 'nomor_surat_jalan' => '2/SJK/NON/08/2024',
@@ -238,7 +238,7 @@ class TestSeed extends Seeder
                 'customerCode' => 'TOM',
                 'orderDate' => '2024-08-08',
                 'purchase_order' => 'potax2',
-                'status_mode' => 3,
+                'status_mode' => 2,
             ],
             [
                 'nomor_surat_jalan' => '3/SJK/NON/08/2024',
@@ -262,7 +262,7 @@ class TestSeed extends Seeder
                 'customerCode' => 'DED',
                 'orderDate' => '2024-08-16',
                 'purchase_order' => 'potax3',
-                'status_mode' => 3,
+                'status_mode' => 2,
             ],
             [
                 'nomor_surat_jalan' => 'H810005211',
