@@ -34,10 +34,16 @@ class InvoiceController extends Controller
                     $orders = Order::where('status_mode', 1)->pluck('nomor_surat_jalan');
                     break;
                 case "out":
-                    $orders = Order::where('status_mode', 2)->pluck('nomor_surat_jalan');
+                    $orders = Order::leftJoin('invoices', 'orders.nomor_surat_jalan', '=', 'invoices.nomor_surat_jalan')
+                    ->where('orders.status_mode', 2)
+                    ->whereNull('invoices.nomor_surat_jalan')
+                    ->pluck('orders.nomor_surat_jalan');
                     break;
                 case "out_tax":
-                    $orders = Order::where('status_mode', 3)->pluck('nomor_surat_jalan');
+                    $orders = Order::leftJoin('invoices', 'orders.nomor_surat_jalan', '=', 'invoices.nomor_surat_jalan')
+                    ->where('orders.status_mode', 3)
+                    ->whereNull('invoices.nomor_surat_jalan')
+                    ->pluck('orders.nomor_surat_jalan');
                     break;
             }
         }

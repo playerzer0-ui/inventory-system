@@ -124,6 +124,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'vendor'])}}">vendors</a></li>
                             <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'customer'])}}">customers</a></li>
+                            <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'truck'])}}">trucks</a></li>
                             <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'product'])}}">products</a></li>
                             <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'storage'])}}">storages</a></li>
                             <li><a class="dropdown-item" href="{{route('master_read', ['data' => 'user'])}}">users</a></li>

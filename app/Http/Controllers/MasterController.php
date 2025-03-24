@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Storage;
+use App\Models\Truck;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Support\Str;
@@ -40,12 +41,23 @@ class MasterController extends Controller
                     "vendorNPWP" => $input_data[3]
                 ]);
                 break;
+            case "truck":
+                Truck::create([
+                    'no_truk' => $input_data[0] ,
+                    'truckEmail' => $input_data[1],
+                    'truckPassword' => Hash::make($input_data[2]),
+                    'size' => $input_data[3],
+                    'mode' => $input_data[4],
+                ]);
+                break;
             case "customer":
                 Customer::create([
                     "customerCode" => $input_data[0],
                     "customerName" => $input_data[1],
-                    "customerAddress" => $input_data[2],
-                    "customerNPWP" => $input_data[3]
+                    "customerEmail" => $input_data[2],
+                    "customerPassword" => Hash::make($input_data[3]),
+                    "customerAddress" => $input_data[4],
+                    "customerNPWP" => $input_data[5]
                 ]);
                 break;
             case "product":
@@ -115,12 +127,23 @@ class MasterController extends Controller
                     "vendorNPWP" => $input_data[3]
                 ]);
                 break;
+            case "truck":
+                Truck::where("no_truk", $oldCode)->update([
+                    'no_truk' => $input_data[0] ,
+                    'truckEmail' => $input_data[1],
+                    'truckPassword' => Hash::make($input_data[2]),
+                    'size' => $input_data[3],
+                    'mode' => $input_data[4],
+                ]);
+                break;
             case "customer":
                 Customer::where("customerCode", $oldCode)->update([
                     "customerCode" => $input_data[0],
                     "customerName" => $input_data[1],
-                    "customerAddress" => $input_data[2],
-                    "customerNPWP" => $input_data[3]
+                    "customerEmail" => $input_data[2],
+                    "customerPassword" => Hash::make($input_data[3]),
+                    "customerAddress" => $input_data[4],
+                    "customerNPWP" => $input_data[5]
                 ]);
                 break;
             case "product":
@@ -170,6 +193,9 @@ class MasterController extends Controller
             case "vendor":
                 Vendor::where("vendorCode", $code)->delete();
                 break;
+            case "truck":
+                Truck::where("no_truk", $code)->delete();
+                break;
             case "customer":
                 Customer::where("customerCode", $code)->delete();
                 break;
@@ -195,6 +221,11 @@ class MasterController extends Controller
                 $result = Vendor::all();
                 $keyNames = (new Vendor)->getFillable();
                 $attr = Vendor::where("vendorCode", $code)->get()->toArray();
+                break;
+            case "truck":
+                $result = Truck::all();
+                $keyNames = (new Truck)->getFillable();
+                $attr = Truck::where("no_truk", $code)->get()->toArray();
                 break;
             case "customer":
                 $result = Customer::all();
