@@ -71,9 +71,8 @@ class StorageReport {
         return array_values($groupData);
     }
 
-    public function getreceivablesReport($month, $year)
+    public function getreceivablesReport($storageCode, $month, $year)
     {
-        $storageCode = "NON";
 
         $receivablesDetails = Order::query()
             ->select([

@@ -9,6 +9,7 @@ for (var i = year - 4; i <= year + 3; i++) {
 }
 
 function generateReport() { 
+    let storageCodeValue = document.getElementById("storageCode").value;
     let yearValue = document.getElementById("year").value;
     let monthValue = document.getElementById("month").value;
 
@@ -17,6 +18,7 @@ function generateReport() {
         url: "/getReceivablesReport",
         datatype: JSON,
         data: {
+            storageCode: storageCodeValue,
             month: monthValue,
             year: yearValue
         },

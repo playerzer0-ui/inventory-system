@@ -76,15 +76,17 @@ class ReportController extends Controller
 
     public function receivables()
     {
-        return view("reports.receivables", ["title" => "receivables"]);
+        $storages = Storage::all();
+        return view("reports.receivables", ["title" => "receivables", "storages" => $storages]);
     }
 
     public function getReceivablesReport(Request $req)
     {
+        $storageCode = $req->storageCode;
         $month = $req->month;
         $year = $req->year;
 
-        return $this->storageReport->getreceivablesReport($month, $year);
+        return $this->storageReport->getreceivablesReport($storageCode, $month, $year);
     }
 
     public function getreportStock(Request $req)

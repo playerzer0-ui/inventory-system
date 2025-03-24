@@ -2,6 +2,16 @@
 
 <main>
     <div>
+        <label for="storageCode">storage:</label>
+        <select name="storageCode" id="storageCode">
+            @foreach ($storages as $key)
+                @if($key["storageCode"] == "NON")
+                    <option value="{{$key["storageCode"]}}" selected>{{$key["storageName"]}}</option>
+                @else
+                    <option value="{{$key["storageCode"]}}">{{$key["storageName"]}}</option>
+                @endif
+            @endforeach
+        </select>
     <label for="month">Month:</label>
     <select id="month" name="month">
         <option value="01">January</option>
