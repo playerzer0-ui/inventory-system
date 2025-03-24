@@ -146,7 +146,6 @@
     </section>
 </main>
 
-<script src="{{asset('js/utility.js')}}" async defer></script>
 <script src="{{asset('js/invoice.js')}}" async defer></script>
 
 <x-footer />

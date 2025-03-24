@@ -133,6 +133,7 @@ class AzureEmailService {
 
     public function supplyLowCheck($storageCode, $date, $productCodes)
     {
+        $timestamp = now()->format('YmdHis');
         $year = substr($date, 0, 4);
         $month = substr($date, 5, 2);
         $products = [];
@@ -171,7 +172,7 @@ class AzureEmailService {
             // Send email to all suppliers
             $suppliers = User::where("userType", 0)->pluck("email");
             foreach ($suppliers as $email) {
-                $this->sendEmail($email, "Supply low: INV-product", $emailContent);
+                $this->sendEmail($email, "Supply low: " . $timestamp, $emailContent);
             }
         }
     }

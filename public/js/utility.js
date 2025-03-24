@@ -16,3 +16,7 @@ function setPurchaseValue(value) {
     input.value = value;
     input.dispatchEvent(new Event('input', { bubbles: true }));
 }
+
+function hideMsg() {
+    document.getElementById("msgBox").style.display = "none";
+}

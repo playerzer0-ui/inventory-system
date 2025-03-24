@@ -149,7 +149,7 @@
     </nav>
 
     @if (session('msg'))
-        <div class="msg">
+        <div class="msg" id="msgBox" onclick="hideMsg()">
             <p>{{session("msg")}}</p>
         </div>
     @endif
