@@ -80,14 +80,14 @@ class CustomerController extends Controller
         $purchaseData = session('purchase_data');
 
         if (!$purchaseData) {
-            return redirect()->route("customer_dashboard")->with('error', 'Session expired. Please try again.');
+            return redirect()->route("customer_dashboard")->with('msg', 'Session expired. Please try again.');
         }
 
         // Get the session_id from the URL
         $sessionId = session('session_id');
 
         if (!$sessionId) {
-            return redirect()->route('purchase_order')->with('error', 'Session ID missing.');
+            return redirect()->route('purchase_order')->with('msg', 'Session ID missing.');
         }
 
         // Retrieve the Stripe session

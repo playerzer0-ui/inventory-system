@@ -54,5 +54,7 @@
     function printReceipt() {
         window.print(); // Open the browser's print dialog
     }
+    localStorage.removeItem("cart");
+    localStorage.clear();
 </script>
 <x-footer class="no-print"/>

@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main>
+<main class="container">
     <div>
         <input type="hidden" id="userType" value="{{session('userType')}}">
         <label for="storageCode">storage:</label>

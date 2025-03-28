@@ -25,7 +25,7 @@ if (Object.keys(cart).length === 0) {
             </div>
             <div class="col-4 d-flex align-items-center">
                 <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity('${productCode}')">-</button>
-                <input type="number" name="qty[]" id="quantity-${productCode}" class="form-control mx-2 text-center" value="${item.quantity}" min="1" style="width: 60px;">
+                <input type="number" name="qty[]" id="quantity-${productCode}" class="form-control mx-2 text-center" value="${item.quantity}" min="1" style="width: 200px;" onchange="updateQuantity('${productCode}')">
                 <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity('${productCode}')">+</button>
             </div>
             <div class="col-2 text-end">
@@ -52,25 +52,36 @@ if (Object.keys(cart).length === 0) {
     document.getElementById("theButton").innerHTML = '<button type="submit" class="btn btn-success">Place Order</button>';
 }
 
-// Decrease Quantity
-function decreaseQuantity(productCode) {
+function updateQuantity(productCode) {
     const input = document.getElementById(`quantity-${productCode}`);
-    let value = parseInt(input.value);
-    if (value > 1) {
-        input.value = value - 1;
-        cart[productCode].quantity = value;
+    const newQuantity = parseInt(input.value);
+
+    if (newQuantity >= 1) { // Ensure quantity is at least 1
+        cart[productCode].quantity = newQuantity;
         localStorage.setItem('cart', JSON.stringify(cart));
         location.reload(); // Refresh to update totals
+    } else {
+        // Reset to 1 if user enters a value less than 1
+        input.value = 1;
+        cart[productCode].quantity = 1;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        location.reload();
     }
 }
 
-// Increase Quantity
 function increaseQuantity(productCode) {
     const input = document.getElementById(`quantity-${productCode}`);
     input.value = parseInt(input.value) + 1;
-    cart[productCode].quantity = input.value;
-    localStorage.setItem('cart', JSON.stringify(cart));
-    location.reload(); // Refresh to update totals
+    updateQuantity(productCode); // Call the new function
+}
+
+function decreaseQuantity(productCode) {
+    const input = document.getElementById(`quantity-${productCode}`);
+    const newValue = parseInt(input.value) - 1;
+    if (newValue >= 1) {
+        input.value = newValue;
+        updateQuantity(productCode); // Call the new function
+    }
 }
 
 // Remove Item

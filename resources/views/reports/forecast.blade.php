@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main>
+<main class="container">
 <div class="main-forecast">
     <ion-icon name="close-circle-outline" class="close-icon" onclick="closeOverlay()"></ion-icon>
     <div class="slider-container">

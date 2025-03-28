@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main>
+<main class="container">
     <h1>Purchase Order</h1>
     <form action="{{route('checkOutPurchase')}}" method="POST" id="orderForm">
         @csrf

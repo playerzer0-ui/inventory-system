@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main>
+<main class="container">
     <div>
         <label for="storageCode">storage:</label>
         <select name="storageCode" id="storageCode">

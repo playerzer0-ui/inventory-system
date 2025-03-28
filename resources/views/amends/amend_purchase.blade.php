@@ -1,6 +1,6 @@
 <x-header :title="$title" />
 
-<main>
+<main class="container">
     <h1>Amend Purchase Order: {{ $result['no_PO'] }}</h1>
     <form action="{{route('amendCheckoutPurchase')}}" method="POST" id="amendForm">
         @csrf
@@ -32,9 +32,9 @@
                         <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity('{{ $product->productCode }}')">-</button>
                         @endif
                         @if (!isset($mode))
-                        <input type="number" name="qty[]" id="quantity-{{ $product->productCode }}" class="form-control mx-2 text-center" value="{{ $product->qty }}" min="1" style="width: 60px;">
+                        <input type="number" name="qty[]" id="quantity-{{ $product->productCode }}" class="form-control mx-2 text-center" value="{{ $product->qty }}" min="1" style="width: 200px;">
                         @else
-                        <input type="number" name="qty[]" id="quantity-{{ $product->productCode }}" class="form-control mx-2 text-center" value="{{ $product->qty }}" min="1" style="width: 60px;" readonly>
+                        <input type="number" name="qty[]" id="quantity-{{ $product->productCode }}" class="form-control mx-2 text-center" value="{{ $product->qty }}" min="1" style="width: 200px;" readonly>
                         @endif
                     </div>
                     @if (!isset($mode))
