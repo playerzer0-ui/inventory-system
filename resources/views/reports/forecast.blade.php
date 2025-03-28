@@ -12,7 +12,7 @@
         <canvas id="forecast"></canvas>
     </div>
 </div>
-<div class="container text-center">
+<div id="charts">
     
 </div>
 </main>

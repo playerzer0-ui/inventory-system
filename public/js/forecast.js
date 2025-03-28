@@ -39,7 +39,7 @@ slider.addEventListener("input", () => {
 });
 
 function getProductData(productCode, productName) {
-    const container = document.querySelector('.container.text-center');
+    const container = document.getElementById("charts");
     const rows = container.querySelectorAll('.row');
     const lastRow = rows[rows.length - 1];
     let row;
