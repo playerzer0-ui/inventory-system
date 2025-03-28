@@ -1,7 +1,7 @@
 <x-header :title="$title" />
 
-<main class="main-container">
-    <div class="form-container bg-white">
+<main class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="form-container bg-white p-4 rounded shadow" style="max-width: 400px; max-height: 400px;">
     @if($action == "create")
     <form action="{{route('master_create_data', ['data' => $data])}}" method="post">
         <h1>REGISTER</h1>
@@ -13,15 +13,15 @@
         @csrf
         <div class="mb-3">
             <label class="form-label">email</label>
-            <input type="email" name="input_data[]" class="form-control" value="{{$result['email'] ?? ''}}" required>
+            <input type="email" name="input_data[]" value="{{$result['email'] ?? ''}}" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Password</label>
-            <input type="password" name="input_data[]" class="form-control" required>
+            <input type="password" name="input_data[]" required>
         </div>
         <div class="mb-3">
             <label class="form-label">user type</label>
-            <select name="input_data[]" class="form-select" required>
+            <select name="input_data[]" required>
                 <option value="0">normal user</option>
                 <option value="1">admin user</option>
             </select>
