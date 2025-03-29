@@ -44,7 +44,7 @@ class CustomerController extends Controller
             return redirect()->route("customer_dashboard");
         }
         else{
-            return redirect()->route("show_customer_login");
+            return redirect()->route("show_customer_login")->with("msg", "invalid credentials");
         }
     }
 

@@ -47,7 +47,7 @@ class TruckController extends Controller
             return redirect()->route("truck_dashboard");
         }
         else{
-            return redirect()->route("show_truck_login");
+            return redirect()->route("show_truck_login")->with("msg", "invalid credentials");
         }
     }
 
