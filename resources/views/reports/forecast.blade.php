@@ -1,6 +1,13 @@
 <x-header :title="$title" />
 
 <main class="container">
+    <div class="search-container mb-4">
+        <div class="input-group">
+            <input type="text" id="productSearch" class="form-control" placeholder="Search by product code...">
+            <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+            <button class="btn btn-outline-secondary" type="button" id="clearSearch">Clear</button>
+        </div>
+    </div>
 <div class="main-forecast">
     <ion-icon name="close-circle-outline" class="close-icon" onclick="closeOverlay()"></ion-icon>
     <div class="slider-container">

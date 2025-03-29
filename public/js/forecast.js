@@ -7,18 +7,67 @@ const sliderValue = document.getElementById("slider-value");
 let chartData = null;
 let chartInstance = null;
 
+let allProducts = []; // To store all product data
+let filteredProducts = []; // To store filtered products
+const searchInput = document.getElementById('productSearch');
+const searchButton = document.getElementById('searchButton');
+const clearSearch = document.getElementById('clearSearch');
+
 $(document).ready(function () {
     $.ajax({
         type: "get",
         url: "/getAllProductCodes",
         dataType: "json",
         success: function (response) {
-            for (let i = 0; i < response.length; i++) {
-                getProductData(response[i].productCode, response[i].productName);
-            }
+            allProducts = response; // Store all products
+            filteredProducts = response; // Initially show all products
+            renderProductCharts(response);
         }
     });
+    
+    searchButton.addEventListener('click', filterProducts);
+    searchInput.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+            filterProducts();
+        }
+    });
+    clearSearch.addEventListener('click', clearSearchResults);
 });
+
+// New function to filter products
+function filterProducts() {
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    if (searchTerm === '') {
+        filteredProducts = [...allProducts];
+    } else {
+        filteredProducts = allProducts.filter(product => 
+            product.productCode.toLowerCase().includes(searchTerm) ||
+            (product.productName && product.productName.toLowerCase().includes(searchTerm))
+        );
+    }
+    
+    // Clear existing charts
+    document.getElementById('charts').innerHTML = '';
+    
+    // Render filtered charts
+    renderProductCharts(filteredProducts);
+}
+
+// New function to clear search
+function clearSearchResults() {
+    searchInput.value = '';
+    filteredProducts = [...allProducts];
+    document.getElementById('charts').innerHTML = '';
+    renderProductCharts(allProducts);
+}
+
+// New function to render charts (extracted from your success callback)
+function renderProductCharts(products) {
+    for (let i = 0; i < products.length; i++) {
+        getProductData(products[i].productCode, products[i].productName);
+    }
+}
 
 function openOverlay() {
     overlay.classList.add("visible");
