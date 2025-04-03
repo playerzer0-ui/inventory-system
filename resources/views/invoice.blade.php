@@ -30,6 +30,7 @@
                         <td>Name Customer</td>
                         <td>:</td>
                         <td colspan="2"><input name="customerCode" type="text" id="customerCode" placeholder="Automatic from the system" readonly></td>
+                        <input type="hidden" name="no_truk" id="no_truk">
                         @endif
                     @endif
                 </tr>

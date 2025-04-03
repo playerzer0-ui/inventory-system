@@ -95,8 +95,6 @@ class SlipController extends Controller
                         "product_status" => $pageState
                     ]);
                 }
-
-                $this->azure->alertAdmins($pageState . ": " . $no_sj);
             }
             else{
                 for($i = 0; $i < count($productCodes); $i++){
@@ -132,13 +130,10 @@ class SlipController extends Controller
                 DB::table('trucks')
                 ->where('no_truk', $no_truk)
                 ->update(['mode' => 2]);
-
-                $truckEmail = Truck::where("no_truk", $no_truk)->pluck("truckEmail")->first();
-                $this->azure->alertAdmins($pageState . ": " . $no_sj);
-                $this->azure->sendEmail($truckEmail, "Delivery outstanding: $purchase_order", "an order requires sending and it has been assigned to you");
-                $this->azure->supplyLowCheck($storageCode, $orderDate, $productCodes);
             }
         }
+
+        $this->azure->alertAdmins($pageState . ": " . $no_sj);
 
         session()->flash('msg', 'no_SJ: ' . $no_sj);
 

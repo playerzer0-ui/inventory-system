@@ -151,6 +151,7 @@ function getDetailsFromSJ(){
         purchaseOrderEl = document.getElementById("purchase_order");
     }
     else{
+        no_trukEl = document.getElementById("no_truk");
         customerCode = document.getElementById("customerCode");
         customerAddress = document.getElementById("customerAddress");
         npwp = document.getElementById("npwp");
@@ -178,6 +179,7 @@ function getDetailsFromSJ(){
                 storageCodeEl.value = data.storageCode;
                 customerCode.value = data.customerCode;
                 customerAddress.value = data.customerAddress;
+                no_trukEl.value = data.no_truk_out;
                 npwp.value = data.customerNPWP;
                 generateNoInvoice();
             }

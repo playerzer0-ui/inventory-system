@@ -7,6 +7,8 @@ use App\Models\Moving;
 use App\Models\Order;
 use App\Service\PDFService;
 use App\Models\Order_Product;
+use App\Models\Truck;
+use App\Service\AzureEmailService;
 use App\Service\OrderProductService as ServiceOrderProductService;
 use Illuminate\Http\Request;
 
@@ -14,11 +16,13 @@ class InvoiceController extends Controller
 {
     protected $orderProductService;
     protected $pdf;
+    protected $azure;
 
-    public function __construct(ServiceOrderProductService $orderProductService,PDFService $pdf)
+    public function __construct(ServiceOrderProductService $orderProductService,PDFService $pdf, AzureEmailService $azure)
     {
         $this->orderProductService = $orderProductService;
         $this->pdf = $pdf;
+        $this->azure = $azure;
     }
 
     public function invoice(Request $req)
@@ -61,10 +65,13 @@ class InvoiceController extends Controller
     public function create_invoice(Request $req)
     {
         $no_sj = $req->no_sj;
+        $storageCode = $req->storageCode;
         $no_moving = $req->no_moving;
         $invoice_date = $req->invoice_date;
         $no_invoice = $req->no_invoice;
         $no_faktur = $req->no_faktur;
+        $purchase_order = $req->purchase_order;
+        $no_truk = $req->no_truk;
         $tax = $req->tax;
 
         $productCodes = $req->input('kd');
@@ -89,6 +96,12 @@ class InvoiceController extends Controller
                     ->where('productCode', $productCodes[$i])
                     ->update(['price_per_UOM' => $price_per_uom[$i]]);
             }
+        }
+
+        if($pageState == "out"){
+            $truckEmail = Truck::where("no_truk", $no_truk)->pluck("truckEmail")->first();
+            $this->azure->sendEmail($truckEmail, "Delivery outstanding: $no_sj", "an order requires sending and it has been assigned to you");
+            $this->azure->supplyLowCheck($storageCode, $invoice_date, $productCodes);
         }
         
         session()->flash('msg', 'no_SJ: ' . ($no_sj ?? $no_moving));
