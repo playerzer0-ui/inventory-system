@@ -16,6 +16,13 @@
         <p id="slider-value">3</p>
     </div>
     <div class="chart-container">
+        <div class="timeframe-buttons">
+            <button class="timeframe-btn" data-timeframe="week">Weekly</button>
+            <button class="timeframe-btn" data-timeframe="month">Monthly</button>
+            <button class="timeframe-btn" data-timeframe="3months">3 Months</button>
+            <button class="timeframe-btn" data-timeframe="year">Yearly</button>
+            <button class="timeframe-btn active" data-timeframe="all">All</button>
+        </div>
         <canvas id="forecast"></canvas>
     </div>
 </div>

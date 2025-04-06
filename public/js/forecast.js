@@ -87,6 +87,80 @@ slider.addEventListener("input", () => {
     }
 });
 
+// Timeframe buttons functionality
+document.querySelectorAll('.timeframe-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        // Remove active class from all buttons
+        document.querySelectorAll('.timeframe-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        if (chartData && chartInstance) {
+            const timeframe = this.dataset.timeframe;
+            filterDataByTimeframe(timeframe);
+        }
+    });
+});
+
+function filterDataByTimeframe(timeframe) {
+    if (!chartData || chartData.length === 0) return;
+
+    let filteredData = [...chartData]; // Start with a copy of all data
+    
+    if (timeframe !== 'all') {
+        const now = new Date();
+        filteredData = chartData.filter(item => {
+            const itemDate = new Date(item.orderDate);
+            const diffTime = now - itemDate;
+            const diffDays = diffTime / (1000 * 60 * 60 * 24);
+            
+            switch(timeframe) {
+                case 'week':
+                    return diffDays <= 7;
+                case 'month':
+                    return diffDays <= 30;
+                case '3months':
+                    return diffDays <= 90;
+                case 'year':
+                    return diffDays <= 365;
+                default:
+                    return true;
+            }
+        });
+    }
+    
+    updateChartWithData(filteredData);
+}
+
+function updateChartWithData(data) {
+    let labels = [];
+    let normalData = [];
+    let ema = [];
+    let alpha = 2 / (parseInt(period) + 1);
+
+    for (let i = 0; i < data.length; i++) {
+        let qty = parseInt(data[i].total_qty);
+        labels.push(data[i].orderDate);
+        normalData.push(qty);
+        if (i < 1) {
+            ema.push(qty);
+        } else {
+            let result = (alpha * qty) + ((1 - alpha) * ema[i - 1]);
+            ema.push(result);
+        }
+    }
+
+    chartInstance.data.labels = labels;
+    chartInstance.data.datasets[0].data = normalData;
+    chartInstance.data.datasets[1].data = ema;
+    chartInstance.update();
+}
+
+// Set 'All' as default active button
+document.querySelector('.timeframe-btn[data-timeframe="all"]').classList.add('active');
+
 function getProductData(productCode, productName) {
     const container = document.getElementById("charts");
     const rows = container.querySelectorAll('.row');
@@ -154,72 +228,95 @@ function resetCanvas() {
 }
 
 function createChart(data) {
+    chartData = data; // Store the original data
     const ctx = document.getElementById("forecast");
+    
+    // Filter data based on default timeframe ('All')
+    const filteredData = filterDataForTimeframe(data, 'all');
+    
     let labels = [];
     let normalData = [];
     let ema = [];
+    let alpha = 2 / (parseInt(period) + 1);
 
-    if (data.length <= 0) {
-        alert("No data present for this product");
-    } else if (period === null || period === "") {
-        alert("Period must not be empty, it helps with the smoothing");
-    } else {
-        let alpha = 2 / (parseInt(period) + 1);
-
-        for (let i = 0; i < data.length; i++) {
-            let qty = parseInt(data[i].total_qty);
-            labels.push(data[i].orderDate);
-            normalData.push(qty);
-            if (i < 1) {
-                ema.push(qty);
-            } else {
-                let result = (alpha * qty) + ((1 - alpha) * ema[i - 1]);
-                ema.push(result);
-            }
+    for (let i = 0; i < filteredData.length; i++) {
+        let qty = parseInt(filteredData[i].total_qty);
+        labels.push(filteredData[i].orderDate);
+        normalData.push(qty);
+        if (i < 1) {
+            ema.push(qty);
+        } else {
+            let result = (alpha * qty) + ((1 - alpha) * ema[i - 1]);
+            ema.push(result);
         }
-
-        // Create new chart instance
-        chartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Normal Data',
-                        data: normalData,
-                        borderWidth: 1,
-                        borderColor: 'blue',
-                    },
-                    {
-                        label: 'EMA Data',
-                        data: ema,
-                        borderWidth: 1,
-                        borderColor: 'red',
-                    },
-                ],
-            },
-            options: {
-                animation: {
-                    duration: 500, // Animation duration in milliseconds
-                    easing: 'easeInOutQuad', // Smooth easing function
-                },
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-                layout: {
-                    padding: {
-                        top: 10,
-                        right: 10,
-                        bottom: 10,
-                        left: 10,
-                    },
-                },
-            },
-        });
     }
+
+    // Create new chart instance
+    chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Normal Data',
+                    data: normalData,
+                    borderWidth: 1,
+                    borderColor: 'blue',
+                },
+                {
+                    label: 'EMA Data',
+                    data: ema,
+                    borderWidth: 1,
+                    borderColor: 'red',
+                },
+            ],
+        },
+        options: {
+            animation: {
+                duration: 500,
+                easing: 'easeInOutQuad',
+            },
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+            layout: {
+                padding: {
+                    top: 40, // Added more top padding for buttons
+                    right: 10,
+                    bottom: 10,
+                    left: 10,
+                },
+            },
+        },
+    });
+}
+
+// Helper function for initial data filtering
+function filterDataForTimeframe(data, timeframe) {
+    if (timeframe === 'all') return data;
+    
+    const now = new Date();
+    return data.filter(item => {
+        const itemDate = new Date(item.orderDate);
+        const diffTime = now - itemDate;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+        
+        switch(timeframe) {
+            case 'week':
+                return diffDays <= 7;
+            case 'month':
+                return diffDays <= 30;
+            case '3months':
+                return diffDays <= 90;
+            case 'year':
+                return diffDays <= 365;
+            default:
+                return true;
+        }
+    });
 }
 
 // Function to dynamically update the EMA dataset
