@@ -439,7 +439,7 @@ class ExcelService
         return response()->download($filePath);
     }
 
-    public function excel_receivable($month, $year) {
+    public function excel_receivable($storageCode, $month, $year) {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
     
@@ -465,7 +465,7 @@ class ExcelService
         $sheet->getStyle('A6:N6')->applyFromArray($headerStyle);
     
         // Fetch data
-        $data = $this->storageReport->getreceivablesReport($month, $year);
+        $data = $this->storageReport->getreceivablesReport($storageCode, $month, $year);
         $row = 7;
         $no = 1;
     

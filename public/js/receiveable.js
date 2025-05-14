@@ -26,7 +26,7 @@ function generateReport() {
             // let data = JSON.parse(response);
             // console.log(response);
             populateTable(data);
-            document.getElementById("excel").innerHTML = `<a href="/excel_receivable?month=${monthValue}&year=${yearValue}" target="_blank"><button class="btn btn-success">excel</button></a>`;
+            document.getElementById("excel").innerHTML = `<a href="/excel_receivable?storageCode=${storageCodeValue}&month=${monthValue}&year=${yearValue}" target="_blank"><button class="btn btn-success">excel</button></a>`;
         }
     });
 }

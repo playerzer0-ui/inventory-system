@@ -178,10 +178,12 @@ class ReportController extends Controller
 
     public function excel_receivable(Request $req)
     {
+        $storageCode = $req->storageCode;
         $month = $req->month;
         $year = $req->year;
+        // dd($storageCode, $month, $year);
 
-        return $this->excel->excel_receivable($month, $year);
+        return $this->excel->excel_receivable($storageCode, $month, $year);
     }
 
     public function excel_logs()
